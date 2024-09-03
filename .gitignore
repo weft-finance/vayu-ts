@@ -1,0 +1,16 @@
+# IDE
+.vscode
+
+# openapi
+src/generated
+
+# build
+dist
+
+# npm
+node_modules
+
+# packed files
+*.tgz
+
+openapitools.json
