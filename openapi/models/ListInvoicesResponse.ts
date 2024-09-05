@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-import { ListInvoicesResponseInvoicesInner } from '../models/ListInvoicesResponseInvoicesInner';
+import { GetInvoiceResponseInvoice } from '../models/GetInvoiceResponseInvoice';
 import { HttpFile } from '../http/http';
 
 export class ListInvoicesResponse {
-    'invoices': Array<ListInvoicesResponseInvoicesInner>;
+    'invoices': Array<GetInvoiceResponseInvoice>;
     'total': number;
     'hasMore': boolean;
     'nextCursor'?: string;
@@ -25,7 +25,7 @@ export class ListInvoicesResponse {
         {
             "name": "invoices",
             "baseName": "invoices",
-            "type": "Array<ListInvoicesResponseInvoicesInner>",
+            "type": "Array<GetInvoiceResponseInvoice>",
             "format": ""
         },
         {

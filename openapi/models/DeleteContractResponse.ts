@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-import { GetContractResponseContract } from '../models/GetContractResponseContract';
+import { DeleteContractResponseContract } from '../models/DeleteContractResponseContract';
 import { HttpFile } from '../http/http';
 
 export class DeleteContractResponse {
-    'contract': GetContractResponseContract;
+    'contract': DeleteContractResponseContract;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -22,7 +22,7 @@ export class DeleteContractResponse {
         {
             "name": "contract",
             "baseName": "contract",
-            "type": "GetContractResponseContract",
+            "type": "DeleteContractResponseContract",
             "format": ""
         }    ];
 

@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-import { ListMetersResponseMetersInner } from '../models/ListMetersResponseMetersInner';
+import { GetMeterResponseMeter } from '../models/GetMeterResponseMeter';
 import { HttpFile } from '../http/http';
 
 export class ListMetersResponse {
-    'meters': Array<ListMetersResponseMetersInner>;
+    'meters': Array<GetMeterResponseMeter>;
     'total': number;
     'hasMore': boolean;
     'nextCursor'?: string;
@@ -25,7 +25,7 @@ export class ListMetersResponse {
         {
             "name": "meters",
             "baseName": "meters",
-            "type": "Array<ListMetersResponseMetersInner>",
+            "type": "Array<GetMeterResponseMeter>",
             "format": ""
         },
         {

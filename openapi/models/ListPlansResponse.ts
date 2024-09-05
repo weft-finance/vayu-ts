@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-import { ListPlansResponsePlansInner } from '../models/ListPlansResponsePlansInner';
+import { GetPlanResponsePlan } from '../models/GetPlanResponsePlan';
 import { HttpFile } from '../http/http';
 
 export class ListPlansResponse {
-    'plans': Array<ListPlansResponsePlansInner>;
+    'plans': Array<GetPlanResponsePlan>;
     'total': number;
     'hasMore': boolean;
     'nextCursor'?: string;
@@ -25,7 +25,7 @@ export class ListPlansResponse {
         {
             "name": "plans",
             "baseName": "plans",
-            "type": "Array<ListPlansResponsePlansInner>",
+            "type": "Array<GetPlanResponsePlan>",
             "format": ""
         },
         {

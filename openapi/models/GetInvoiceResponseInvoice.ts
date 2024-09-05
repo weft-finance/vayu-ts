@@ -36,7 +36,6 @@ export class GetInvoiceResponseInvoice {
     'id': string;
     'createdAt': Date;
     'updatedAt': Date;
-    'deletedAt': string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -94,12 +93,6 @@ export class GetInvoiceResponseInvoice {
             "baseName": "updatedAt",
             "type": "Date",
             "format": "date-time"
-        },
-        {
-            "name": "deletedAt",
-            "baseName": "deletedAt",
-            "type": "string",
-            "format": ""
         }    ];
 
     static getAttributeTypeMap() {

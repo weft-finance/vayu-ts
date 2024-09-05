@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-import { ListCustomersResponseCustomersInner } from '../models/ListCustomersResponseCustomersInner';
+import { CreateCustomerResponseCustomer } from '../models/CreateCustomerResponseCustomer';
 import { HttpFile } from '../http/http';
 
 export class ListCustomersResponse {
-    'customers': Array<ListCustomersResponseCustomersInner>;
+    'customers': Array<CreateCustomerResponseCustomer>;
     'total': number;
     'hasMore': boolean;
     'nextCursor'?: string;
@@ -25,7 +25,7 @@ export class ListCustomersResponse {
         {
             "name": "customers",
             "baseName": "customers",
-            "type": "Array<ListCustomersResponseCustomersInner>",
+            "type": "Array<CreateCustomerResponseCustomer>",
             "format": ""
         },
         {

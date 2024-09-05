@@ -10,24 +10,21 @@
  * Do not edit the class manually.
  */
 
-import { AggregationMethod } from '../models/AggregationMethod';
-import { Filter } from '../models/Filter';
+import { PlanBillingData } from '../models/PlanBillingData';
+import { PlanStatus } from '../models/PlanStatus';
 import { HttpFile } from '../http/http';
 
-export class ListMetersResponseMetersInner {
+export class DeletePlanResponsePlan {
     /**
-    * The name of the meter
+    * The name of the plan
     */
     'name': string;
-    /**
-    * The name of the event that the meter is tracking.
-    */
-    'eventName': string;
-    'aggregationMethod': AggregationMethod;
-    'filter'?: Filter;
+    'status': PlanStatus;
+    'billingData': PlanBillingData;
     'id': string;
     'createdAt': Date;
     'updatedAt': Date;
+    'deletedAt': string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -39,21 +36,15 @@ export class ListMetersResponseMetersInner {
             "format": ""
         },
         {
-            "name": "eventName",
-            "baseName": "eventName",
-            "type": "string",
+            "name": "status",
+            "baseName": "status",
+            "type": "PlanStatus",
             "format": ""
         },
         {
-            "name": "aggregationMethod",
-            "baseName": "aggregationMethod",
-            "type": "AggregationMethod",
-            "format": ""
-        },
-        {
-            "name": "filter",
-            "baseName": "filter",
-            "type": "Filter",
+            "name": "billingData",
+            "baseName": "billingData",
+            "type": "PlanBillingData",
             "format": ""
         },
         {
@@ -73,13 +64,21 @@ export class ListMetersResponseMetersInner {
             "baseName": "updatedAt",
             "type": "Date",
             "format": "date-time"
+        },
+        {
+            "name": "deletedAt",
+            "baseName": "deletedAt",
+            "type": "string",
+            "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return ListMetersResponseMetersInner.attributeTypeMap;
+        return DeletePlanResponsePlan.attributeTypeMap;
     }
 
     public constructor() {
     }
 }
+
+
 

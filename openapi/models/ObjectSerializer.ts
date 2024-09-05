@@ -15,11 +15,15 @@ export * from '../models/CriterionOperator';
 export * from '../models/Currency';
 export * from '../models/DeductCreditsRequest';
 export * from '../models/DeleteContractResponse';
+export * from '../models/DeleteContractResponseContract';
 export * from '../models/DeleteCustomerResponse';
+export * from '../models/DeleteCustomerResponseCustomer';
 export * from '../models/DeleteEventResponse';
 export * from '../models/DeleteEventResponseEvent';
 export * from '../models/DeleteMeterResponse';
+export * from '../models/DeleteMeterResponseMeter';
 export * from '../models/DeletePlanResponse';
+export * from '../models/DeletePlanResponsePlan';
 export * from '../models/Event';
 export * from '../models/EventsDryRunRequest';
 export * from '../models/EventsDryRunResponse';
@@ -44,16 +48,11 @@ export * from '../models/GrantCreditsRequest';
 export * from '../models/InvalidEvent';
 export * from '../models/LineItem';
 export * from '../models/ListContractsResponse';
-export * from '../models/ListContractsResponseContractsInner';
 export * from '../models/ListCreditLedgerEntriesResponse';
 export * from '../models/ListCustomersResponse';
-export * from '../models/ListCustomersResponseCustomersInner';
 export * from '../models/ListInvoicesResponse';
-export * from '../models/ListInvoicesResponseInvoicesInner';
 export * from '../models/ListMetersResponse';
-export * from '../models/ListMetersResponseMetersInner';
 export * from '../models/ListPlansResponse';
-export * from '../models/ListPlansResponsePlansInner';
 export * from '../models/LoginRequest';
 export * from '../models/LoginResponse';
 export * from '../models/Meter';
@@ -96,11 +95,15 @@ import { CriterionOperator } from '../models/CriterionOperator';
 import { Currency } from '../models/Currency';
 import { DeductCreditsRequest } from '../models/DeductCreditsRequest';
 import { DeleteContractResponse } from '../models/DeleteContractResponse';
+import { DeleteContractResponseContract } from '../models/DeleteContractResponseContract';
 import { DeleteCustomerResponse } from '../models/DeleteCustomerResponse';
+import { DeleteCustomerResponseCustomer } from '../models/DeleteCustomerResponseCustomer';
 import { DeleteEventResponse } from '../models/DeleteEventResponse';
 import { DeleteEventResponseEvent } from '../models/DeleteEventResponseEvent';
 import { DeleteMeterResponse } from '../models/DeleteMeterResponse';
+import { DeleteMeterResponseMeter } from '../models/DeleteMeterResponseMeter';
 import { DeletePlanResponse } from '../models/DeletePlanResponse';
+import { DeletePlanResponsePlan        } from '../models/DeletePlanResponsePlan';
 import { Event } from '../models/Event';
 import { EventsDryRunRequest } from '../models/EventsDryRunRequest';
 import { EventsDryRunResponse } from '../models/EventsDryRunResponse';
@@ -119,22 +122,17 @@ import { GetInvoiceResponseInvoice } from '../models/GetInvoiceResponseInvoice';
 import { GetMeterResponse } from '../models/GetMeterResponse';
 import { GetMeterResponseMeter } from '../models/GetMeterResponseMeter';
 import { GetPlanResponse } from '../models/GetPlanResponse';
-import { GetPlanResponsePlan        } from '../models/GetPlanResponsePlan';
+import { GetPlanResponsePlan       } from '../models/GetPlanResponsePlan';
 import { GetProductsUsageReportResponse                } from '../models/GetProductsUsageReportResponse';
 import { GrantCreditsRequest } from '../models/GrantCreditsRequest';
 import { InvalidEvent } from '../models/InvalidEvent';
 import { LineItem } from '../models/LineItem';
 import { ListContractsResponse } from '../models/ListContractsResponse';
-import { ListContractsResponseContractsInner } from '../models/ListContractsResponseContractsInner';
 import { ListCreditLedgerEntriesResponse } from '../models/ListCreditLedgerEntriesResponse';
 import { ListCustomersResponse } from '../models/ListCustomersResponse';
-import { ListCustomersResponseCustomersInner } from '../models/ListCustomersResponseCustomersInner';
 import { ListInvoicesResponse } from '../models/ListInvoicesResponse';
-import { ListInvoicesResponseInvoicesInner } from '../models/ListInvoicesResponseInvoicesInner';
 import { ListMetersResponse } from '../models/ListMetersResponse';
-import { ListMetersResponseMetersInner } from '../models/ListMetersResponseMetersInner';
 import { ListPlansResponse } from '../models/ListPlansResponse';
-import { ListPlansResponsePlansInner       } from '../models/ListPlansResponsePlansInner';
 import { LoginRequest } from '../models/LoginRequest';
 import { LoginResponse } from '../models/LoginResponse';
 import { Meter } from '../models/Meter';
@@ -197,11 +195,15 @@ let typeMap: {[index: string]: any} = {
     "Criterion": Criterion,
     "DeductCreditsRequest": DeductCreditsRequest,
     "DeleteContractResponse": DeleteContractResponse,
+    "DeleteContractResponseContract": DeleteContractResponseContract,
     "DeleteCustomerResponse": DeleteCustomerResponse,
+    "DeleteCustomerResponseCustomer": DeleteCustomerResponseCustomer,
     "DeleteEventResponse": DeleteEventResponse,
     "DeleteEventResponseEvent": DeleteEventResponseEvent,
     "DeleteMeterResponse": DeleteMeterResponse,
+    "DeleteMeterResponseMeter": DeleteMeterResponseMeter,
     "DeletePlanResponse": DeletePlanResponse,
+    "DeletePlanResponsePlan": DeletePlanResponsePlan,
     "Event": Event,
     "EventsDryRunRequest": EventsDryRunRequest,
     "EventsDryRunResponse": EventsDryRunResponse,
@@ -226,16 +228,11 @@ let typeMap: {[index: string]: any} = {
     "InvalidEvent": InvalidEvent,
     "LineItem": LineItem,
     "ListContractsResponse": ListContractsResponse,
-    "ListContractsResponseContractsInner": ListContractsResponseContractsInner,
     "ListCreditLedgerEntriesResponse": ListCreditLedgerEntriesResponse,
     "ListCustomersResponse": ListCustomersResponse,
-    "ListCustomersResponseCustomersInner": ListCustomersResponseCustomersInner,
     "ListInvoicesResponse": ListInvoicesResponse,
-    "ListInvoicesResponseInvoicesInner": ListInvoicesResponseInvoicesInner,
     "ListMetersResponse": ListMetersResponse,
-    "ListMetersResponseMetersInner": ListMetersResponseMetersInner,
     "ListPlansResponse": ListPlansResponse,
-    "ListPlansResponsePlansInner": ListPlansResponsePlansInner,
     "LoginRequest": LoginRequest,
     "LoginResponse": LoginResponse,
     "Meter": Meter,

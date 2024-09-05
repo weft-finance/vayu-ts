@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-import { GetMeterResponseMeter } from '../models/GetMeterResponseMeter';
+import { DeleteMeterResponseMeter } from '../models/DeleteMeterResponseMeter';
 import { HttpFile } from '../http/http';
 
 export class DeleteMeterResponse {
-    'meter': GetMeterResponseMeter;
+    'meter': DeleteMeterResponseMeter;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -22,7 +22,7 @@ export class DeleteMeterResponse {
         {
             "name": "meter",
             "baseName": "meter",
-            "type": "GetMeterResponseMeter",
+            "type": "DeleteMeterResponseMeter",
             "format": ""
         }    ];
 

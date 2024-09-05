@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-import { CreateCustomerResponseCustomer } from '../models/CreateCustomerResponseCustomer';
+import { DeleteCustomerResponseCustomer } from '../models/DeleteCustomerResponseCustomer';
 import { HttpFile } from '../http/http';
 
 export class DeleteCustomerResponse {
-    'customer': CreateCustomerResponseCustomer;
+    'customer': DeleteCustomerResponseCustomer;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -22,7 +22,7 @@ export class DeleteCustomerResponse {
         {
             "name": "customer",
             "baseName": "customer",
-            "type": "CreateCustomerResponseCustomer",
+            "type": "DeleteCustomerResponseCustomer",
             "format": ""
         }    ];
 

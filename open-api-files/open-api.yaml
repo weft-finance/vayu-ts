@@ -340,14 +340,11 @@ components:
             updatedAt:
               type: string
               format: date-time
-            deletedAt:
-              type: string
           required:
             - name
             - id
             - createdAt
             - updatedAt
-            - deletedAt
       required:
         - customer
     ListCustomersResponse:
@@ -411,14 +408,11 @@ components:
             updatedAt:
               type: string
               format: date-time
-            deletedAt:
-              type: string
           required:
             - name
             - id
             - createdAt
             - updatedAt
-            - deletedAt
       required:
         - customer
     UpdateCustomerRequest:
@@ -455,14 +449,11 @@ components:
             updatedAt:
               type: string
               format: date-time
-            deletedAt:
-              type: string
           required:
             - name
             - id
             - createdAt
             - updatedAt
-            - deletedAt
       required:
         - customer
     DeleteCustomerResponse:
@@ -605,8 +596,6 @@ components:
             updatedAt:
               type: string
               format: date-time
-            deletedAt:
-              type: string
           required:
             - name
             - eventName
@@ -614,7 +603,6 @@ components:
             - id
             - createdAt
             - updatedAt
-            - deletedAt
       required:
         - meter
     UpdateMeterRequest:
@@ -659,8 +647,6 @@ components:
             updatedAt:
               type: string
               format: date-time
-            deletedAt:
-              type: string
           required:
             - name
             - eventName
@@ -668,7 +654,6 @@ components:
             - id
             - createdAt
             - updatedAt
-            - deletedAt
       required:
         - meter
     DeleteMeterResponse:
@@ -823,8 +808,6 @@ components:
             updatedAt:
               type: string
               format: date-time
-            deletedAt:
-              type: string
           required:
             - name
             - status
@@ -832,7 +815,6 @@ components:
             - id
             - createdAt
             - updatedAt
-            - deletedAt
       required:
         - plan
     DeletePlanResponse:
@@ -940,8 +922,6 @@ components:
             updatedAt:
               type: string
               format: date-time
-            deletedAt:
-              type: string
           required:
             - startDate
             - customerId
@@ -949,7 +929,6 @@ components:
             - id
             - createdAt
             - updatedAt
-            - deletedAt
       required:
         - contract
     DeleteContractResponse:
@@ -1096,8 +1075,6 @@ components:
             updatedAt:
               type: string
               format: date-time
-            deletedAt:
-              type: string
           required:
             - startDate
             - customerId
@@ -1105,7 +1082,6 @@ components:
             - id
             - createdAt
             - updatedAt
-            - deletedAt
       required:
         - contract
     Period:
@@ -1171,8 +1147,6 @@ components:
             updatedAt:
               type: string
               format: date-time
-            deletedAt:
-              type: string
           required:
             - customerId
             - name
@@ -1182,7 +1156,6 @@ components:
             - id
             - createdAt
             - updatedAt
-            - deletedAt
       required:
         - invoice
     ListInvoicesResponse:

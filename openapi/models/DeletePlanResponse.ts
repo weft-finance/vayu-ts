@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-import { GetPlanResponsePlan } from '../models/GetPlanResponsePlan';
+import { DeletePlanResponsePlan } from '../models/DeletePlanResponsePlan';
 import { HttpFile } from '../http/http';
 
 export class DeletePlanResponse {
-    'plan': GetPlanResponsePlan;
+    'plan': DeletePlanResponsePlan;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -22,7 +22,7 @@ export class DeletePlanResponse {
         {
             "name": "plan",
             "baseName": "plan",
-            "type": "GetPlanResponsePlan",
+            "type": "DeletePlanResponsePlan",
             "format": ""
         }    ];
 
