@@ -10,40 +10,55 @@
  * Do not edit the class manually.
  */
 
-import { PlanBillingData } from '../models/PlanBillingData';
-import { PlanStatus } from '../models/PlanStatus';
 import { HttpFile } from '../http/http';
 
-export class ListPlansResponsePlansInner {
+export class DeleteContractResponseContract {
     /**
-    * The name of the plan
+    * The start date of the contract
     */
-    'name': string;
-    'status': PlanStatus;
-    'billingData': PlanBillingData;
+    'startDate': Date;
+    /**
+    * The end date of the contract
+    */
+    'endDate'?: Date;
+    /**
+    * The id of the customer that the contract is associated with
+    */
+    'customerId': string;
+    /**
+    * The id of the plan that the contract is associated with
+    */
+    'planId': string;
     'id': string;
     'createdAt': Date;
     'updatedAt': Date;
+    'deletedAt': string;
 
     static readonly discriminator: string | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "name",
-            "baseName": "name",
+            "name": "startDate",
+            "baseName": "startDate",
+            "type": "Date",
+            "format": "date-time"
+        },
+        {
+            "name": "endDate",
+            "baseName": "endDate",
+            "type": "Date",
+            "format": "date-time"
+        },
+        {
+            "name": "customerId",
+            "baseName": "customerId",
             "type": "string",
             "format": ""
         },
         {
-            "name": "status",
-            "baseName": "status",
-            "type": "PlanStatus",
-            "format": ""
-        },
-        {
-            "name": "billingData",
-            "baseName": "billingData",
-            "type": "PlanBillingData",
+            "name": "planId",
+            "baseName": "planId",
+            "type": "string",
             "format": ""
         },
         {
@@ -63,15 +78,19 @@ export class ListPlansResponsePlansInner {
             "baseName": "updatedAt",
             "type": "Date",
             "format": "date-time"
+        },
+        {
+            "name": "deletedAt",
+            "baseName": "deletedAt",
+            "type": "string",
+            "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return ListPlansResponsePlansInner.attributeTypeMap;
+        return DeleteContractResponseContract.attributeTypeMap;
     }
 
     public constructor() {
     }
 }
-
-
 

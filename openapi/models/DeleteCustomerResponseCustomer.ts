@@ -12,7 +12,7 @@
 
 import { HttpFile } from '../http/http';
 
-export class ListCustomersResponseCustomersInner {
+export class DeleteCustomerResponseCustomer {
     /**
     * The name of the customer
     */
@@ -24,6 +24,7 @@ export class ListCustomersResponseCustomersInner {
     'id': string;
     'createdAt': Date;
     'updatedAt': Date;
+    'deletedAt': string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -57,10 +58,16 @@ export class ListCustomersResponseCustomersInner {
             "baseName": "updatedAt",
             "type": "Date",
             "format": "date-time"
+        },
+        {
+            "name": "deletedAt",
+            "baseName": "deletedAt",
+            "type": "string",
+            "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return ListCustomersResponseCustomersInner.attributeTypeMap;
+        return DeleteCustomerResponseCustomer.attributeTypeMap;
     }
 
     public constructor() {

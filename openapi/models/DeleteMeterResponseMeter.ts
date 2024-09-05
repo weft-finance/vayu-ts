@@ -10,54 +10,51 @@
  * Do not edit the class manually.
  */
 
+import { AggregationMethod } from '../models/AggregationMethod';
+import { Filter } from '../models/Filter';
 import { HttpFile } from '../http/http';
 
-export class ListContractsResponseContractsInner {
+export class DeleteMeterResponseMeter {
     /**
-    * The start date of the contract
+    * The name of the meter
     */
-    'startDate': Date;
+    'name': string;
     /**
-    * The end date of the contract
+    * The name of the event that the meter is tracking.
     */
-    'endDate'?: Date;
-    /**
-    * The id of the customer that the contract is associated with
-    */
-    'customerId': string;
-    /**
-    * The id of the plan that the contract is associated with
-    */
-    'planId': string;
+    'eventName': string;
+    'aggregationMethod': AggregationMethod;
+    'filter'?: Filter;
     'id': string;
     'createdAt': Date;
     'updatedAt': Date;
+    'deletedAt': string;
 
     static readonly discriminator: string | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "startDate",
-            "baseName": "startDate",
-            "type": "Date",
-            "format": "date-time"
-        },
-        {
-            "name": "endDate",
-            "baseName": "endDate",
-            "type": "Date",
-            "format": "date-time"
-        },
-        {
-            "name": "customerId",
-            "baseName": "customerId",
+            "name": "name",
+            "baseName": "name",
             "type": "string",
             "format": ""
         },
         {
-            "name": "planId",
-            "baseName": "planId",
+            "name": "eventName",
+            "baseName": "eventName",
             "type": "string",
+            "format": ""
+        },
+        {
+            "name": "aggregationMethod",
+            "baseName": "aggregationMethod",
+            "type": "AggregationMethod",
+            "format": ""
+        },
+        {
+            "name": "filter",
+            "baseName": "filter",
+            "type": "Filter",
             "format": ""
         },
         {
@@ -77,10 +74,16 @@ export class ListContractsResponseContractsInner {
             "baseName": "updatedAt",
             "type": "Date",
             "format": "date-time"
+        },
+        {
+            "name": "deletedAt",
+            "baseName": "deletedAt",
+            "type": "string",
+            "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return ListContractsResponseContractsInner.attributeTypeMap;
+        return DeleteMeterResponseMeter.attributeTypeMap;
     }
 
     public constructor() {

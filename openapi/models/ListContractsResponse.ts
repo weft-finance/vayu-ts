@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-import { ListContractsResponseContractsInner } from '../models/ListContractsResponseContractsInner';
+import { GetContractResponseContract } from '../models/GetContractResponseContract';
 import { HttpFile } from '../http/http';
 
 export class ListContractsResponse {
-    'contracts': Array<ListContractsResponseContractsInner>;
+    'contracts': Array<GetContractResponseContract>;
     'total': number;
     'hasMore': boolean;
     'nextCursor'?: string;
@@ -25,7 +25,7 @@ export class ListContractsResponse {
         {
             "name": "contracts",
             "baseName": "contracts",
-            "type": "Array<ListContractsResponseContractsInner>",
+            "type": "Array<GetContractResponseContract>",
             "format": ""
         },
         {
