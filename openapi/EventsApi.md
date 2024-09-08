@@ -224,7 +224,7 @@ let body:.EventsApiSendEventsRequest = {
         customerAlias: "customer_12345",
         ref: "4f6cf35x-2c4y-483z-a0a9-158621f77a21",
         data: {
-          "key": "key_example",
+          "key": null,
         },
       },
     ],
@@ -295,7 +295,7 @@ let body:.EventsApiSendEventsDryRunRequest = {
         customerAlias: "customer_12345",
         ref: "4f6cf35x-2c4y-483z-a0a9-158621f77a21",
         data: {
-          "key": "key_example",
+          "key": null,
         },
       },
     ],
