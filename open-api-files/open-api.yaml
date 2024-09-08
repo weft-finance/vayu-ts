@@ -1106,7 +1106,6 @@ components:
           description: The id of the invoice that the line item is a part of
         price:
           type: number
-          minimum: 0
           description: The price of the line item
       required:
         - invoiceId
@@ -1265,7 +1264,7 @@ components:
           type: object
           nullable: true
           additionalProperties:
-            type: string
+            nullable: true
           description: A schema-less JSON object encapsulating miscellaneous attributes
             and metrics associated with the event.
           example:
@@ -1325,7 +1324,7 @@ components:
               type: object
               nullable: true
               additionalProperties:
-                type: string
+                nullable: true
             ref:
               type: string
             name:
@@ -1402,7 +1401,7 @@ components:
                 type: object
                 nullable: true
                 additionalProperties:
-                  type: string
+                  nullable: true
                 description: A schema-less JSON object encapsulating miscellaneous attributes
                   and metrics associated with the event.
                 example:
@@ -1504,7 +1503,7 @@ components:
               type: object
               nullable: true
               additionalProperties:
-                type: string
+                nullable: true
               description: A schema-less JSON object encapsulating miscellaneous attributes
                 and metrics associated with the event.
               example:
@@ -1565,7 +1564,7 @@ components:
               type: object
               nullable: true
               additionalProperties:
-                type: string
+                nullable: true
               description: A schema-less JSON object encapsulating miscellaneous attributes
                 and metrics associated with the event.
               example:

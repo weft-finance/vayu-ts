@@ -35,7 +35,7 @@ export class DeleteEventResponseEvent {
     /**
     * A schema-less JSON object encapsulating miscellaneous attributes and metrics associated with the event.
     */
-    'data'?: { [key: string]: string; } | null;
+    'data'?: { [key: string]: any | null; } | null;
     'id': string;
     'createdAt': Date;
     'updatedAt': Date;
@@ -71,7 +71,7 @@ export class DeleteEventResponseEvent {
         {
             "name": "data",
             "baseName": "data",
-            "type": "{ [key: string]: string; }",
+            "type": "{ [key: string]: any | null; }",
             "format": ""
         },
         {

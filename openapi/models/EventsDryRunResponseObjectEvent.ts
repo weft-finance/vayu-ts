@@ -16,7 +16,7 @@ export class EventsDryRunResponseObjectEvent {
     'timestamp': Date;
     'customerAlias': string;
     'accountId': string;
-    'data'?: { [key: string]: string; } | null;
+    'data'?: { [key: string]: any | null; } | null;
     'ref': string;
     'name': string;
 
@@ -44,7 +44,7 @@ export class EventsDryRunResponseObjectEvent {
         {
             "name": "data",
             "baseName": "data",
-            "type": "{ [key: string]: string; }",
+            "type": "{ [key: string]: any | null; }",
             "format": ""
         },
         {
