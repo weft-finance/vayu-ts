@@ -1,5 +1,5 @@
 import type { BaseServerConfiguration } from '../openapi';
-import { AuthApi, createConfiguration, server1, server2 } from '../openapi';
+import { AuthApi, createConfiguration, server1, server2, ServerConfiguration } from '../openapi';
 import { ContractsClient,
   CustomersClient,
   EventsClient,
@@ -113,11 +113,7 @@ export class Vayu {
 
     const baseServer = BASE_URLS_MAP.get(baseUrl);
 
-    if (!baseServer) {
-      throw new Error(`Invalid baseUrl: ${baseUrl}`);
-    }
-
-    return baseServer;
+    return baseServer ?? new ServerConfiguration<{}>(baseUrl, {});
   }
 }
 
