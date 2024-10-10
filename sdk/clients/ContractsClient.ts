@@ -1,4 +1,4 @@
-import type { BaseServerConfiguration, CreateContractRequest } from '../../openapi';
+import type { CreateContractRequest } from '../../openapi';
 import { ContractsApi } from '../../openapi';
 import type { PaginationOptions } from '../types';
 import { BaseClient } from './BaseClient';
@@ -6,8 +6,8 @@ import { BaseClient } from './BaseClient';
 export class ContractsClient extends BaseClient {
   private client: ContractsApi;
 
-  constructor(accessToken: string | undefined, baseServer: BaseServerConfiguration) {
-    super(accessToken, baseServer);
+  constructor() {
+    super();
     this.client = new ContractsApi(this.configuration);
   }
 

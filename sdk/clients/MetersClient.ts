@@ -1,4 +1,4 @@
-import type { BaseServerConfiguration, UpdateMeterRequest } from '../../openapi';
+import type { UpdateMeterRequest } from '../../openapi';
 import { MetersApi } from '../../openapi';
 import type { PaginationOptions } from '../types';
 import { BaseClient } from './BaseClient';
@@ -6,8 +6,8 @@ import { BaseClient } from './BaseClient';
 export class MetersClient extends BaseClient {
   private client: MetersApi;
 
-  constructor(accessToken: string | undefined, baseServer: BaseServerConfiguration) {
-    super(accessToken, baseServer);
+  constructor() {
+    super();
     this.client = new MetersApi(this.configuration);
   }
 

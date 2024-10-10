@@ -1,4 +1,4 @@
-import type { BaseServerConfiguration, CreateCustomerRequest, UpdateCustomerRequest } from '../../openapi';
+import type { CreateCustomerRequest, UpdateCustomerRequest } from '../../openapi';
 import { CustomersApi } from '../../openapi';
 import type { PaginationOptions } from '../types';
 import { BaseClient } from './BaseClient';
@@ -6,8 +6,8 @@ import { BaseClient } from './BaseClient';
 export class CustomersClient extends BaseClient {
   private client: CustomersApi;
 
-  constructor(accessToken: string | undefined, baseServer: BaseServerConfiguration) {
-    super(accessToken, baseServer);
+  constructor() {
+    super();
     this.client = new CustomersApi(this.configuration);
   }
 

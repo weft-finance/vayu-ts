@@ -1,4 +1,4 @@
-import type { BaseServerConfiguration, Event } from '../../openapi';
+import type { Event } from '../../openapi';
 import { EventsApi } from '../../openapi';
 import type { PaginationOptions } from '../types';
 import { BaseClient } from './BaseClient';
@@ -6,8 +6,8 @@ import { BaseClient } from './BaseClient';
 export class EventsClient extends BaseClient {
   private client: EventsApi;
 
-  constructor(accessToken: string | undefined, baseServer: BaseServerConfiguration) {
-    super(accessToken, baseServer);
+  constructor() {
+    super();
     this.client = new EventsApi(this.configuration);
   }
 

@@ -1,4 +1,3 @@
-import type { BaseServerConfiguration } from '../../openapi';
 import { InvoicesApi } from '../../openapi';
 import type { PaginationOptions } from '../types';
 import { BaseClient } from './BaseClient';
@@ -6,8 +5,8 @@ import { BaseClient } from './BaseClient';
 export class InvoicesClient extends BaseClient {
   private client: InvoicesApi;
 
-  constructor(accessToken: string | undefined, baseServer: BaseServerConfiguration) {
-    super(accessToken, baseServer);
+  constructor() {
+    super();
     this.client = new InvoicesApi(this.configuration);
   }
 

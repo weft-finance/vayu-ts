@@ -1,4 +1,3 @@
-import type { BaseServerConfiguration } from '../../openapi';
 import { PlansApi } from '../../openapi';
 import type { PaginationOptions } from '../types';
 import { BaseClient } from './BaseClient';
@@ -6,8 +5,8 @@ import { BaseClient } from './BaseClient';
 export class PlansClient extends BaseClient {
   private client: PlansApi;
 
-  constructor(accessToken: string | undefined, baseServer: BaseServerConfiguration) {
-    super(accessToken, baseServer);
+  constructor() {
+    super();
     this.client = new PlansApi(this.configuration);
   }
 
