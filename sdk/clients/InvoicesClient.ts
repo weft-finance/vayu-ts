@@ -1,14 +1,12 @@
-import type { BaseServerConfiguration } from '../../openapi';
 import { InvoicesApi } from '../../openapi';
+import { ConfigurationService } from '../services';
 import type { PaginationOptions } from '../types';
-import { BaseClient } from './BaseClient';
 
-export class InvoicesClient extends BaseClient {
+export class InvoicesClient {
   private client: InvoicesApi;
 
-  constructor(accessToken: string | undefined, baseServer: BaseServerConfiguration) {
-    super(accessToken, baseServer);
-    this.client = new InvoicesApi(this.configuration);
+  constructor() {
+    this.client = ConfigurationService.instance.generateNewClient(InvoicesApi);
   }
 
   async list(pagination?: PaginationOptions) {
