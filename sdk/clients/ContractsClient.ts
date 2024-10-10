@@ -1,14 +1,13 @@
 import type { CreateContractRequest } from '../../openapi';
 import { ContractsApi } from '../../openapi';
+import { ConfigurationService } from '../services';
 import type { PaginationOptions } from '../types';
-import { BaseClient } from './BaseClient';
 
-export class ContractsClient extends BaseClient {
+export class ContractsClient {
   private client: ContractsApi;
 
   constructor() {
-    super();
-    this.client = new ContractsApi(this.configuration);
+    this.client = ConfigurationService.instance.generateNewClient(ContractsApi);
   }
 
   async list(pagination?: PaginationOptions) {

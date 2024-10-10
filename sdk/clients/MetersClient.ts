@@ -1,14 +1,13 @@
 import type { UpdateMeterRequest } from '../../openapi';
 import { MetersApi } from '../../openapi';
+import { ConfigurationService } from '../services';
 import type { PaginationOptions } from '../types';
-import { BaseClient } from './BaseClient';
 
-export class MetersClient extends BaseClient {
+export class MetersClient {
   private client: MetersApi;
 
   constructor() {
-    super();
-    this.client = new MetersApi(this.configuration);
+    this.client = ConfigurationService.instance.generateNewClient(MetersApi);
   }
 
   async list(pagination?: PaginationOptions) {
