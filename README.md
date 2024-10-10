@@ -1,4 +1,4 @@
-# Vayu API Client Library ![client version](https://img.shields.io/npm/v/@vayu-billing/client?label=Latest%20Version)
+# Vayu API Client Library ![client version](https://img.shields.io/npm/v/vayu-ts?label=Latest%20Version)
 
 ## Overview
 
@@ -9,7 +9,7 @@ The Vayu API client library in TypeScript allows you to submit events for proces
 Install the Vayu API client library using npm:
 
 ```bash
-npm i @vayu-billing/client
+npm i vayu-ts
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ npm i @vayu-billing/client
 Initialize the Vayu API client. The `baseUrl` parameter is optional and defaults to Vayu's public API servers.
 
 ```typescript
-import { Vayu } from '@vayu-billing/client';
+import { Vayu } from 'vayu-ts';
 
 const vayu = new Vayu(
   'your-access-token',
