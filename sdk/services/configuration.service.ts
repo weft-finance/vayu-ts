@@ -52,6 +52,8 @@ export class ConfigurationService {
   }
 
   generateNewClient<T extends { new(config: Configuration): InstanceType<T> }>(ClientClass: T): InstanceType<T> {
+    this.validateIsLoggedIn();
+
     const newClient = new ClientClass(this.configuration);
 
     return newClient;

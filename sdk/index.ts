@@ -10,7 +10,7 @@ export class Vayu {
   private configurationManager: ConfigurationService;
 
   constructor(
-    private readonly apiKey: string,
+    apiKey: string,
     baseUrl?: string,
   ) {
     const baseServer = ConfigurationService.generateServerConfiguration(baseUrl);
@@ -22,43 +22,27 @@ export class Vayu {
   }
 
   get events() {
-    this.validateIsLoggedIn();
-
     return new EventsClient();
   }
 
   get customers() {
-    this.validateIsLoggedIn();
-
     return new CustomersClient();
   }
 
   get meters() {
-    this.validateIsLoggedIn();
-
     return new MetersClient();
   }
 
   get plans() {
-    this.validateIsLoggedIn();
-
     return new PlansClient();
   }
 
   get contracts() {
-    this.validateIsLoggedIn();
-
     return new ContractsClient();
   }
 
   get invoices() {
-    this.validateIsLoggedIn();
-
     return new InvoicesClient();
-  }
-
-  private validateIsLoggedIn() {
-    this.configurationManager.validateIsLoggedIn();
   }
 }
 
