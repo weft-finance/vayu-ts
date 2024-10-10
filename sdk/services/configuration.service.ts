@@ -51,28 +51,10 @@ export class ConfigurationService {
     this.expiresAt = Date.now();
   }
 
-  get configuration(): Configuration {
-    return createConfiguration({
-      baseServer: this.baseServer,
-      authMethods: {
-        default: {
-          getName: () => 'Logged In',
-          applySecurityAuthentication: () => this.validateIsLoggedIn(),
-        },
-      },
-      promiseMiddleware: [{
-        pre: async (context: RequestContext) => {
-          if (this.expiresAt <= Date.now() + EXPIRATION_THRESHOLD) {
-            await this.generateToken();
-          }
+  generateNewClient<T extends { new(config: Configuration): InstanceType<T> }>(ClientClass: T): InstanceType<T> {
+    const newClient = new ClientClass(this.configuration);
 
-          context.setHeaderParam('Authorization', `Bearer ${this.accessToken}`);
-
-          return context;
-        },
-        post: async (context: ResponseContext) => (context),
-      }],
-    });
+    return newClient;
   }
 
   async generateToken() {
@@ -104,5 +86,29 @@ export class ConfigurationService {
     if (!this.accessToken) {
       throw new Error('Please login first');
     }
+  }
+
+  private get configuration(): Configuration {
+    return createConfiguration({
+      baseServer: this.baseServer,
+      authMethods: {
+        default: {
+          getName: () => 'Logged In',
+          applySecurityAuthentication: () => this.validateIsLoggedIn(),
+        },
+      },
+      promiseMiddleware: [{
+        pre: async (context: RequestContext) => {
+          if (this.expiresAt <= Date.now() + EXPIRATION_THRESHOLD) {
+            await this.generateToken();
+          }
+
+          context.setHeaderParam('Authorization', `Bearer ${this.accessToken}`);
+
+          return context;
+        },
+        post: async (context: ResponseContext) => (context),
+      }],
+    });
   }
 }
