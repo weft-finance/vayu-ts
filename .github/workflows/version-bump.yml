@@ -52,7 +52,7 @@ jobs:
           fi
 
       - name: Bump version
-        run: npm version ${{ env.OPERATION }}
+        run: npm version ${{ env.OPERATION }} -m "Release version %s"
 
       - name: Push changes and tags
         env:
@@ -60,3 +60,7 @@ jobs:
         run: |
           git push
           git push --follow-tags
+      
+      - name: Check git tags
+        run: git tag
+
