@@ -55,11 +55,10 @@ jobs:
         run: npm version ${{ env.OPERATION }} -m "Release version %s"
 
       - name: Push changes and tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git push
           git push --follow-tags
+          git tag -a test-release -m "Test Release"
       
       - name: Check git tags
         run: git tag
