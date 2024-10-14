@@ -58,7 +58,6 @@ jobs:
         run: |
           git push
           git push --follow-tags
-          git tag -a test-release -m "Test Release"
       
       - name: Check git tags
         run: git tag
