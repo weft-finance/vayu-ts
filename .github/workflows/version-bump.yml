@@ -56,7 +56,7 @@ jobs:
 
       - name: Push changes and tags
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git push
           git push --follow-tags
