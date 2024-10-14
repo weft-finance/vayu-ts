@@ -3,9 +3,9 @@ name: Publish package
 on:
   push:
     branches:
-      - "main"
+      - main
     tags:
-      - "*"
+      - '**'
 
   workflow_dispatch:
 
