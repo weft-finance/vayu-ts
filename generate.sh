@@ -31,5 +31,6 @@ rm -rf openapi/git_push.sh
 rm -rf openapi/.travis
 rm -rf openapi/.openapi-generator
 rm -rf openapi/docs
+rm -rf openapi/*.md
 
 echo "Generated TS client for openapi"

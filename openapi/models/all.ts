@@ -1,3 +1,4 @@
+export * from '../models/Address'
 export * from '../models/AggregationMethod'
 export * from '../models/AggregationOperator'
 export * from '../models/BillingCycleStatus'
