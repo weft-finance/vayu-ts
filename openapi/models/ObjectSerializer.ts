@@ -1,3 +1,4 @@
+export * from '../models/Address';
 export * from '../models/AggregationMethod';
 export * from '../models/AggregationOperator';
 export * from '../models/BillingCycleStatus';
@@ -78,6 +79,7 @@ export * from '../models/UpdateMeterRequest';
 export * from '../models/UpdateMeterResponse';
 export * from '../models/WebhookSubscribeRequest';
 
+import { Address } from '../models/Address';
 import { AggregationMethod    } from '../models/AggregationMethod';
 import { AggregationOperator } from '../models/AggregationOperator';
 import { BillingCycleStatus } from '../models/BillingCycleStatus';
@@ -184,6 +186,7 @@ let enumsMap: Set<string> = new Set<string>([
 ]);
 
 let typeMap: {[index: string]: any} = {
+    "Address": Address,
     "AggregationMethod": AggregationMethod,
     "Condition": Condition,
     "CreateContractRequest": CreateContractRequest,

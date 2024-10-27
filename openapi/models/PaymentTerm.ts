@@ -12,6 +12,9 @@
 
 import { HttpFile } from '../http/http';
 
+/**
+* flag to indicate if the payment is postpayment or prepayment
+*/
 export enum PaymentTerm {
     Prepayment = 'Prepayment',
     Postpayment = 'Postpayment'

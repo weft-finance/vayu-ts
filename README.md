@@ -133,6 +133,23 @@ const response = await vayu.customers.delete('customer-id');
 console.log(response.customer);
 ```
 
+### Contracts
+
+#### Assigning a contract to a customer
+
+In order to assign a contract to a customer you would need to provide the customer Id and the relevant plan
+
+```typescript
+	const response = await vayu.contracts.create({
+    startDate: new Date(),
+    endDate: undefined,
+    customerId: '1f4cf23x-2c4y-483z-1111-158621f77a21',
+    planId: '4f6cf35x-1234-483z-a0a9-158621f77a21',
+  })
+
+  console.log(response.contract)
+```
+
 ### Meters
 
 Meters are entities that track and aggregate usage data based on events. They are crucial for billing and monitoring purposes.

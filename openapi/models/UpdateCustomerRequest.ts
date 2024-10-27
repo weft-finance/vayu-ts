@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 
+import { Address } from '../models/Address';
 import { HttpFile } from '../http/http';
 
 export class UpdateCustomerRequest {
@@ -18,9 +19,14 @@ export class UpdateCustomerRequest {
     */
     'name'?: string;
     /**
-    * The alias of the customer used to match events to the customer.
+    * The external ID of the customer
     */
-    'alias'?: string;
+    'externalId'?: string;
+    /**
+    * The aliases of the customer used to match events to the customer.
+    */
+    'aliases'?: Array<string>;
+    'address'?: Address;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -32,9 +38,21 @@ export class UpdateCustomerRequest {
             "format": ""
         },
         {
-            "name": "alias",
-            "baseName": "alias",
+            "name": "externalId",
+            "baseName": "externalId",
             "type": "string",
+            "format": ""
+        },
+        {
+            "name": "aliases",
+            "baseName": "aliases",
+            "type": "Array<string>",
+            "format": ""
+        },
+        {
+            "name": "address",
+            "baseName": "address",
+            "type": "Address",
             "format": ""
         }    ];
 

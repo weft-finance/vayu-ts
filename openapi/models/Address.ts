@@ -10,54 +10,54 @@
  * Do not edit the class manually.
  */
 
-import { Address } from '../models/Address';
 import { HttpFile } from '../http/http';
 
-export class CreateCustomerRequest {
-    /**
-    * The name of the customer
-    */
-    'name': string;
-    /**
-    * The external ID of the customer
-    */
-    'externalId'?: string;
-    /**
-    * The aliases of the customer used to match events to the customer.
-    */
-    'aliases'?: Array<string>;
-    'address'?: Address;
+/**
+* The address of the customer
+*/
+export class Address {
+    'country'?: string;
+    'city'?: string;
+    'addressText'?: string;
+    'state'?: string;
+    'postalCode'?: string;
 
     static readonly discriminator: string | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "name",
-            "baseName": "name",
+            "name": "country",
+            "baseName": "country",
             "type": "string",
             "format": ""
         },
         {
-            "name": "externalId",
-            "baseName": "externalId",
+            "name": "city",
+            "baseName": "city",
             "type": "string",
             "format": ""
         },
         {
-            "name": "aliases",
-            "baseName": "aliases",
-            "type": "Array<string>",
+            "name": "addressText",
+            "baseName": "addressText",
+            "type": "string",
             "format": ""
         },
         {
-            "name": "address",
-            "baseName": "address",
-            "type": "Address",
+            "name": "state",
+            "baseName": "state",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "postalCode",
+            "baseName": "postalCode",
+            "type": "string",
             "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return CreateCustomerRequest.attributeTypeMap;
+        return Address.attributeTypeMap;
     }
 
     public constructor() {
