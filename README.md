@@ -104,7 +104,7 @@ To create a new customer:
 ```typescript
 const response = await vayu.customers.create({
   name: 'John Doe',
-  alias: 'customer_12345'
+  externalId: 'customer_12345'
 });
 
 console.log(response.customer);
@@ -117,7 +117,7 @@ To update an existing customer by ID:
 ```typescript
 const response = await vayu.customers.update('customer-id', {
   name: 'Jane Doe',
-  alias: 'customer_67890'
+  externalId: 'customer_67890'
 });
 
 console.log(response.customer);
