@@ -10,8 +10,8 @@
  * Do not edit the class manually.
  */
 
+import { FullDayPeriod } from '../models/FullDayPeriod';
 import { LineItem } from '../models/LineItem';
-import { Period } from '../models/Period';
 import { HttpFile } from '../http/http';
 
 export class GetInvoiceResponseInvoice {
@@ -27,7 +27,7 @@ export class GetInvoiceResponseInvoice {
     * The name of the invoice, usually a description of the billing period
     */
     'name': string;
-    'billingCycle': Period;
+    'billingCycle': FullDayPeriod;
     'lineItems': Array<LineItem>;
     /**
     * The total amount of the invoice
@@ -61,7 +61,7 @@ export class GetInvoiceResponseInvoice {
         {
             "name": "billingCycle",
             "baseName": "billingCycle",
-            "type": "Period",
+            "type": "FullDayPeriod",
             "format": ""
         },
         {

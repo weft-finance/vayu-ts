@@ -7,6 +7,7 @@ import { AggregationOperator } from '../models/AggregationOperator';
 import { BillingCycleStatus } from '../models/BillingCycleStatus';
 import { BillingInterval } from '../models/BillingInterval';
 import { Condition } from '../models/Condition';
+import { Contact } from '../models/Contact';
 import { ContractStatus } from '../models/ContractStatus';
 import { CreateContractRequest } from '../models/CreateContractRequest';
 import { CreateContractResponse } from '../models/CreateContractResponse';
@@ -35,6 +36,7 @@ import { EventsDryRunResponseObject } from '../models/EventsDryRunResponseObject
 import { EventsDryRunResponseObjectEvent } from '../models/EventsDryRunResponseObjectEvent';
 import { EventsDryRunResponseObjectMeterWithValuesInner } from '../models/EventsDryRunResponseObjectMeterWithValuesInner';
 import { Filter } from '../models/Filter';
+import { FullDayPeriod } from '../models/FullDayPeriod';
 import { GetCommitmentReportResponse } from '../models/GetCommitmentReportResponse';
 import { GetContractResponse } from '../models/GetContractResponse';
 import { GetContractResponseContract } from '../models/GetContractResponseContract';
@@ -51,6 +53,7 @@ import { GetProductsUsageReportResponse } from '../models/GetProductsUsageReport
 import { GrantCreditsRequest } from '../models/GrantCreditsRequest';
 import { InvalidEvent } from '../models/InvalidEvent';
 import { LineItem } from '../models/LineItem';
+import { LineItemRevenueBreakdown } from '../models/LineItemRevenueBreakdown';
 import { ListContractsResponse } from '../models/ListContractsResponse';
 import { ListCreditLedgerEntriesResponse } from '../models/ListCreditLedgerEntriesResponse';
 import { ListCustomersResponse } from '../models/ListCustomersResponse';
@@ -69,7 +72,6 @@ import { NetSuiteSyncInvoicesRequestDataItemItemsInner } from '../models/NetSuit
 import { NetSuiteSyncInvoicesResponse } from '../models/NetSuiteSyncInvoicesResponse';
 import { NotificationEventType } from '../models/NotificationEventType';
 import { PaymentTerm } from '../models/PaymentTerm';
-import { Period } from '../models/Period';
 import { PlanBillingData } from '../models/PlanBillingData';
 import { PlanStatus } from '../models/PlanStatus';
 import { QueryEventsResponse } from '../models/QueryEventsResponse';

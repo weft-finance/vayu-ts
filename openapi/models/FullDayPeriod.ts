@@ -15,7 +15,7 @@ import { HttpFile } from '../http/http';
 /**
 * The billing cycle of the invoice, consists of a start and end date
 */
-export class Period {
+export class FullDayPeriod {
     'startTime': Date;
     'endTime': Date;
 
@@ -36,7 +36,7 @@ export class Period {
         }    ];
 
     static getAttributeTypeMap() {
-        return Period.attributeTypeMap;
+        return FullDayPeriod.attributeTypeMap;
     }
 
     public constructor() {
