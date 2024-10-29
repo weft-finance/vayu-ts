@@ -10,34 +10,37 @@
  * Do not edit the class manually.
  */
 
-import { LineItemRevenueBreakdown } from '../models/LineItemRevenueBreakdown';
 import { HttpFile } from '../http/http';
 
-export class LineItem {
-    /**
-    * The id of the invoice that the line item is a part of
-    */
-    'invoiceId': string;
-    'revenueBreakdown': LineItemRevenueBreakdown;
+export class Contact {
+    'name'?: string;
+    'email': string;
+    'isPrimary'?: boolean;
 
     static readonly discriminator: string | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "invoiceId",
-            "baseName": "invoiceId",
+            "name": "name",
+            "baseName": "name",
             "type": "string",
             "format": ""
         },
         {
-            "name": "revenueBreakdown",
-            "baseName": "revenueBreakdown",
-            "type": "LineItemRevenueBreakdown",
+            "name": "email",
+            "baseName": "email",
+            "type": "string",
+            "format": "email"
+        },
+        {
+            "name": "isPrimary",
+            "baseName": "isPrimary",
+            "type": "boolean",
             "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return LineItem.attributeTypeMap;
+        return Contact.attributeTypeMap;
     }
 
     public constructor() {

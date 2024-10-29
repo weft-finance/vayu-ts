@@ -4,6 +4,7 @@ export * from '../models/AggregationOperator';
 export * from '../models/BillingCycleStatus';
 export * from '../models/BillingInterval';
 export * from '../models/Condition';
+export * from '../models/Contact';
 export * from '../models/ContractStatus';
 export * from '../models/CreateContractRequest';
 export * from '../models/CreateContractResponse';
@@ -32,6 +33,7 @@ export * from '../models/EventsDryRunResponseObject';
 export * from '../models/EventsDryRunResponseObjectEvent';
 export * from '../models/EventsDryRunResponseObjectMeterWithValuesInner';
 export * from '../models/Filter';
+export * from '../models/FullDayPeriod';
 export * from '../models/GetCommitmentReportResponse';
 export * from '../models/GetContractResponse';
 export * from '../models/GetContractResponseContract';
@@ -48,6 +50,7 @@ export * from '../models/GetProductsUsageReportResponse';
 export * from '../models/GrantCreditsRequest';
 export * from '../models/InvalidEvent';
 export * from '../models/LineItem';
+export * from '../models/LineItemRevenueBreakdown';
 export * from '../models/ListContractsResponse';
 export * from '../models/ListCreditLedgerEntriesResponse';
 export * from '../models/ListCustomersResponse';
@@ -66,7 +69,6 @@ export * from '../models/NetSuiteSyncInvoicesRequestDataItemItemsInner';
 export * from '../models/NetSuiteSyncInvoicesResponse';
 export * from '../models/NotificationEventType';
 export * from '../models/PaymentTerm';
-export * from '../models/Period';
 export * from '../models/PlanBillingData';
 export * from '../models/PlanStatus';
 export * from '../models/QueryEventsResponse';
@@ -85,6 +87,7 @@ import { AggregationOperator } from '../models/AggregationOperator';
 import { BillingCycleStatus } from '../models/BillingCycleStatus';
 import { BillingInterval } from '../models/BillingInterval';
 import { Condition } from '../models/Condition';
+import { Contact } from '../models/Contact';
 import { ContractStatus } from '../models/ContractStatus';
 import { CreateContractRequest } from '../models/CreateContractRequest';
 import { CreateContractResponse } from '../models/CreateContractResponse';
@@ -113,6 +116,7 @@ import { EventsDryRunResponseObject } from '../models/EventsDryRunResponseObject
 import { EventsDryRunResponseObjectEvent } from '../models/EventsDryRunResponseObjectEvent';
 import { EventsDryRunResponseObjectMeterWithValuesInner } from '../models/EventsDryRunResponseObjectMeterWithValuesInner';
 import { Filter } from '../models/Filter';
+import { FullDayPeriod } from '../models/FullDayPeriod';
 import { GetCommitmentReportResponse                } from '../models/GetCommitmentReportResponse';
 import { GetContractResponse } from '../models/GetContractResponse';
 import { GetContractResponseContract } from '../models/GetContractResponseContract';
@@ -129,6 +133,7 @@ import { GetProductsUsageReportResponse                } from '../models/GetProd
 import { GrantCreditsRequest } from '../models/GrantCreditsRequest';
 import { InvalidEvent } from '../models/InvalidEvent';
 import { LineItem } from '../models/LineItem';
+import { LineItemRevenueBreakdown } from '../models/LineItemRevenueBreakdown';
 import { ListContractsResponse } from '../models/ListContractsResponse';
 import { ListCreditLedgerEntriesResponse } from '../models/ListCreditLedgerEntriesResponse';
 import { ListCustomersResponse } from '../models/ListCustomersResponse';
@@ -147,7 +152,6 @@ import { NetSuiteSyncInvoicesRequestDataItemItemsInner } from '../models/NetSuit
 import { NetSuiteSyncInvoicesResponse } from '../models/NetSuiteSyncInvoicesResponse';
 import { NotificationEventType } from '../models/NotificationEventType';
 import { PaymentTerm } from '../models/PaymentTerm';
-import { Period } from '../models/Period';
 import { PlanBillingData      } from '../models/PlanBillingData';
 import { PlanStatus } from '../models/PlanStatus';
 import { QueryEventsResponse } from '../models/QueryEventsResponse';
@@ -189,6 +193,7 @@ let typeMap: {[index: string]: any} = {
     "Address": Address,
     "AggregationMethod": AggregationMethod,
     "Condition": Condition,
+    "Contact": Contact,
     "CreateContractRequest": CreateContractRequest,
     "CreateContractResponse": CreateContractResponse,
     "CreateCustomerRequest": CreateCustomerRequest,
@@ -214,6 +219,7 @@ let typeMap: {[index: string]: any} = {
     "EventsDryRunResponseObjectEvent": EventsDryRunResponseObjectEvent,
     "EventsDryRunResponseObjectMeterWithValuesInner": EventsDryRunResponseObjectMeterWithValuesInner,
     "Filter": Filter,
+    "FullDayPeriod": FullDayPeriod,
     "GetCommitmentReportResponse": GetCommitmentReportResponse,
     "GetContractResponse": GetContractResponse,
     "GetContractResponseContract": GetContractResponseContract,
@@ -230,6 +236,7 @@ let typeMap: {[index: string]: any} = {
     "GrantCreditsRequest": GrantCreditsRequest,
     "InvalidEvent": InvalidEvent,
     "LineItem": LineItem,
+    "LineItemRevenueBreakdown": LineItemRevenueBreakdown,
     "ListContractsResponse": ListContractsResponse,
     "ListCreditLedgerEntriesResponse": ListCreditLedgerEntriesResponse,
     "ListCustomersResponse": ListCustomersResponse,
@@ -246,7 +253,6 @@ let typeMap: {[index: string]: any} = {
     "NetSuiteSyncInvoicesRequestDataItem": NetSuiteSyncInvoicesRequestDataItem,
     "NetSuiteSyncInvoicesRequestDataItemItemsInner": NetSuiteSyncInvoicesRequestDataItemItemsInner,
     "NetSuiteSyncInvoicesResponse": NetSuiteSyncInvoicesResponse,
-    "Period": Period,
     "PlanBillingData": PlanBillingData,
     "QueryEventsResponse": QueryEventsResponse,
     "QueryEventsResponseEventsInner": QueryEventsResponseEventsInner,

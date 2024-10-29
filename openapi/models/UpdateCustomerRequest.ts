@@ -11,6 +11,7 @@
  */
 
 import { Address } from '../models/Address';
+import { Contact } from '../models/Contact';
 import { HttpFile } from '../http/http';
 
 export class UpdateCustomerRequest {
@@ -27,6 +28,10 @@ export class UpdateCustomerRequest {
     */
     'aliases'?: Array<string>;
     'address'?: Address;
+    /**
+    * The contacts of the customer. Contact marked as primary is the target for invoice sharing.
+    */
+    'contacts'?: Array<Contact>;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -53,6 +58,12 @@ export class UpdateCustomerRequest {
             "name": "address",
             "baseName": "address",
             "type": "Address",
+            "format": ""
+        },
+        {
+            "name": "contacts",
+            "baseName": "contacts",
+            "type": "Array<Contact>",
             "format": ""
         }    ];
 
