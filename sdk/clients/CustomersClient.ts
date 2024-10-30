@@ -21,6 +21,10 @@ export class CustomersClient {
     return this.client.getCustomer(id);
   }
 
+  async getByExternalId(externalId: string) {
+    return this.client.getCustomerByExternalId(externalId);
+  }
+
   async create(payload: CreateCustomerRequest) {
     return this.client.createCustomer(payload);
   }
