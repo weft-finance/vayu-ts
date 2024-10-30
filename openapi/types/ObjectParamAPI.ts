@@ -384,6 +384,15 @@ export interface CustomersApiGetCustomerRequest {
     customerId: string
 }
 
+export interface CustomersApiGetCustomerByExternalIdRequest {
+    /**
+     * 
+     * @type string
+     * @memberof CustomersApigetCustomerByExternalId
+     */
+    externalId: string
+}
+
 export interface CustomersApiListCustomersRequest {
     /**
      * 
@@ -473,6 +482,24 @@ export class ObjectCustomersApi {
      */
     public getCustomer(param: CustomersApiGetCustomerRequest, options?: Configuration): Promise<GetCustomerResponse> {
         return this.api.getCustomer(param.customerId,  options).toPromise();
+    }
+
+    /**
+     * Use this endpoint to get a specific customer using its external Id.
+     * Get customer by externalId
+     * @param param the request object
+     */
+    public getCustomerByExternalIdWithHttpInfo(param: CustomersApiGetCustomerByExternalIdRequest, options?: Configuration): Promise<HttpInfo<GetCustomerResponse>> {
+        return this.api.getCustomerByExternalIdWithHttpInfo(param.externalId,  options).toPromise();
+    }
+
+    /**
+     * Use this endpoint to get a specific customer using its external Id.
+     * Get customer by externalId
+     * @param param the request object
+     */
+    public getCustomerByExternalId(param: CustomersApiGetCustomerByExternalIdRequest, options?: Configuration): Promise<GetCustomerResponse> {
+        return this.api.getCustomerByExternalId(param.externalId,  options).toPromise();
     }
 
     /**

@@ -381,6 +381,26 @@ export class PromiseCustomersApi {
     }
 
     /**
+     * Use this endpoint to get a specific customer using its external Id.
+     * Get customer by externalId
+     * @param externalId 
+     */
+    public getCustomerByExternalIdWithHttpInfo(externalId: string, _options?: Configuration): Promise<HttpInfo<GetCustomerResponse>> {
+        const result = this.api.getCustomerByExternalIdWithHttpInfo(externalId, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Use this endpoint to get a specific customer using its external Id.
+     * Get customer by externalId
+     * @param externalId 
+     */
+    public getCustomerByExternalId(externalId: string, _options?: Configuration): Promise<GetCustomerResponse> {
+        const result = this.api.getCustomerByExternalId(externalId, _options);
+        return result.toPromise();
+    }
+
+    /**
      * Get a list of Customers.
      * List Customers
      * @param limit 

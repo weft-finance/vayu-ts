@@ -177,34 +177,35 @@ The Vayu API client library provides access to the following features:
 - **Auth**
   - `auth.login()`
 - **Events**
-  - `events.sendEvents()`
-  - `events.queryEvents()`
-  - `events.getEventByRefId()`
-  - `events.deleteEventByRefId()`
-  - `events.sendEventsDryRun()`
+  - `events.send()`
+  - `events.query()`
+  - `events.get()`
+  - `events.delete()`
+  - `events.dryRun()`
 - **Customers**
-  - `customers.createCustomer()`
-  - `customers.updateCustomer()`
-  - `customers.deleteCustomer()`
-  - `customers.listCustomers()`
-  - `customers.getCustomer()`
+  - `customers.create()`
+  - `customers.update()`
+  - `customers.delete()`
+  - `customers.list()`
+  - `customers.get()`
+  - `customers.getByExternalId()`
 - **Meters**
-  - `meters.getMeter()`
-  - `meters.updateMeter()`
-  - `meters.deleteMeter()`
-  - `meters.listMeters()`
+  - `meters.get()`
+  - `meters.update()`
+  - `meters.delete()`
+  - `meters.list()`
 - **Plans**
-  - `plans.getPlan()`
-  - `plans.deletePlan()`
-  - `plans.listPlans()`
+  - `plans.get()`
+  - `plans.delete()`
+  - `plans.list()`
 - **Contracts**
-  - `contracts.createContract()`
-  - `contracts.deleteContract()`
-  - `contracts.listContracts()`
-  - `contracts.getContract()`
+  - `contracts.create()`
+  - `contracts.delete()`
+  - `contracts.list()`
+  - `contracts.get()`
 - **Invoices**
-  - `invoices.getInvoice()`
-  - `invoices.listInvoices()`
+  - `invoices.get()`
+  - `invoices.list()`
 
 ## Support
 

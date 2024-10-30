@@ -20,18 +20,18 @@ export class UpdateCustomerRequest {
     */
     'name'?: string;
     /**
-    * The external ID of the customer
-    */
-    'externalId'?: string;
-    /**
     * The aliases of the customer used to match events to the customer.
     */
-    'aliases'?: Array<string>;
+    'aliases'?: Array<string> | null;
     'address'?: Address;
     /**
     * The contacts of the customer. Contact marked as primary is the target for invoice sharing.
     */
     'contacts'?: Array<Contact>;
+    /**
+    * The external ID of the customer
+    */
+    'externalId'?: string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -39,12 +39,6 @@ export class UpdateCustomerRequest {
         {
             "name": "name",
             "baseName": "name",
-            "type": "string",
-            "format": ""
-        },
-        {
-            "name": "externalId",
-            "baseName": "externalId",
             "type": "string",
             "format": ""
         },
@@ -64,6 +58,12 @@ export class UpdateCustomerRequest {
             "name": "contacts",
             "baseName": "contacts",
             "type": "Array<Contact>",
+            "format": ""
+        },
+        {
+            "name": "externalId",
+            "baseName": "externalId",
+            "type": "string",
             "format": ""
         }    ];
 
