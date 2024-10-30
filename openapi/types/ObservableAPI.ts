@@ -525,6 +525,39 @@ export class ObservableCustomersApi {
     }
 
     /**
+     * Use this endpoint to get a specific customer using its external Id.
+     * Get customer by externalId
+     * @param externalId 
+     */
+    public getCustomerByExternalIdWithHttpInfo(externalId: string, _options?: Configuration): Observable<HttpInfo<GetCustomerResponse>> {
+        const requestContextPromise = this.requestFactory.getCustomerByExternalId(externalId, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getCustomerByExternalIdWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * Use this endpoint to get a specific customer using its external Id.
+     * Get customer by externalId
+     * @param externalId 
+     */
+    public getCustomerByExternalId(externalId: string, _options?: Configuration): Observable<GetCustomerResponse> {
+        return this.getCustomerByExternalIdWithHttpInfo(externalId, _options).pipe(map((apiResponse: HttpInfo<GetCustomerResponse>) => apiResponse.data));
+    }
+
+    /**
      * Get a list of Customers.
      * List Customers
      * @param limit 
