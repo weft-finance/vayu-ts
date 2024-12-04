@@ -1,8 +1,23 @@
 {
   "name": "vayu-ts",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Simple and easy to use typescript package for utilizing vayu billing system",
   "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "dist/index.d.ts": [
+        "dist/index.d.ts"
+      ],
+      "v2": [
+        "dist/v2.d.ts"
+      ]
+    }
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./v2": "./dist/v2.js"
+  },
   "homepage": "https://withvayu.com",
   "publishConfig": {
     "access": "public"
@@ -11,6 +26,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
+    "generate": "./generate.sh && ./generate-v2.sh",
     "build": "tsc",
     "lint": "eslint sdk",
     "lint:fix": "eslint sdk --fix"

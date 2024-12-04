@@ -1,12 +1,10 @@
 import type { JwtPayload } from 'jsonwebtoken';
 import jwt from 'jsonwebtoken';
-import type { BaseServerConfiguration, Configuration, RequestContext, ResponseContext } from '../../openapi';
-import { AuthApi, createConfiguration, server1, server2, ServerConfiguration } from '../../openapi';
+import type { BaseServerConfiguration, Configuration, RequestContext, ResponseContext } from '../../openapi-v2';
+import { createConfiguration, ServerConfiguration, AuthenticationApi } from '../../openapi-v2';
 
 const EXPIRATION_THRESHOLD = 1000 * 60 * 5;
 const BASE_URLS_MAP = new Map<string, BaseServerConfiguration>([
-  ['https://connect.withvayu.com', server1],
-  ['https://staging-connect.withvayu.com', server2],
 ]);
 
 /* eslint-disable no-underscore-dangle */
@@ -32,13 +30,9 @@ export class ConfigurationService {
   }
 
   static generateServerConfiguration(baseUrl?: string): BaseServerConfiguration {
-    if (!baseUrl) {
-      return server1;
-    }
+    const baseServer = BASE_URLS_MAP.get(baseUrl ?? '');
 
-    const baseServer = BASE_URLS_MAP.get(baseUrl);
-
-    return baseServer ?? new ServerConfiguration<{}>(baseUrl, {});
+    return baseServer ?? new ServerConfiguration<{}>(baseUrl ?? '', {});
   }
 
   private accessToken: string | undefined;
@@ -60,7 +54,7 @@ export class ConfigurationService {
   }
 
   async generateToken() {
-    const authClient = new AuthApi(createConfiguration({
+    const authClient = new AuthenticationApi(createConfiguration({
       baseServer: this.baseServer,
     }));
 
