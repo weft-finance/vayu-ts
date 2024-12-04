@@ -4,10 +4,10 @@
 directory_path="./open-api-files"
 
 # File name within the directory
-file_name="open-api.yaml"
+file_name="open-api-v2.json"
 
 # Output directory
-output_directory="./openapi"
+output_directory="./openapi-v2"
 
 # Check if the directory exists
 if [[ ! -d "$directory_path" ]]; then

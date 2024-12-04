@@ -1,7 +1,7 @@
 {
-  "name": "openapi",
+  "name": "openapi-v2",
   "version": "1.0.0",
-  "description": "OpenAPI client for openapi",
+  "description": "OpenAPI client for openapi-v2",
   "author": "OpenAPI-Generator Contributors",
   "repository": {
     "type": "git",
