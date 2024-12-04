@@ -76,7 +76,7 @@ export class ConfigurationService {
       throw new Error('Invalid JWT token');
     }
 
-    this.expiresAt = decodedJWT.exp ?? Date.now() + 1000 * 60 * 15;
+    this.expiresAt = (decodedJWT.exp ?? Math.floor(Date.now() / 1000) + 60 * 15) * 1000;
 
     return {
       accessToken: login.accessToken,
