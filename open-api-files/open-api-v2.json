@@ -120,7 +120,8 @@
 								},
 								"end": {
 									"type": "number",
-									"format": "double"
+									"format": "double",
+									"nullable": true
 								},
 								"start": {
 									"type": "number",
@@ -140,40 +141,6 @@
 				},
 				"required": [
 					"tiers"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"ObjectId": {
-				"type": "string",
-				"description": "A class representation of the BSON ObjectId type."
-			},
-			"ProductRevision": {
-				"properties": {
-					"revisionId": {
-						"$ref": "#/components/schemas/ObjectId"
-					},
-					"reason": {
-						"type": "string"
-					},
-					"asOf": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"pricing": {
-						"$ref": "#/components/schemas/Pricing"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"revisionId",
-					"reason",
-					"asOf",
-					"pricing",
-					"createdAt"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -208,13 +175,6 @@
 					"pricing": {
 						"$ref": "#/components/schemas/Pricing",
 						"description": "Pricing"
-					},
-					"revisions": {
-						"items": {
-							"$ref": "#/components/schemas/ProductRevision"
-						},
-						"type": "array",
-						"description": "Revisions"
 					},
 					"createdAt": {
 						"type": "string",
@@ -297,33 +257,6 @@
 				},
 				"type": "object",
 				"additionalProperties": true
-			},
-			"ReviseProductPayload": {
-				"properties": {
-					"reason": {
-						"type": "string",
-						"description": "The reason the product was revised"
-					},
-					"pricing": {
-						"$ref": "#/components/schemas/Pricing",
-						"description": "Pricing"
-					},
-					"asOf": {
-						"type": "string",
-						"format": "date",
-						"description": "The date the revision is effective as of"
-					}
-				},
-				"required": [
-					"reason",
-					"pricing",
-					"asOf"
-				],
-				"type": "object",
-				"additionalProperties": true
-			},
-			"APIReviseProductPayload": {
-				"$ref": "#/components/schemas/ReviseProductPayload"
 			},
 			"QueryResult_APIProduct_": {
 				"properties": {
@@ -752,6 +685,10 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"ObjectId": {
+				"type": "string",
+				"description": "A class representation of the BSON ObjectId type."
+			},
 			"Event": {
 				"properties": {
 					"_id": {
@@ -914,6 +851,160 @@
 				"type": "object",
 				"additionalProperties": true
 			},
+			"EntitlementRevision": {
+				"properties": {
+					"revisionId": {
+						"$ref": "#/components/schemas/ObjectId"
+					},
+					"reason": {
+						"type": "string"
+					},
+					"asOf": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"pricing": {
+						"$ref": "#/components/schemas/Pricing"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"revisionId",
+					"reason",
+					"asOf",
+					"pricing",
+					"createdAt"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"APIEntitlement": {
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "The ID of the entitlement"
+					},
+					"accountId": {
+						"type": "string",
+						"description": "The ID of the account"
+					},
+					"customerId": {
+						"type": "string",
+						"description": "The ID of the customer"
+					},
+					"productId": {
+						"type": "string",
+						"description": "The ID of the product"
+					},
+					"pricing": {
+						"$ref": "#/components/schemas/Pricing",
+						"description": "Pricing information"
+					},
+					"revisions": {
+						"items": {
+							"$ref": "#/components/schemas/EntitlementRevision"
+						},
+						"type": "array",
+						"description": "Revisions"
+					},
+					"assignedAt": {
+						"type": "string",
+						"format": "date-time",
+						"description": "The date the entitlement was assigned"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"accountId",
+					"customerId",
+					"productId",
+					"pricing",
+					"assignedAt",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"QueryResult_APIEntitlement_": {
+				"properties": {
+					"items": {
+						"items": {
+							"$ref": "#/components/schemas/APIEntitlement"
+						},
+						"type": "array",
+						"description": "Items"
+					},
+					"totalCount": {
+						"type": "integer",
+						"format": "int32",
+						"description": "Total items found"
+					},
+					"hasMore": {
+						"type": "boolean",
+						"description": "There are more items"
+					}
+				},
+				"required": [
+					"items",
+					"totalCount",
+					"hasMore"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"APIQueryPayload_APIEntitlement_": {
+				"properties": {
+					"filter": {
+						"properties": {},
+						"type": "object",
+						"description": "Filter by field.",
+						"example": {
+							"field": "A"
+						}
+					},
+					"page": {
+						"type": "integer",
+						"format": "int32",
+						"description": "Page",
+						"example": 0,
+						"default": 0,
+						"minimum": 0
+					},
+					"pageSize": {
+						"type": "integer",
+						"format": "int32",
+						"description": "Page Size",
+						"example": 10,
+						"default": 100,
+						"minimum": 0
+					},
+					"sort": {
+						"properties": {},
+						"type": "object",
+						"description": "Sort by field. Use 1 for ascending and -1 for descending.",
+						"example": {
+							"field": 1
+						}
+					}
+				},
+				"required": [
+					"filter"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
 			"APICustomer": {
 				"description": "API Customer",
 				"properties": {
@@ -994,6 +1085,33 @@
 				],
 				"type": "object",
 				"additionalProperties": true
+			},
+			"ReviseEntitlementPayload": {
+				"properties": {
+					"reason": {
+						"type": "string",
+						"description": "The reason the product was revised"
+					},
+					"pricing": {
+						"$ref": "#/components/schemas/Pricing",
+						"description": "Pricing"
+					},
+					"asOf": {
+						"type": "string",
+						"format": "date",
+						"description": "The date the revision is effective as of"
+					}
+				},
+				"required": [
+					"reason",
+					"pricing",
+					"asOf"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"APIReviseEntitlement": {
+				"$ref": "#/components/schemas/ReviseEntitlementPayload"
 			},
 			"APIUpdateCustomerPayload": {
 				"properties": {
@@ -1277,53 +1395,6 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/APICreateProductPayload"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/products/{id}/revise": {
-			"post": {
-				"operationId": "Revise a Product",
-				"responses": {
-					"200": {
-						"description": "Product revised",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/APIProduct"
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Invalid payload"
-					},
-					"404": {
-						"description": "Product not found"
-					}
-				},
-				"tags": [
-					"Products"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/APIReviseProductPayload"
 							}
 						}
 					}
@@ -1722,6 +1793,97 @@
 				}
 			}
 		},
+		"/entitlements/{id}": {
+			"get": {
+				"operationId": "Get Entitlement",
+				"responses": {
+					"200": {
+						"description": "Entitlement found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/APIEntitlement"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Entitlement not found"
+					}
+				},
+				"tags": [
+					"Entitlements"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "Delete Entitlement",
+				"responses": {
+					"204": {
+						"description": "Entitlement deleted"
+					}
+				},
+				"tags": [
+					"Entitlements"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/entitlements/query": {
+			"post": {
+				"operationId": "Query Entitlements",
+				"responses": {
+					"200": {
+						"description": "Entitlements found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/QueryResult_APIEntitlement_"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid query"
+					}
+				},
+				"tags": [
+					"Entitlements"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/APIQueryPayload_APIEntitlement_"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/customers/{id}": {
 			"get": {
 				"operationId": "Get Customer",
@@ -1852,6 +2014,58 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/APICreateCustomerPayload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/customers/{id}/products/{productId}": {
+			"patch": {
+				"operationId": "Update a customer's product",
+				"responses": {
+					"200": {
+						"description": "Customer product revised",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/APIEntitlement"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid payload"
+					}
+				},
+				"tags": [
+					"Customers"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/APIReviseEntitlement"
 							}
 						}
 					}

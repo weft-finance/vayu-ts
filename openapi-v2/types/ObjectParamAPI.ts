@@ -5,12 +5,14 @@ import { APICreateCustomerPayload } from '../models/APICreateCustomerPayload';
 import { APICreateInvoicePayload } from '../models/APICreateInvoicePayload';
 import { APICreateProductPayload } from '../models/APICreateProductPayload';
 import { APICustomer } from '../models/APICustomer';
+import { APIEntitlement } from '../models/APIEntitlement';
 import { APIEvent } from '../models/APIEvent';
 import { APIIngestEventPayload } from '../models/APIIngestEventPayload';
 import { APIInvoice } from '../models/APIInvoice';
 import { APIInvoiceBillingPeriod } from '../models/APIInvoiceBillingPeriod';
 import { APIProduct } from '../models/APIProduct';
 import { APIQueryPayloadAPICustomer } from '../models/APIQueryPayloadAPICustomer';
+import { APIQueryPayloadAPIEntitlement } from '../models/APIQueryPayloadAPIEntitlement';
 import { APIQueryPayloadAPIEvent } from '../models/APIQueryPayloadAPIEvent';
 import { APIQueryPayloadAPIInvoice } from '../models/APIQueryPayloadAPIInvoice';
 import { APIQueryPayloadAPIProduct } from '../models/APIQueryPayloadAPIProduct';
@@ -23,6 +25,7 @@ import { Condition } from '../models/Condition';
 import { Criterion } from '../models/Criterion';
 import { CriterionOperators } from '../models/CriterionOperators';
 import { CriterionValue } from '../models/CriterionValue';
+import { EntitlementRevision } from '../models/EntitlementRevision';
 import { Event } from '../models/Event';
 import { IngestEventToTheSystem201Response } from '../models/IngestEventToTheSystem201Response';
 import { InvoiceProductBreakdown } from '../models/InvoiceProductBreakdown';
@@ -31,12 +34,12 @@ import { LoginRequest } from '../models/LoginRequest';
 import { Pricing } from '../models/Pricing';
 import { PricingTiersInner } from '../models/PricingTiersInner';
 import { ProductBreakdown } from '../models/ProductBreakdown';
-import { ProductRevision } from '../models/ProductRevision';
 import { QueryResultAPICustomer } from '../models/QueryResultAPICustomer';
+import { QueryResultAPIEntitlement } from '../models/QueryResultAPIEntitlement';
 import { QueryResultAPIEvent } from '../models/QueryResultAPIEvent';
 import { QueryResultAPIInvoice } from '../models/QueryResultAPIInvoice';
 import { QueryResultAPIProduct } from '../models/QueryResultAPIProduct';
-import { ReviseProductPayload } from '../models/ReviseProductPayload';
+import { ReviseEntitlementPayload } from '../models/ReviseEntitlementPayload';
 import { UpdateEventPayload } from '../models/UpdateEventPayload';
 
 import { ObservableAuthenticationApi } from "./ObservableAPI";
@@ -111,6 +114,27 @@ export interface CustomersApiQueryCustomersRequest {
      * @memberof CustomersApiqueryCustomers
      */
     aPIQueryPayloadAPICustomer: APIQueryPayloadAPICustomer
+}
+
+export interface CustomersApiUpdateACustomersProductRequest {
+    /**
+     * 
+     * @type ReviseEntitlementPayload
+     * @memberof CustomersApiupdateACustomersProduct
+     */
+    body: ReviseEntitlementPayload
+    /**
+     * 
+     * @type string
+     * @memberof CustomersApiupdateACustomersProduct
+     */
+    id: string
+    /**
+     * 
+     * @type string
+     * @memberof CustomersApiupdateACustomersProduct
+     */
+    productId: string
 }
 
 export interface CustomersApiUpdateCustomerRequest {
@@ -194,6 +218,20 @@ export class ObjectCustomersApi {
     /**
      * @param param the request object
      */
+    public updateACustomersProductWithHttpInfo(param: CustomersApiUpdateACustomersProductRequest, options?: Configuration): Promise<HttpInfo<APIEntitlement>> {
+        return this.api.updateACustomersProductWithHttpInfo(param.body, param.id, param.productId,  options).toPromise();
+    }
+
+    /**
+     * @param param the request object
+     */
+    public updateACustomersProduct(param: CustomersApiUpdateACustomersProductRequest, options?: Configuration): Promise<APIEntitlement> {
+        return this.api.updateACustomersProduct(param.body, param.id, param.productId,  options).toPromise();
+    }
+
+    /**
+     * @param param the request object
+     */
     public updateCustomerWithHttpInfo(param: CustomersApiUpdateCustomerRequest, options?: Configuration): Promise<HttpInfo<APICustomer>> {
         return this.api.updateCustomerWithHttpInfo(param.aPIUpdateCustomerPayload, param.id,  options).toPromise();
     }
@@ -203,6 +241,87 @@ export class ObjectCustomersApi {
      */
     public updateCustomer(param: CustomersApiUpdateCustomerRequest, options?: Configuration): Promise<APICustomer> {
         return this.api.updateCustomer(param.aPIUpdateCustomerPayload, param.id,  options).toPromise();
+    }
+
+}
+
+import { ObservableEntitlementsApi } from "./ObservableAPI";
+import { EntitlementsApiRequestFactory, EntitlementsApiResponseProcessor} from "../apis/EntitlementsApi";
+
+export interface EntitlementsApiDeleteEntitlementRequest {
+    /**
+     * 
+     * @type string
+     * @memberof EntitlementsApideleteEntitlement
+     */
+    id: string
+}
+
+export interface EntitlementsApiGetEntitlementRequest {
+    /**
+     * 
+     * @type string
+     * @memberof EntitlementsApigetEntitlement
+     */
+    id: string
+}
+
+export interface EntitlementsApiQueryEntitlementsRequest {
+    /**
+     * 
+     * @type APIQueryPayloadAPIEntitlement
+     * @memberof EntitlementsApiqueryEntitlements
+     */
+    aPIQueryPayloadAPIEntitlement: APIQueryPayloadAPIEntitlement
+}
+
+export class ObjectEntitlementsApi {
+    private api: ObservableEntitlementsApi
+
+    public constructor(configuration: Configuration, requestFactory?: EntitlementsApiRequestFactory, responseProcessor?: EntitlementsApiResponseProcessor) {
+        this.api = new ObservableEntitlementsApi(configuration, requestFactory, responseProcessor);
+    }
+
+    /**
+     * @param param the request object
+     */
+    public deleteEntitlementWithHttpInfo(param: EntitlementsApiDeleteEntitlementRequest, options?: Configuration): Promise<HttpInfo<void>> {
+        return this.api.deleteEntitlementWithHttpInfo(param.id,  options).toPromise();
+    }
+
+    /**
+     * @param param the request object
+     */
+    public deleteEntitlement(param: EntitlementsApiDeleteEntitlementRequest, options?: Configuration): Promise<void> {
+        return this.api.deleteEntitlement(param.id,  options).toPromise();
+    }
+
+    /**
+     * @param param the request object
+     */
+    public getEntitlementWithHttpInfo(param: EntitlementsApiGetEntitlementRequest, options?: Configuration): Promise<HttpInfo<APIEntitlement>> {
+        return this.api.getEntitlementWithHttpInfo(param.id,  options).toPromise();
+    }
+
+    /**
+     * @param param the request object
+     */
+    public getEntitlement(param: EntitlementsApiGetEntitlementRequest, options?: Configuration): Promise<APIEntitlement> {
+        return this.api.getEntitlement(param.id,  options).toPromise();
+    }
+
+    /**
+     * @param param the request object
+     */
+    public queryEntitlementsWithHttpInfo(param: EntitlementsApiQueryEntitlementsRequest, options?: Configuration): Promise<HttpInfo<QueryResultAPIEntitlement>> {
+        return this.api.queryEntitlementsWithHttpInfo(param.aPIQueryPayloadAPIEntitlement,  options).toPromise();
+    }
+
+    /**
+     * @param param the request object
+     */
+    public queryEntitlements(param: EntitlementsApiQueryEntitlementsRequest, options?: Configuration): Promise<QueryResultAPIEntitlement> {
+        return this.api.queryEntitlements(param.aPIQueryPayloadAPIEntitlement,  options).toPromise();
     }
 
 }
@@ -506,21 +625,6 @@ export interface ProductsApiQueryProductsRequest {
     aPIQueryPayloadAPIProduct: APIQueryPayloadAPIProduct
 }
 
-export interface ProductsApiReviseAProductRequest {
-    /**
-     * 
-     * @type ReviseProductPayload
-     * @memberof ProductsApireviseAProduct
-     */
-    body: ReviseProductPayload
-    /**
-     * 
-     * @type string
-     * @memberof ProductsApireviseAProduct
-     */
-    id: string
-}
-
 export interface ProductsApiUpdateProductRequest {
     /**
      * 
@@ -597,20 +701,6 @@ export class ObjectProductsApi {
      */
     public queryProducts(param: ProductsApiQueryProductsRequest, options?: Configuration): Promise<QueryResultAPIProduct> {
         return this.api.queryProducts(param.aPIQueryPayloadAPIProduct,  options).toPromise();
-    }
-
-    /**
-     * @param param the request object
-     */
-    public reviseAProductWithHttpInfo(param: ProductsApiReviseAProductRequest, options?: Configuration): Promise<HttpInfo<APIProduct>> {
-        return this.api.reviseAProductWithHttpInfo(param.body, param.id,  options).toPromise();
-    }
-
-    /**
-     * @param param the request object
-     */
-    public reviseAProduct(param: ProductsApiReviseAProductRequest, options?: Configuration): Promise<APIProduct> {
-        return this.api.reviseAProduct(param.body, param.id,  options).toPromise();
     }
 
     /**

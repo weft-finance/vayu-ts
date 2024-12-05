@@ -1,4 +1,4 @@
-import type { APIQueryPayloadAPICustomer, APICreateCustomerPayload, APIUpdateCustomerPayload } from '../../openapi-v2';
+import type { APIQueryPayloadAPICustomer, APICreateCustomerPayload, APIUpdateCustomerPayload, ReviseEntitlementPayload } from '../../openapi-v2';
 import { CustomersApi } from '../../openapi-v2';
 import { ConfigurationService } from '../services';
 
@@ -27,5 +27,9 @@ export class CustomersClient {
   
   async query(payload: APIQueryPayloadAPICustomer) {
     return this.client.queryCustomers(payload);
+  }
+
+  async revise(id: string, productId: string, payload: ReviseEntitlementPayload) {
+    return this.client.updateACustomersProduct(payload, id, productId);
   }
 }

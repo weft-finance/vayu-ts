@@ -10,44 +10,38 @@
  * Do not edit the class manually.
  */
 
-import { Aggregation } from '../models/Aggregation';
+import { EntitlementRevision } from '../models/EntitlementRevision';
 import { Pricing } from '../models/Pricing';
 import { HttpFile } from '../http/http';
 
-/**
-* API Product
-*/
-export class APIProduct {
+export class APIEntitlement {
     /**
-    * ID
+    * The ID of the entitlement
     */
     'id': string;
     /**
-    * Name
-    */
-    'name': string;
-    /**
-    * Event Name
-    */
-    'eventName': string;
-    /**
-    * Description
-    */
-    'description'?: string;
-    /**
-    * Account ID
+    * The ID of the account
     */
     'accountId': string;
-    'aggregation': Aggregation;
+    /**
+    * The ID of the customer
+    */
+    'customerId': string;
+    /**
+    * The ID of the product
+    */
+    'productId': string;
     'pricing': Pricing;
     /**
-    * Created At
+    * Revisions
     */
-    'createdAt': string;
+    'revisions'?: Array<EntitlementRevision>;
     /**
-    * Updated At
+    * The date the entitlement was assigned
     */
-    'updatedAt': string;
+    'assignedAt': Date;
+    'createdAt': Date;
+    'updatedAt': Date;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -59,33 +53,21 @@ export class APIProduct {
             "format": ""
         },
         {
-            "name": "name",
-            "baseName": "name",
-            "type": "string",
-            "format": ""
-        },
-        {
-            "name": "eventName",
-            "baseName": "eventName",
-            "type": "string",
-            "format": ""
-        },
-        {
-            "name": "description",
-            "baseName": "description",
-            "type": "string",
-            "format": ""
-        },
-        {
             "name": "accountId",
             "baseName": "accountId",
             "type": "string",
             "format": ""
         },
         {
-            "name": "aggregation",
-            "baseName": "aggregation",
-            "type": "Aggregation",
+            "name": "customerId",
+            "baseName": "customerId",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "productId",
+            "baseName": "productId",
+            "type": "string",
             "format": ""
         },
         {
@@ -95,20 +77,32 @@ export class APIProduct {
             "format": ""
         },
         {
+            "name": "revisions",
+            "baseName": "revisions",
+            "type": "Array<EntitlementRevision>",
+            "format": ""
+        },
+        {
+            "name": "assignedAt",
+            "baseName": "assignedAt",
+            "type": "Date",
+            "format": "date-time"
+        },
+        {
             "name": "createdAt",
             "baseName": "createdAt",
-            "type": "string",
-            "format": "date"
+            "type": "Date",
+            "format": "date-time"
         },
         {
             "name": "updatedAt",
             "baseName": "updatedAt",
-            "type": "string",
-            "format": "date"
+            "type": "Date",
+            "format": "date-time"
         }    ];
 
     static getAttributeTypeMap() {
-        return APIProduct.attributeTypeMap;
+        return APIEntitlement.attributeTypeMap;
     }
 
     public constructor() {

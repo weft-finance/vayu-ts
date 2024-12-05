@@ -6,12 +6,14 @@ import { APICreateCustomerPayload } from '../models/APICreateCustomerPayload';
 import { APICreateInvoicePayload } from '../models/APICreateInvoicePayload';
 import { APICreateProductPayload } from '../models/APICreateProductPayload';
 import { APICustomer } from '../models/APICustomer';
+import { APIEntitlement } from '../models/APIEntitlement';
 import { APIEvent } from '../models/APIEvent';
 import { APIIngestEventPayload } from '../models/APIIngestEventPayload';
 import { APIInvoice } from '../models/APIInvoice';
 import { APIInvoiceBillingPeriod } from '../models/APIInvoiceBillingPeriod';
 import { APIProduct } from '../models/APIProduct';
 import { APIQueryPayloadAPICustomer } from '../models/APIQueryPayloadAPICustomer';
+import { APIQueryPayloadAPIEntitlement } from '../models/APIQueryPayloadAPIEntitlement';
 import { APIQueryPayloadAPIEvent } from '../models/APIQueryPayloadAPIEvent';
 import { APIQueryPayloadAPIInvoice } from '../models/APIQueryPayloadAPIInvoice';
 import { APIQueryPayloadAPIProduct } from '../models/APIQueryPayloadAPIProduct';
@@ -24,6 +26,7 @@ import { Condition } from '../models/Condition';
 import { Criterion } from '../models/Criterion';
 import { CriterionOperators } from '../models/CriterionOperators';
 import { CriterionValue } from '../models/CriterionValue';
+import { EntitlementRevision } from '../models/EntitlementRevision';
 import { Event } from '../models/Event';
 import { IngestEventToTheSystem201Response } from '../models/IngestEventToTheSystem201Response';
 import { InvoiceProductBreakdown } from '../models/InvoiceProductBreakdown';
@@ -32,12 +35,12 @@ import { LoginRequest } from '../models/LoginRequest';
 import { Pricing } from '../models/Pricing';
 import { PricingTiersInner } from '../models/PricingTiersInner';
 import { ProductBreakdown } from '../models/ProductBreakdown';
-import { ProductRevision } from '../models/ProductRevision';
 import { QueryResultAPICustomer } from '../models/QueryResultAPICustomer';
+import { QueryResultAPIEntitlement } from '../models/QueryResultAPIEntitlement';
 import { QueryResultAPIEvent } from '../models/QueryResultAPIEvent';
 import { QueryResultAPIInvoice } from '../models/QueryResultAPIInvoice';
 import { QueryResultAPIProduct } from '../models/QueryResultAPIProduct';
-import { ReviseProductPayload } from '../models/ReviseProductPayload';
+import { ReviseEntitlementPayload } from '../models/ReviseEntitlementPayload';
 import { UpdateEventPayload } from '../models/UpdateEventPayload';
 
 import { AuthenticationApiRequestFactory, AuthenticationApiResponseProcessor} from "../apis/AuthenticationApi";
@@ -220,6 +223,39 @@ export class ObservableCustomersApi {
     }
 
     /**
+     * @param body 
+     * @param id 
+     * @param productId 
+     */
+    public updateACustomersProductWithHttpInfo(body: ReviseEntitlementPayload, id: string, productId: string, _options?: Configuration): Observable<HttpInfo<APIEntitlement>> {
+        const requestContextPromise = this.requestFactory.updateACustomersProduct(body, id, productId, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.updateACustomersProductWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * @param body 
+     * @param id 
+     * @param productId 
+     */
+    public updateACustomersProduct(body: ReviseEntitlementPayload, id: string, productId: string, _options?: Configuration): Observable<APIEntitlement> {
+        return this.updateACustomersProductWithHttpInfo(body, id, productId, _options).pipe(map((apiResponse: HttpInfo<APIEntitlement>) => apiResponse.data));
+    }
+
+    /**
      * @param aPIUpdateCustomerPayload 
      * @param id 
      */
@@ -248,6 +284,111 @@ export class ObservableCustomersApi {
      */
     public updateCustomer(aPIUpdateCustomerPayload: APIUpdateCustomerPayload, id: string, _options?: Configuration): Observable<APICustomer> {
         return this.updateCustomerWithHttpInfo(aPIUpdateCustomerPayload, id, _options).pipe(map((apiResponse: HttpInfo<APICustomer>) => apiResponse.data));
+    }
+
+}
+
+import { EntitlementsApiRequestFactory, EntitlementsApiResponseProcessor} from "../apis/EntitlementsApi";
+export class ObservableEntitlementsApi {
+    private requestFactory: EntitlementsApiRequestFactory;
+    private responseProcessor: EntitlementsApiResponseProcessor;
+    private configuration: Configuration;
+
+    public constructor(
+        configuration: Configuration,
+        requestFactory?: EntitlementsApiRequestFactory,
+        responseProcessor?: EntitlementsApiResponseProcessor
+    ) {
+        this.configuration = configuration;
+        this.requestFactory = requestFactory || new EntitlementsApiRequestFactory(configuration);
+        this.responseProcessor = responseProcessor || new EntitlementsApiResponseProcessor();
+    }
+
+    /**
+     * @param id 
+     */
+    public deleteEntitlementWithHttpInfo(id: string, _options?: Configuration): Observable<HttpInfo<void>> {
+        const requestContextPromise = this.requestFactory.deleteEntitlement(id, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteEntitlementWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * @param id 
+     */
+    public deleteEntitlement(id: string, _options?: Configuration): Observable<void> {
+        return this.deleteEntitlementWithHttpInfo(id, _options).pipe(map((apiResponse: HttpInfo<void>) => apiResponse.data));
+    }
+
+    /**
+     * @param id 
+     */
+    public getEntitlementWithHttpInfo(id: string, _options?: Configuration): Observable<HttpInfo<APIEntitlement>> {
+        const requestContextPromise = this.requestFactory.getEntitlement(id, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getEntitlementWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * @param id 
+     */
+    public getEntitlement(id: string, _options?: Configuration): Observable<APIEntitlement> {
+        return this.getEntitlementWithHttpInfo(id, _options).pipe(map((apiResponse: HttpInfo<APIEntitlement>) => apiResponse.data));
+    }
+
+    /**
+     * @param aPIQueryPayloadAPIEntitlement 
+     */
+    public queryEntitlementsWithHttpInfo(aPIQueryPayloadAPIEntitlement: APIQueryPayloadAPIEntitlement, _options?: Configuration): Observable<HttpInfo<QueryResultAPIEntitlement>> {
+        const requestContextPromise = this.requestFactory.queryEntitlements(aPIQueryPayloadAPIEntitlement, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (let middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (let middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.queryEntitlementsWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * @param aPIQueryPayloadAPIEntitlement 
+     */
+    public queryEntitlements(aPIQueryPayloadAPIEntitlement: APIQueryPayloadAPIEntitlement, _options?: Configuration): Observable<QueryResultAPIEntitlement> {
+        return this.queryEntitlementsWithHttpInfo(aPIQueryPayloadAPIEntitlement, _options).pipe(map((apiResponse: HttpInfo<QueryResultAPIEntitlement>) => apiResponse.data));
     }
 
 }
@@ -710,37 +851,6 @@ export class ObservableProductsApi {
      */
     public queryProducts(aPIQueryPayloadAPIProduct: APIQueryPayloadAPIProduct, _options?: Configuration): Observable<QueryResultAPIProduct> {
         return this.queryProductsWithHttpInfo(aPIQueryPayloadAPIProduct, _options).pipe(map((apiResponse: HttpInfo<QueryResultAPIProduct>) => apiResponse.data));
-    }
-
-    /**
-     * @param body 
-     * @param id 
-     */
-    public reviseAProductWithHttpInfo(body: ReviseProductPayload, id: string, _options?: Configuration): Observable<HttpInfo<APIProduct>> {
-        const requestContextPromise = this.requestFactory.reviseAProduct(body, id, _options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.reviseAProductWithHttpInfo(rsp)));
-            }));
-    }
-
-    /**
-     * @param body 
-     * @param id 
-     */
-    public reviseAProduct(body: ReviseProductPayload, id: string, _options?: Configuration): Observable<APIProduct> {
-        return this.reviseAProductWithHttpInfo(body, id, _options).pipe(map((apiResponse: HttpInfo<APIProduct>) => apiResponse.data));
     }
 
     /**

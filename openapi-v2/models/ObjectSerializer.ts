@@ -2,12 +2,14 @@ export * from '../models/APICreateCustomerPayload';
 export * from '../models/APICreateInvoicePayload';
 export * from '../models/APICreateProductPayload';
 export * from '../models/APICustomer';
+export * from '../models/APIEntitlement';
 export * from '../models/APIEvent';
 export * from '../models/APIIngestEventPayload';
 export * from '../models/APIInvoice';
 export * from '../models/APIInvoiceBillingPeriod';
 export * from '../models/APIProduct';
 export * from '../models/APIQueryPayloadAPICustomer';
+export * from '../models/APIQueryPayloadAPIEntitlement';
 export * from '../models/APIQueryPayloadAPIEvent';
 export * from '../models/APIQueryPayloadAPIInvoice';
 export * from '../models/APIQueryPayloadAPIProduct';
@@ -20,6 +22,7 @@ export * from '../models/Condition';
 export * from '../models/Criterion';
 export * from '../models/CriterionOperators';
 export * from '../models/CriterionValue';
+export * from '../models/EntitlementRevision';
 export * from '../models/Event';
 export * from '../models/IngestEventToTheSystem201Response';
 export * from '../models/InvoiceProductBreakdown';
@@ -28,24 +31,26 @@ export * from '../models/LoginRequest';
 export * from '../models/Pricing';
 export * from '../models/PricingTiersInner';
 export * from '../models/ProductBreakdown';
-export * from '../models/ProductRevision';
 export * from '../models/QueryResultAPICustomer';
+export * from '../models/QueryResultAPIEntitlement';
 export * from '../models/QueryResultAPIEvent';
 export * from '../models/QueryResultAPIInvoice';
 export * from '../models/QueryResultAPIProduct';
-export * from '../models/ReviseProductPayload';
+export * from '../models/ReviseEntitlementPayload';
 export * from '../models/UpdateEventPayload';
 
 import { APICreateCustomerPayload } from '../models/APICreateCustomerPayload';
 import { APICreateInvoicePayload } from '../models/APICreateInvoicePayload';
 import { APICreateProductPayload } from '../models/APICreateProductPayload';
 import { APICustomer } from '../models/APICustomer';
+import { APIEntitlement } from '../models/APIEntitlement';
 import { APIEvent } from '../models/APIEvent';
 import { APIIngestEventPayload } from '../models/APIIngestEventPayload';
 import { APIInvoice } from '../models/APIInvoice';
 import { APIInvoiceBillingPeriod } from '../models/APIInvoiceBillingPeriod';
 import { APIProduct } from '../models/APIProduct';
 import { APIQueryPayloadAPICustomer } from '../models/APIQueryPayloadAPICustomer';
+import { APIQueryPayloadAPIEntitlement } from '../models/APIQueryPayloadAPIEntitlement';
 import { APIQueryPayloadAPIEvent } from '../models/APIQueryPayloadAPIEvent';
 import { APIQueryPayloadAPIInvoice } from '../models/APIQueryPayloadAPIInvoice';
 import { APIQueryPayloadAPIProduct } from '../models/APIQueryPayloadAPIProduct';
@@ -58,6 +63,7 @@ import { Condition } from '../models/Condition';
 import { Criterion    } from '../models/Criterion';
 import { CriterionOperators } from '../models/CriterionOperators';
 import { CriterionValue } from '../models/CriterionValue';
+import { EntitlementRevision } from '../models/EntitlementRevision';
 import { Event } from '../models/Event';
 import { IngestEventToTheSystem201Response } from '../models/IngestEventToTheSystem201Response';
 import { InvoiceProductBreakdown } from '../models/InvoiceProductBreakdown';
@@ -66,12 +72,12 @@ import { LoginRequest } from '../models/LoginRequest';
 import { Pricing } from '../models/Pricing';
 import { PricingTiersInner } from '../models/PricingTiersInner';
 import { ProductBreakdown } from '../models/ProductBreakdown';
-import { ProductRevision } from '../models/ProductRevision';
 import { QueryResultAPICustomer } from '../models/QueryResultAPICustomer';
+import { QueryResultAPIEntitlement } from '../models/QueryResultAPIEntitlement';
 import { QueryResultAPIEvent } from '../models/QueryResultAPIEvent';
 import { QueryResultAPIInvoice } from '../models/QueryResultAPIInvoice';
 import { QueryResultAPIProduct } from '../models/QueryResultAPIProduct';
-import { ReviseProductPayload } from '../models/ReviseProductPayload';
+import { ReviseEntitlementPayload } from '../models/ReviseEntitlementPayload';
 import { UpdateEventPayload } from '../models/UpdateEventPayload';
 
 /* tslint:disable:no-unused-variable */
@@ -96,12 +102,14 @@ let typeMap: {[index: string]: any} = {
     "APICreateInvoicePayload": APICreateInvoicePayload,
     "APICreateProductPayload": APICreateProductPayload,
     "APICustomer": APICustomer,
+    "APIEntitlement": APIEntitlement,
     "APIEvent": APIEvent,
     "APIIngestEventPayload": APIIngestEventPayload,
     "APIInvoice": APIInvoice,
     "APIInvoiceBillingPeriod": APIInvoiceBillingPeriod,
     "APIProduct": APIProduct,
     "APIQueryPayloadAPICustomer": APIQueryPayloadAPICustomer,
+    "APIQueryPayloadAPIEntitlement": APIQueryPayloadAPIEntitlement,
     "APIQueryPayloadAPIEvent": APIQueryPayloadAPIEvent,
     "APIQueryPayloadAPIInvoice": APIQueryPayloadAPIInvoice,
     "APIQueryPayloadAPIProduct": APIQueryPayloadAPIProduct,
@@ -112,6 +120,7 @@ let typeMap: {[index: string]: any} = {
     "Condition": Condition,
     "Criterion": Criterion,
     "CriterionValue": CriterionValue,
+    "EntitlementRevision": EntitlementRevision,
     "Event": Event,
     "IngestEventToTheSystem201Response": IngestEventToTheSystem201Response,
     "InvoiceProductBreakdown": InvoiceProductBreakdown,
@@ -120,12 +129,12 @@ let typeMap: {[index: string]: any} = {
     "Pricing": Pricing,
     "PricingTiersInner": PricingTiersInner,
     "ProductBreakdown": ProductBreakdown,
-    "ProductRevision": ProductRevision,
     "QueryResultAPICustomer": QueryResultAPICustomer,
+    "QueryResultAPIEntitlement": QueryResultAPIEntitlement,
     "QueryResultAPIEvent": QueryResultAPIEvent,
     "QueryResultAPIInvoice": QueryResultAPIInvoice,
     "QueryResultAPIProduct": QueryResultAPIProduct,
-    "ReviseProductPayload": ReviseProductPayload,
+    "ReviseEntitlementPayload": ReviseEntitlementPayload,
     "UpdateEventPayload": UpdateEventPayload,
 }
 
