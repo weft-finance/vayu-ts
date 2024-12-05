@@ -189,6 +189,10 @@
 						"type": "string",
 						"description": "Name"
 					},
+					"eventName": {
+						"type": "string",
+						"description": "Event Name"
+					},
 					"description": {
 						"type": "string",
 						"description": "Description"
@@ -226,6 +230,7 @@
 				"required": [
 					"id",
 					"name",
+					"eventName",
 					"accountId",
 					"aggregation",
 					"pricing",
@@ -240,6 +245,10 @@
 					"name": {
 						"type": "string",
 						"description": "Name"
+					},
+					"eventName": {
+						"type": "string",
+						"description": "Event Name"
 					},
 					"description": {
 						"type": "string",
@@ -256,6 +265,7 @@
 				},
 				"required": [
 					"name",
+					"eventName",
 					"aggregation",
 					"pricing"
 				],
@@ -267,6 +277,10 @@
 					"name": {
 						"type": "string",
 						"description": "Name"
+					},
+					"eventName": {
+						"type": "string",
+						"description": "Event Name"
 					},
 					"description": {
 						"type": "string",

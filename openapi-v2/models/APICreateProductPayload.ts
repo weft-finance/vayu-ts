@@ -20,6 +20,10 @@ export class APICreateProductPayload {
     */
     'name': string;
     /**
+    * Event Name
+    */
+    'eventName': string;
+    /**
     * Description
     */
     'description'?: string;
@@ -32,6 +36,12 @@ export class APICreateProductPayload {
         {
             "name": "name",
             "baseName": "name",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "eventName",
+            "baseName": "eventName",
             "type": "string",
             "format": ""
         },

@@ -28,6 +28,10 @@ export class APIProduct {
     */
     'name': string;
     /**
+    * Event Name
+    */
+    'eventName': string;
+    /**
     * Description
     */
     'description'?: string;
@@ -62,6 +66,12 @@ export class APIProduct {
         {
             "name": "name",
             "baseName": "name",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "eventName",
+            "baseName": "eventName",
             "type": "string",
             "format": ""
         },
