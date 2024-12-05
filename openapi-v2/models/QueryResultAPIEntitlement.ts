@@ -10,44 +10,47 @@
  * Do not edit the class manually.
  */
 
+import { APIEntitlement } from '../models/APIEntitlement';
 import { HttpFile } from '../http/http';
 
-export class PricingTiersInner {
-    'chunkSize': number;
-    'price': number;
-    'end': number | null;
-    'start': number;
+export class QueryResultAPIEntitlement {
+    /**
+    * Items
+    */
+    'items': Array<APIEntitlement>;
+    /**
+    * Total items found
+    */
+    'totalCount': number;
+    /**
+    * There are more items
+    */
+    'hasMore': boolean;
 
     static readonly discriminator: string | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "chunkSize",
-            "baseName": "chunkSize",
-            "type": "number",
-            "format": "double"
+            "name": "items",
+            "baseName": "items",
+            "type": "Array<APIEntitlement>",
+            "format": ""
         },
         {
-            "name": "price",
-            "baseName": "price",
+            "name": "totalCount",
+            "baseName": "totalCount",
             "type": "number",
-            "format": "double"
+            "format": "int32"
         },
         {
-            "name": "end",
-            "baseName": "end",
-            "type": "number",
-            "format": "double"
-        },
-        {
-            "name": "start",
-            "baseName": "start",
-            "type": "number",
-            "format": "double"
+            "name": "hasMore",
+            "baseName": "hasMore",
+            "type": "boolean",
+            "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return PricingTiersInner.attributeTypeMap;
+        return QueryResultAPIEntitlement.attributeTypeMap;
     }
 
     public constructor() {

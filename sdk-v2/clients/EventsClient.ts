@@ -13,14 +13,6 @@ export class EventsClient {
     return this.client.getEvent(id);
   }
 
-  // async create(payload: CreateEventPayload) {
-  //   return this.client.createEvent(payload);
-  // }
-
-  // async update(id: string, payload: UpdateEventPayload) {
-  //   return this.client.updateEvent(payload, id);
-  // }
-
   async delete(id: string) {
     return this.client.deleteEvent(id);
   }
@@ -32,8 +24,4 @@ export class EventsClient {
   async ingest(payload: APIIngestEventPayload[]) {
     return this.client.ingestEventToTheSystem(payload);
   }
-
-  // async upload(payload: any) {
-  //   //todo: 
-  // }
 }

@@ -4,6 +4,5 @@ export type {
   APIProduct as Product,
   APIUpdateProductPayload as UpdateProductPayload,
   APIQueryPayloadAPIProduct as QueryProductPayload,
-  ReviseProductPayload,
   InvoiceProductBreakdown,
 } from '../../openapi-v2';

@@ -5,12 +5,14 @@ import { APICreateCustomerPayload } from '../models/APICreateCustomerPayload';
 import { APICreateInvoicePayload } from '../models/APICreateInvoicePayload';
 import { APICreateProductPayload } from '../models/APICreateProductPayload';
 import { APICustomer } from '../models/APICustomer';
+import { APIEntitlement } from '../models/APIEntitlement';
 import { APIEvent } from '../models/APIEvent';
 import { APIIngestEventPayload } from '../models/APIIngestEventPayload';
 import { APIInvoice } from '../models/APIInvoice';
 import { APIInvoiceBillingPeriod } from '../models/APIInvoiceBillingPeriod';
 import { APIProduct } from '../models/APIProduct';
 import { APIQueryPayloadAPICustomer } from '../models/APIQueryPayloadAPICustomer';
+import { APIQueryPayloadAPIEntitlement } from '../models/APIQueryPayloadAPIEntitlement';
 import { APIQueryPayloadAPIEvent } from '../models/APIQueryPayloadAPIEvent';
 import { APIQueryPayloadAPIInvoice } from '../models/APIQueryPayloadAPIInvoice';
 import { APIQueryPayloadAPIProduct } from '../models/APIQueryPayloadAPIProduct';
@@ -23,6 +25,7 @@ import { Condition } from '../models/Condition';
 import { Criterion } from '../models/Criterion';
 import { CriterionOperators } from '../models/CriterionOperators';
 import { CriterionValue } from '../models/CriterionValue';
+import { EntitlementRevision } from '../models/EntitlementRevision';
 import { Event } from '../models/Event';
 import { IngestEventToTheSystem201Response } from '../models/IngestEventToTheSystem201Response';
 import { InvoiceProductBreakdown } from '../models/InvoiceProductBreakdown';
@@ -31,12 +34,12 @@ import { LoginRequest } from '../models/LoginRequest';
 import { Pricing } from '../models/Pricing';
 import { PricingTiersInner } from '../models/PricingTiersInner';
 import { ProductBreakdown } from '../models/ProductBreakdown';
-import { ProductRevision } from '../models/ProductRevision';
 import { QueryResultAPICustomer } from '../models/QueryResultAPICustomer';
+import { QueryResultAPIEntitlement } from '../models/QueryResultAPIEntitlement';
 import { QueryResultAPIEvent } from '../models/QueryResultAPIEvent';
 import { QueryResultAPIInvoice } from '../models/QueryResultAPIInvoice';
 import { QueryResultAPIProduct } from '../models/QueryResultAPIProduct';
-import { ReviseProductPayload } from '../models/ReviseProductPayload';
+import { ReviseEntitlementPayload } from '../models/ReviseEntitlementPayload';
 import { UpdateEventPayload } from '../models/UpdateEventPayload';
 import { ObservableAuthenticationApi } from './ObservableAPI';
 
@@ -152,6 +155,26 @@ export class PromiseCustomersApi {
     }
 
     /**
+     * @param body 
+     * @param id 
+     * @param productId 
+     */
+    public updateACustomersProductWithHttpInfo(body: ReviseEntitlementPayload, id: string, productId: string, _options?: Configuration): Promise<HttpInfo<APIEntitlement>> {
+        const result = this.api.updateACustomersProductWithHttpInfo(body, id, productId, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * @param body 
+     * @param id 
+     * @param productId 
+     */
+    public updateACustomersProduct(body: ReviseEntitlementPayload, id: string, productId: string, _options?: Configuration): Promise<APIEntitlement> {
+        const result = this.api.updateACustomersProduct(body, id, productId, _options);
+        return result.toPromise();
+    }
+
+    /**
      * @param aPIUpdateCustomerPayload 
      * @param id 
      */
@@ -166,6 +189,73 @@ export class PromiseCustomersApi {
      */
     public updateCustomer(aPIUpdateCustomerPayload: APIUpdateCustomerPayload, id: string, _options?: Configuration): Promise<APICustomer> {
         const result = this.api.updateCustomer(aPIUpdateCustomerPayload, id, _options);
+        return result.toPromise();
+    }
+
+
+}
+
+
+
+import { ObservableEntitlementsApi } from './ObservableAPI';
+
+import { EntitlementsApiRequestFactory, EntitlementsApiResponseProcessor} from "../apis/EntitlementsApi";
+export class PromiseEntitlementsApi {
+    private api: ObservableEntitlementsApi
+
+    public constructor(
+        configuration: Configuration,
+        requestFactory?: EntitlementsApiRequestFactory,
+        responseProcessor?: EntitlementsApiResponseProcessor
+    ) {
+        this.api = new ObservableEntitlementsApi(configuration, requestFactory, responseProcessor);
+    }
+
+    /**
+     * @param id 
+     */
+    public deleteEntitlementWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<void>> {
+        const result = this.api.deleteEntitlementWithHttpInfo(id, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * @param id 
+     */
+    public deleteEntitlement(id: string, _options?: Configuration): Promise<void> {
+        const result = this.api.deleteEntitlement(id, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * @param id 
+     */
+    public getEntitlementWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APIEntitlement>> {
+        const result = this.api.getEntitlementWithHttpInfo(id, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * @param id 
+     */
+    public getEntitlement(id: string, _options?: Configuration): Promise<APIEntitlement> {
+        const result = this.api.getEntitlement(id, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * @param aPIQueryPayloadAPIEntitlement 
+     */
+    public queryEntitlementsWithHttpInfo(aPIQueryPayloadAPIEntitlement: APIQueryPayloadAPIEntitlement, _options?: Configuration): Promise<HttpInfo<QueryResultAPIEntitlement>> {
+        const result = this.api.queryEntitlementsWithHttpInfo(aPIQueryPayloadAPIEntitlement, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * @param aPIQueryPayloadAPIEntitlement 
+     */
+    public queryEntitlements(aPIQueryPayloadAPIEntitlement: APIQueryPayloadAPIEntitlement, _options?: Configuration): Promise<QueryResultAPIEntitlement> {
+        const result = this.api.queryEntitlements(aPIQueryPayloadAPIEntitlement, _options);
         return result.toPromise();
     }
 
@@ -449,24 +539,6 @@ export class PromiseProductsApi {
      */
     public queryProducts(aPIQueryPayloadAPIProduct: APIQueryPayloadAPIProduct, _options?: Configuration): Promise<QueryResultAPIProduct> {
         const result = this.api.queryProducts(aPIQueryPayloadAPIProduct, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * @param body 
-     * @param id 
-     */
-    public reviseAProductWithHttpInfo(body: ReviseProductPayload, id: string, _options?: Configuration): Promise<HttpInfo<APIProduct>> {
-        const result = this.api.reviseAProductWithHttpInfo(body, id, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * @param body 
-     * @param id 
-     */
-    public reviseAProduct(body: ReviseProductPayload, id: string, _options?: Configuration): Promise<APIProduct> {
-        const result = this.api.reviseAProduct(body, id, _options);
         return result.toPromise();
     }
 

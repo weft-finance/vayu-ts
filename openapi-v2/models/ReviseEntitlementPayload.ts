@@ -13,36 +13,25 @@
 import { Pricing } from '../models/Pricing';
 import { HttpFile } from '../http/http';
 
-export class ProductRevision {
+export class ReviseEntitlementPayload {
     /**
-    * A class representation of the BSON ObjectId type.
+    * The reason the product was revised
     */
-    'revisionId': string;
     'reason': string;
-    'asOf': Date;
     'pricing': Pricing;
-    'createdAt': Date;
+    /**
+    * The date the revision is effective as of
+    */
+    'asOf': string;
 
     static readonly discriminator: string | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "revisionId",
-            "baseName": "revisionId",
-            "type": "string",
-            "format": ""
-        },
-        {
             "name": "reason",
             "baseName": "reason",
             "type": "string",
             "format": ""
-        },
-        {
-            "name": "asOf",
-            "baseName": "asOf",
-            "type": "Date",
-            "format": "date-time"
         },
         {
             "name": "pricing",
@@ -51,14 +40,14 @@ export class ProductRevision {
             "format": ""
         },
         {
-            "name": "createdAt",
-            "baseName": "createdAt",
-            "type": "Date",
-            "format": "date-time"
+            "name": "asOf",
+            "baseName": "asOf",
+            "type": "string",
+            "format": "date"
         }    ];
 
     static getAttributeTypeMap() {
-        return ProductRevision.attributeTypeMap;
+        return ReviseEntitlementPayload.attributeTypeMap;
     }
 
     public constructor() {
