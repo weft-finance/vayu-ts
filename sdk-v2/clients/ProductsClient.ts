@@ -1,4 +1,4 @@
-import type { APIQueryPayloadAPIProduct, APICreateProductPayload, APIUpdateProductPayload, ReviseProductPayload } from '../../openapi-v2';
+import type { APIQueryPayloadAPIProduct, APICreateProductPayload, APIUpdateProductPayload } from '../../openapi-v2';
 import { ProductsApi } from '../../openapi-v2';
 import { ConfigurationService } from '../services';
 
@@ -19,10 +19,6 @@ export class ProductsClient {
 
   async update(id: string, payload: APIUpdateProductPayload) {
     return this.client.updateProduct(payload, id);
-  }
-
-  async revise(id: string, payload: ReviseProductPayload) {
-    return this.client.reviseAProduct(payload, id);
   }
 
   async delete(id: string) {

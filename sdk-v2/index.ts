@@ -11,7 +11,8 @@ export class Vayu {
     apiKey: string,
     _baseUrl?: string,
   ) {
-    const baseServer = ConfigurationService.generateServerConfiguration('http://connect.v2.dev.withvayu.com');
+    // const baseServer = ConfigurationService.generateServerConfiguration('http://connect.v2.dev.withvayu.com');
+    const baseServer = ConfigurationService.generateServerConfiguration('http://localhost:3000');
     this.configurationManager = ConfigurationService.initialize(apiKey, baseServer);
   }
 
