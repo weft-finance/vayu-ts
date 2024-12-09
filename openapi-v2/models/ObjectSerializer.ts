@@ -23,12 +23,12 @@ export * from '../models/Criterion';
 export * from '../models/CriterionOperators';
 export * from '../models/CriterionValue';
 export * from '../models/EntitlementRevision';
-export * from '../models/Event';
 export * from '../models/IngestEventToTheSystem201Response';
 export * from '../models/InvoiceProductBreakdown';
 export * from '../models/Login200Response';
 export * from '../models/LoginRequest';
 export * from '../models/Pricing';
+export * from '../models/PricingCadence';
 export * from '../models/PricingTiersInner';
 export * from '../models/ProductBreakdown';
 export * from '../models/QueryResultAPICustomer';
@@ -37,7 +37,6 @@ export * from '../models/QueryResultAPIEvent';
 export * from '../models/QueryResultAPIInvoice';
 export * from '../models/QueryResultAPIProduct';
 export * from '../models/ReviseEntitlementPayload';
-export * from '../models/UpdateEventPayload';
 
 import { APICreateCustomerPayload } from '../models/APICreateCustomerPayload';
 import { APICreateInvoicePayload } from '../models/APICreateInvoicePayload';
@@ -64,12 +63,12 @@ import { Criterion    } from '../models/Criterion';
 import { CriterionOperators } from '../models/CriterionOperators';
 import { CriterionValue } from '../models/CriterionValue';
 import { EntitlementRevision } from '../models/EntitlementRevision';
-import { Event } from '../models/Event';
 import { IngestEventToTheSystem201Response } from '../models/IngestEventToTheSystem201Response';
 import { InvoiceProductBreakdown } from '../models/InvoiceProductBreakdown';
 import { Login200Response } from '../models/Login200Response';
 import { LoginRequest } from '../models/LoginRequest';
-import { Pricing } from '../models/Pricing';
+import { Pricing    } from '../models/Pricing';
+import { PricingCadence } from '../models/PricingCadence';
 import { PricingTiersInner } from '../models/PricingTiersInner';
 import { ProductBreakdown } from '../models/ProductBreakdown';
 import { QueryResultAPICustomer } from '../models/QueryResultAPICustomer';
@@ -78,7 +77,6 @@ import { QueryResultAPIEvent } from '../models/QueryResultAPIEvent';
 import { QueryResultAPIInvoice } from '../models/QueryResultAPIInvoice';
 import { QueryResultAPIProduct } from '../models/QueryResultAPIProduct';
 import { ReviseEntitlementPayload } from '../models/ReviseEntitlementPayload';
-import { UpdateEventPayload } from '../models/UpdateEventPayload';
 
 /* tslint:disable:no-unused-variable */
 let primitives = [
@@ -95,6 +93,7 @@ let primitives = [
 let enumsMap: Set<string> = new Set<string>([
     "AggregationMethods",
     "CriterionOperators",
+    "PricingCadence",
 ]);
 
 let typeMap: {[index: string]: any} = {
@@ -121,7 +120,6 @@ let typeMap: {[index: string]: any} = {
     "Criterion": Criterion,
     "CriterionValue": CriterionValue,
     "EntitlementRevision": EntitlementRevision,
-    "Event": Event,
     "IngestEventToTheSystem201Response": IngestEventToTheSystem201Response,
     "InvoiceProductBreakdown": InvoiceProductBreakdown,
     "Login200Response": Login200Response,
@@ -135,7 +133,6 @@ let typeMap: {[index: string]: any} = {
     "QueryResultAPIInvoice": QueryResultAPIInvoice,
     "QueryResultAPIProduct": QueryResultAPIProduct,
     "ReviseEntitlementPayload": ReviseEntitlementPayload,
-    "UpdateEventPayload": UpdateEventPayload,
 }
 
 type MimeTypeDescriptor = {

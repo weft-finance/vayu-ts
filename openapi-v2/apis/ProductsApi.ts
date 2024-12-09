@@ -22,7 +22,8 @@ import { QueryResultAPIProduct } from '../models/QueryResultAPIProduct';
 export class ProductsApiRequestFactory extends BaseAPIRequestFactory {
 
     /**
-     * @param aPICreateProductPayload 
+     * Create a new product.
+     * @param aPICreateProductPayload - The details of the product to create.
      */
     public async createProduct(aPICreateProductPayload: APICreateProductPayload, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -62,7 +63,8 @@ export class ProductsApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param id 
+     * Delete a product by ID.
+     * @param id - The ID of the product to delete.
      */
     public async deleteProduct(id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -92,7 +94,8 @@ export class ProductsApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param id 
+     * Get a single product by ID.
+     * @param id - The ID of the product to fetch.
      */
     public async getProduct(id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -122,7 +125,8 @@ export class ProductsApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param aPIQueryPayloadAPIProduct 
+     * Query products based on filters and pagination.
+     * @param aPIQueryPayloadAPIProduct - The query filters and pagination details.
      */
     public async queryProducts(aPIQueryPayloadAPIProduct: APIQueryPayloadAPIProduct, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -162,8 +166,9 @@ export class ProductsApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param aPIUpdateProductPayload 
-     * @param id 
+     * Update an existing product.
+     * @param aPIUpdateProductPayload - The updated details of the product.
+     * @param id - The ID of the product to update.
      */
     public async updateProduct(aPIUpdateProductPayload: APIUpdateProductPayload, id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;

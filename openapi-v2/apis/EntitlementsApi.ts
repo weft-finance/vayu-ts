@@ -20,7 +20,8 @@ import { QueryResultAPIEntitlement } from '../models/QueryResultAPIEntitlement';
 export class EntitlementsApiRequestFactory extends BaseAPIRequestFactory {
 
     /**
-     * @param id 
+     * Delete an entitlement by ID.
+     * @param id - The ID of the entitlement to delete.
      */
     public async deleteEntitlement(id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -50,7 +51,8 @@ export class EntitlementsApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param id 
+     * Get a single entitlement by ID.
+     * @param id - The ID of the entitlement to fetch.
      */
     public async getEntitlement(id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -80,7 +82,8 @@ export class EntitlementsApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param aPIQueryPayloadAPIEntitlement 
+     * Query entitlements based on filters and pagination.
+     * @param aPIQueryPayloadAPIEntitlement - The query filters and pagination options.
      */
     public async queryEntitlements(aPIQueryPayloadAPIEntitlement: APIQueryPayloadAPIEntitlement, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;

@@ -26,12 +26,12 @@ import { Criterion } from '../models/Criterion';
 import { CriterionOperators } from '../models/CriterionOperators';
 import { CriterionValue } from '../models/CriterionValue';
 import { EntitlementRevision } from '../models/EntitlementRevision';
-import { Event } from '../models/Event';
 import { IngestEventToTheSystem201Response } from '../models/IngestEventToTheSystem201Response';
 import { InvoiceProductBreakdown } from '../models/InvoiceProductBreakdown';
 import { Login200Response } from '../models/Login200Response';
 import { LoginRequest } from '../models/LoginRequest';
 import { Pricing } from '../models/Pricing';
+import { PricingCadence } from '../models/PricingCadence';
 import { PricingTiersInner } from '../models/PricingTiersInner';
 import { ProductBreakdown } from '../models/ProductBreakdown';
 import { QueryResultAPICustomer } from '../models/QueryResultAPICustomer';
@@ -40,7 +40,6 @@ import { QueryResultAPIEvent } from '../models/QueryResultAPIEvent';
 import { QueryResultAPIInvoice } from '../models/QueryResultAPIInvoice';
 import { QueryResultAPIProduct } from '../models/QueryResultAPIProduct';
 import { ReviseEntitlementPayload } from '../models/ReviseEntitlementPayload';
-import { UpdateEventPayload } from '../models/UpdateEventPayload';
 
 import { ObservableAuthenticationApi } from "./ObservableAPI";
 import { AuthenticationApiRequestFactory, AuthenticationApiResponseProcessor} from "../apis/AuthenticationApi";
@@ -82,7 +81,7 @@ import { CustomersApiRequestFactory, CustomersApiResponseProcessor} from "../api
 
 export interface CustomersApiCreateCustomerRequest {
     /**
-     * 
+     * - The details of the customer to create.
      * @type APICreateCustomerPayload
      * @memberof CustomersApicreateCustomer
      */
@@ -91,7 +90,7 @@ export interface CustomersApiCreateCustomerRequest {
 
 export interface CustomersApiDeleteCustomerRequest {
     /**
-     * 
+     * - The ID of the customer to delete.
      * @type string
      * @memberof CustomersApideleteCustomer
      */
@@ -100,7 +99,7 @@ export interface CustomersApiDeleteCustomerRequest {
 
 export interface CustomersApiGetCustomerRequest {
     /**
-     * 
+     * - The ID of the customer to fetch.
      * @type string
      * @memberof CustomersApigetCustomer
      */
@@ -109,7 +108,7 @@ export interface CustomersApiGetCustomerRequest {
 
 export interface CustomersApiQueryCustomersRequest {
     /**
-     * 
+     * - The query filters and pagination options.
      * @type APIQueryPayloadAPICustomer
      * @memberof CustomersApiqueryCustomers
      */
@@ -118,19 +117,19 @@ export interface CustomersApiQueryCustomersRequest {
 
 export interface CustomersApiUpdateACustomersProductRequest {
     /**
-     * 
+     * - The details of the revision to apply.
      * @type ReviseEntitlementPayload
      * @memberof CustomersApiupdateACustomersProduct
      */
     body: ReviseEntitlementPayload
     /**
-     * 
+     * - The ID of the customer to revise.
      * @type string
      * @memberof CustomersApiupdateACustomersProduct
      */
     id: string
     /**
-     * 
+     * - The ID of the product to revise.
      * @type string
      * @memberof CustomersApiupdateACustomersProduct
      */
@@ -139,13 +138,13 @@ export interface CustomersApiUpdateACustomersProductRequest {
 
 export interface CustomersApiUpdateCustomerRequest {
     /**
-     * 
+     * - The updated details of the customer.
      * @type APIUpdateCustomerPayload
      * @memberof CustomersApiupdateCustomer
      */
     aPIUpdateCustomerPayload: APIUpdateCustomerPayload
     /**
-     * 
+     * - The ID of the customer to update.
      * @type string
      * @memberof CustomersApiupdateCustomer
      */
@@ -160,6 +159,7 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Create a new customer.
      * @param param the request object
      */
     public createCustomerWithHttpInfo(param: CustomersApiCreateCustomerRequest, options?: Configuration): Promise<HttpInfo<APICustomer>> {
@@ -167,6 +167,7 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Create a new customer.
      * @param param the request object
      */
     public createCustomer(param: CustomersApiCreateCustomerRequest, options?: Configuration): Promise<APICustomer> {
@@ -174,6 +175,7 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Delete a customer by ID.
      * @param param the request object
      */
     public deleteCustomerWithHttpInfo(param: CustomersApiDeleteCustomerRequest, options?: Configuration): Promise<HttpInfo<void>> {
@@ -181,6 +183,7 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Delete a customer by ID.
      * @param param the request object
      */
     public deleteCustomer(param: CustomersApiDeleteCustomerRequest, options?: Configuration): Promise<void> {
@@ -188,6 +191,7 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Get a single customer by ID.
      * @param param the request object
      */
     public getCustomerWithHttpInfo(param: CustomersApiGetCustomerRequest, options?: Configuration): Promise<HttpInfo<APICustomer>> {
@@ -195,6 +199,7 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Get a single customer by ID.
      * @param param the request object
      */
     public getCustomer(param: CustomersApiGetCustomerRequest, options?: Configuration): Promise<APICustomer> {
@@ -202,6 +207,7 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Query customers based on filters and pagination.
      * @param param the request object
      */
     public queryCustomersWithHttpInfo(param: CustomersApiQueryCustomersRequest, options?: Configuration): Promise<HttpInfo<QueryResultAPICustomer>> {
@@ -209,6 +215,7 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Query customers based on filters and pagination.
      * @param param the request object
      */
     public queryCustomers(param: CustomersApiQueryCustomersRequest, options?: Configuration): Promise<QueryResultAPICustomer> {
@@ -216,6 +223,7 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Revise a customer\'s product.
      * @param param the request object
      */
     public updateACustomersProductWithHttpInfo(param: CustomersApiUpdateACustomersProductRequest, options?: Configuration): Promise<HttpInfo<APIEntitlement>> {
@@ -223,6 +231,7 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Revise a customer\'s product.
      * @param param the request object
      */
     public updateACustomersProduct(param: CustomersApiUpdateACustomersProductRequest, options?: Configuration): Promise<APIEntitlement> {
@@ -230,6 +239,7 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Update an existing customer.
      * @param param the request object
      */
     public updateCustomerWithHttpInfo(param: CustomersApiUpdateCustomerRequest, options?: Configuration): Promise<HttpInfo<APICustomer>> {
@@ -237,6 +247,7 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Update an existing customer.
      * @param param the request object
      */
     public updateCustomer(param: CustomersApiUpdateCustomerRequest, options?: Configuration): Promise<APICustomer> {
@@ -250,7 +261,7 @@ import { EntitlementsApiRequestFactory, EntitlementsApiResponseProcessor} from "
 
 export interface EntitlementsApiDeleteEntitlementRequest {
     /**
-     * 
+     * - The ID of the entitlement to delete.
      * @type string
      * @memberof EntitlementsApideleteEntitlement
      */
@@ -259,7 +270,7 @@ export interface EntitlementsApiDeleteEntitlementRequest {
 
 export interface EntitlementsApiGetEntitlementRequest {
     /**
-     * 
+     * - The ID of the entitlement to fetch.
      * @type string
      * @memberof EntitlementsApigetEntitlement
      */
@@ -268,7 +279,7 @@ export interface EntitlementsApiGetEntitlementRequest {
 
 export interface EntitlementsApiQueryEntitlementsRequest {
     /**
-     * 
+     * - The query filters and pagination options.
      * @type APIQueryPayloadAPIEntitlement
      * @memberof EntitlementsApiqueryEntitlements
      */
@@ -283,6 +294,7 @@ export class ObjectEntitlementsApi {
     }
 
     /**
+     * Delete an entitlement by ID.
      * @param param the request object
      */
     public deleteEntitlementWithHttpInfo(param: EntitlementsApiDeleteEntitlementRequest, options?: Configuration): Promise<HttpInfo<void>> {
@@ -290,6 +302,7 @@ export class ObjectEntitlementsApi {
     }
 
     /**
+     * Delete an entitlement by ID.
      * @param param the request object
      */
     public deleteEntitlement(param: EntitlementsApiDeleteEntitlementRequest, options?: Configuration): Promise<void> {
@@ -297,6 +310,7 @@ export class ObjectEntitlementsApi {
     }
 
     /**
+     * Get a single entitlement by ID.
      * @param param the request object
      */
     public getEntitlementWithHttpInfo(param: EntitlementsApiGetEntitlementRequest, options?: Configuration): Promise<HttpInfo<APIEntitlement>> {
@@ -304,6 +318,7 @@ export class ObjectEntitlementsApi {
     }
 
     /**
+     * Get a single entitlement by ID.
      * @param param the request object
      */
     public getEntitlement(param: EntitlementsApiGetEntitlementRequest, options?: Configuration): Promise<APIEntitlement> {
@@ -311,6 +326,7 @@ export class ObjectEntitlementsApi {
     }
 
     /**
+     * Query entitlements based on filters and pagination.
      * @param param the request object
      */
     public queryEntitlementsWithHttpInfo(param: EntitlementsApiQueryEntitlementsRequest, options?: Configuration): Promise<HttpInfo<QueryResultAPIEntitlement>> {
@@ -318,6 +334,7 @@ export class ObjectEntitlementsApi {
     }
 
     /**
+     * Query entitlements based on filters and pagination.
      * @param param the request object
      */
     public queryEntitlements(param: EntitlementsApiQueryEntitlementsRequest, options?: Configuration): Promise<QueryResultAPIEntitlement> {
@@ -331,7 +348,7 @@ import { EventsApiRequestFactory, EventsApiResponseProcessor} from "../apis/Even
 
 export interface EventsApiDeleteEventRequest {
     /**
-     * 
+     * - The ID of the event to delete.
      * @type string
      * @memberof EventsApideleteEvent
      */
@@ -340,7 +357,7 @@ export interface EventsApiDeleteEventRequest {
 
 export interface EventsApiGetEventRequest {
     /**
-     * 
+     * - The ID of the event to fetch.
      * @type string
      * @memberof EventsApigetEvent
      */
@@ -349,7 +366,7 @@ export interface EventsApiGetEventRequest {
 
 export interface EventsApiIngestEventToTheSystemRequest {
     /**
-     * 
+     * - The events to ingest
      * @type Array&lt;APIIngestEventPayload&gt;
      * @memberof EventsApiingestEventToTheSystem
      */
@@ -358,7 +375,7 @@ export interface EventsApiIngestEventToTheSystemRequest {
 
 export interface EventsApiQueryEventsRequest {
     /**
-     * 
+     * - The query filters and pagination options.
      * @type APIQueryPayloadAPIEvent
      * @memberof EventsApiqueryEvents
      */
@@ -373,6 +390,7 @@ export class ObjectEventsApi {
     }
 
     /**
+     * Delete an event by ID.
      * @param param the request object
      */
     public deleteEventWithHttpInfo(param: EventsApiDeleteEventRequest, options?: Configuration): Promise<HttpInfo<void>> {
@@ -380,6 +398,7 @@ export class ObjectEventsApi {
     }
 
     /**
+     * Delete an event by ID.
      * @param param the request object
      */
     public deleteEvent(param: EventsApiDeleteEventRequest, options?: Configuration): Promise<void> {
@@ -387,6 +406,7 @@ export class ObjectEventsApi {
     }
 
     /**
+     * Get a single event by ID.
      * @param param the request object
      */
     public getEventWithHttpInfo(param: EventsApiGetEventRequest, options?: Configuration): Promise<HttpInfo<APIEvent>> {
@@ -394,6 +414,7 @@ export class ObjectEventsApi {
     }
 
     /**
+     * Get a single event by ID.
      * @param param the request object
      */
     public getEvent(param: EventsApiGetEventRequest, options?: Configuration): Promise<APIEvent> {
@@ -401,6 +422,7 @@ export class ObjectEventsApi {
     }
 
     /**
+     * Ingest events to the system
      * @param param the request object
      */
     public ingestEventToTheSystemWithHttpInfo(param: EventsApiIngestEventToTheSystemRequest, options?: Configuration): Promise<HttpInfo<IngestEventToTheSystem201Response>> {
@@ -408,6 +430,7 @@ export class ObjectEventsApi {
     }
 
     /**
+     * Ingest events to the system
      * @param param the request object
      */
     public ingestEventToTheSystem(param: EventsApiIngestEventToTheSystemRequest, options?: Configuration): Promise<IngestEventToTheSystem201Response> {
@@ -415,6 +438,7 @@ export class ObjectEventsApi {
     }
 
     /**
+     * Query events based on filters and pagination.
      * @param param the request object
      */
     public queryEventsWithHttpInfo(param: EventsApiQueryEventsRequest, options?: Configuration): Promise<HttpInfo<QueryResultAPIEvent>> {
@@ -422,6 +446,7 @@ export class ObjectEventsApi {
     }
 
     /**
+     * Query events based on filters and pagination.
      * @param param the request object
      */
     public queryEvents(param: EventsApiQueryEventsRequest, options?: Configuration): Promise<QueryResultAPIEvent> {
@@ -435,7 +460,7 @@ import { InvoicesApiRequestFactory, InvoicesApiResponseProcessor} from "../apis/
 
 export interface InvoicesApiCalculateInvoiceRequest {
     /**
-     * 
+     * - The ID of the invoice to calculate.
      * @type string
      * @memberof InvoicesApicalculateInvoice
      */
@@ -444,7 +469,7 @@ export interface InvoicesApiCalculateInvoiceRequest {
 
 export interface InvoicesApiCreateInvoiceRequest {
     /**
-     * 
+     * - The details of the invoice to create.
      * @type APICreateInvoicePayload
      * @memberof InvoicesApicreateInvoice
      */
@@ -453,7 +478,7 @@ export interface InvoicesApiCreateInvoiceRequest {
 
 export interface InvoicesApiDeleteInvoiceRequest {
     /**
-     * 
+     * - The ID of the invoice to delete.
      * @type string
      * @memberof InvoicesApideleteInvoice
      */
@@ -462,7 +487,7 @@ export interface InvoicesApiDeleteInvoiceRequest {
 
 export interface InvoicesApiGetInvoiceRequest {
     /**
-     * 
+     * - The ID of the invoice to fetch.
      * @type string
      * @memberof InvoicesApigetInvoice
      */
@@ -471,7 +496,7 @@ export interface InvoicesApiGetInvoiceRequest {
 
 export interface InvoicesApiQueryInvoicesRequest {
     /**
-     * 
+     * - The query filters and pagination options.
      * @type APIQueryPayloadAPIInvoice
      * @memberof InvoicesApiqueryInvoices
      */
@@ -480,13 +505,13 @@ export interface InvoicesApiQueryInvoicesRequest {
 
 export interface InvoicesApiUpdateInvoiceRequest {
     /**
-     * 
+     * - The updated details of the invoice.
      * @type APIUpdateInvoicePayload
      * @memberof InvoicesApiupdateInvoice
      */
     aPIUpdateInvoicePayload: APIUpdateInvoicePayload
     /**
-     * 
+     * - The ID of the invoice to update.
      * @type string
      * @memberof InvoicesApiupdateInvoice
      */
@@ -501,6 +526,7 @@ export class ObjectInvoicesApi {
     }
 
     /**
+     * Calculate the total of an invoice.
      * @param param the request object
      */
     public calculateInvoiceWithHttpInfo(param: InvoicesApiCalculateInvoiceRequest, options?: Configuration): Promise<HttpInfo<APIInvoice>> {
@@ -508,6 +534,7 @@ export class ObjectInvoicesApi {
     }
 
     /**
+     * Calculate the total of an invoice.
      * @param param the request object
      */
     public calculateInvoice(param: InvoicesApiCalculateInvoiceRequest, options?: Configuration): Promise<APIInvoice> {
@@ -515,6 +542,7 @@ export class ObjectInvoicesApi {
     }
 
     /**
+     * Create a new invoice.
      * @param param the request object
      */
     public createInvoiceWithHttpInfo(param: InvoicesApiCreateInvoiceRequest, options?: Configuration): Promise<HttpInfo<APIInvoice>> {
@@ -522,6 +550,7 @@ export class ObjectInvoicesApi {
     }
 
     /**
+     * Create a new invoice.
      * @param param the request object
      */
     public createInvoice(param: InvoicesApiCreateInvoiceRequest, options?: Configuration): Promise<APIInvoice> {
@@ -529,6 +558,7 @@ export class ObjectInvoicesApi {
     }
 
     /**
+     * Delete an invoice by ID.
      * @param param the request object
      */
     public deleteInvoiceWithHttpInfo(param: InvoicesApiDeleteInvoiceRequest, options?: Configuration): Promise<HttpInfo<void>> {
@@ -536,6 +566,7 @@ export class ObjectInvoicesApi {
     }
 
     /**
+     * Delete an invoice by ID.
      * @param param the request object
      */
     public deleteInvoice(param: InvoicesApiDeleteInvoiceRequest, options?: Configuration): Promise<void> {
@@ -543,6 +574,7 @@ export class ObjectInvoicesApi {
     }
 
     /**
+     * Get a single invoice by ID.
      * @param param the request object
      */
     public getInvoiceWithHttpInfo(param: InvoicesApiGetInvoiceRequest, options?: Configuration): Promise<HttpInfo<APIInvoice>> {
@@ -550,6 +582,7 @@ export class ObjectInvoicesApi {
     }
 
     /**
+     * Get a single invoice by ID.
      * @param param the request object
      */
     public getInvoice(param: InvoicesApiGetInvoiceRequest, options?: Configuration): Promise<APIInvoice> {
@@ -557,6 +590,7 @@ export class ObjectInvoicesApi {
     }
 
     /**
+     * Query invoices based on filters and pagination.
      * @param param the request object
      */
     public queryInvoicesWithHttpInfo(param: InvoicesApiQueryInvoicesRequest, options?: Configuration): Promise<HttpInfo<QueryResultAPIInvoice>> {
@@ -564,6 +598,7 @@ export class ObjectInvoicesApi {
     }
 
     /**
+     * Query invoices based on filters and pagination.
      * @param param the request object
      */
     public queryInvoices(param: InvoicesApiQueryInvoicesRequest, options?: Configuration): Promise<QueryResultAPIInvoice> {
@@ -571,6 +606,7 @@ export class ObjectInvoicesApi {
     }
 
     /**
+     * Update an existing invoice.
      * @param param the request object
      */
     public updateInvoiceWithHttpInfo(param: InvoicesApiUpdateInvoiceRequest, options?: Configuration): Promise<HttpInfo<APIInvoice>> {
@@ -578,6 +614,7 @@ export class ObjectInvoicesApi {
     }
 
     /**
+     * Update an existing invoice.
      * @param param the request object
      */
     public updateInvoice(param: InvoicesApiUpdateInvoiceRequest, options?: Configuration): Promise<APIInvoice> {
@@ -591,7 +628,7 @@ import { ProductsApiRequestFactory, ProductsApiResponseProcessor} from "../apis/
 
 export interface ProductsApiCreateProductRequest {
     /**
-     * 
+     * - The details of the product to create.
      * @type APICreateProductPayload
      * @memberof ProductsApicreateProduct
      */
@@ -600,7 +637,7 @@ export interface ProductsApiCreateProductRequest {
 
 export interface ProductsApiDeleteProductRequest {
     /**
-     * 
+     * - The ID of the product to delete.
      * @type string
      * @memberof ProductsApideleteProduct
      */
@@ -609,7 +646,7 @@ export interface ProductsApiDeleteProductRequest {
 
 export interface ProductsApiGetProductRequest {
     /**
-     * 
+     * - The ID of the product to fetch.
      * @type string
      * @memberof ProductsApigetProduct
      */
@@ -618,7 +655,7 @@ export interface ProductsApiGetProductRequest {
 
 export interface ProductsApiQueryProductsRequest {
     /**
-     * 
+     * - The query filters and pagination details.
      * @type APIQueryPayloadAPIProduct
      * @memberof ProductsApiqueryProducts
      */
@@ -627,13 +664,13 @@ export interface ProductsApiQueryProductsRequest {
 
 export interface ProductsApiUpdateProductRequest {
     /**
-     * 
+     * - The updated details of the product.
      * @type APIUpdateProductPayload
      * @memberof ProductsApiupdateProduct
      */
     aPIUpdateProductPayload: APIUpdateProductPayload
     /**
-     * 
+     * - The ID of the product to update.
      * @type string
      * @memberof ProductsApiupdateProduct
      */
@@ -648,6 +685,7 @@ export class ObjectProductsApi {
     }
 
     /**
+     * Create a new product.
      * @param param the request object
      */
     public createProductWithHttpInfo(param: ProductsApiCreateProductRequest, options?: Configuration): Promise<HttpInfo<APIProduct>> {
@@ -655,6 +693,7 @@ export class ObjectProductsApi {
     }
 
     /**
+     * Create a new product.
      * @param param the request object
      */
     public createProduct(param: ProductsApiCreateProductRequest, options?: Configuration): Promise<APIProduct> {
@@ -662,6 +701,7 @@ export class ObjectProductsApi {
     }
 
     /**
+     * Delete a product by ID.
      * @param param the request object
      */
     public deleteProductWithHttpInfo(param: ProductsApiDeleteProductRequest, options?: Configuration): Promise<HttpInfo<void>> {
@@ -669,6 +709,7 @@ export class ObjectProductsApi {
     }
 
     /**
+     * Delete a product by ID.
      * @param param the request object
      */
     public deleteProduct(param: ProductsApiDeleteProductRequest, options?: Configuration): Promise<void> {
@@ -676,6 +717,7 @@ export class ObjectProductsApi {
     }
 
     /**
+     * Get a single product by ID.
      * @param param the request object
      */
     public getProductWithHttpInfo(param: ProductsApiGetProductRequest, options?: Configuration): Promise<HttpInfo<APIProduct>> {
@@ -683,6 +725,7 @@ export class ObjectProductsApi {
     }
 
     /**
+     * Get a single product by ID.
      * @param param the request object
      */
     public getProduct(param: ProductsApiGetProductRequest, options?: Configuration): Promise<APIProduct> {
@@ -690,6 +733,7 @@ export class ObjectProductsApi {
     }
 
     /**
+     * Query products based on filters and pagination.
      * @param param the request object
      */
     public queryProductsWithHttpInfo(param: ProductsApiQueryProductsRequest, options?: Configuration): Promise<HttpInfo<QueryResultAPIProduct>> {
@@ -697,6 +741,7 @@ export class ObjectProductsApi {
     }
 
     /**
+     * Query products based on filters and pagination.
      * @param param the request object
      */
     public queryProducts(param: ProductsApiQueryProductsRequest, options?: Configuration): Promise<QueryResultAPIProduct> {
@@ -704,6 +749,7 @@ export class ObjectProductsApi {
     }
 
     /**
+     * Update an existing product.
      * @param param the request object
      */
     public updateProductWithHttpInfo(param: ProductsApiUpdateProductRequest, options?: Configuration): Promise<HttpInfo<APIProduct>> {
@@ -711,6 +757,7 @@ export class ObjectProductsApi {
     }
 
     /**
+     * Update an existing product.
      * @param param the request object
      */
     public updateProduct(param: ProductsApiUpdateProductRequest, options?: Configuration): Promise<APIProduct> {

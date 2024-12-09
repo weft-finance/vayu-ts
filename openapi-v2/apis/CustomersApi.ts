@@ -24,7 +24,8 @@ import { ReviseEntitlementPayload } from '../models/ReviseEntitlementPayload';
 export class CustomersApiRequestFactory extends BaseAPIRequestFactory {
 
     /**
-     * @param aPICreateCustomerPayload 
+     * Create a new customer.
+     * @param aPICreateCustomerPayload - The details of the customer to create.
      */
     public async createCustomer(aPICreateCustomerPayload: APICreateCustomerPayload, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -64,7 +65,8 @@ export class CustomersApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param id 
+     * Delete a customer by ID.
+     * @param id - The ID of the customer to delete.
      */
     public async deleteCustomer(id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -94,7 +96,8 @@ export class CustomersApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param id 
+     * Get a single customer by ID.
+     * @param id - The ID of the customer to fetch.
      */
     public async getCustomer(id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -124,7 +127,8 @@ export class CustomersApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param aPIQueryPayloadAPICustomer 
+     * Query customers based on filters and pagination.
+     * @param aPIQueryPayloadAPICustomer - The query filters and pagination options.
      */
     public async queryCustomers(aPIQueryPayloadAPICustomer: APIQueryPayloadAPICustomer, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -164,9 +168,10 @@ export class CustomersApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param body 
-     * @param id 
-     * @param productId 
+     * Revise a customer\'s product.
+     * @param body - The details of the revision to apply.
+     * @param id - The ID of the customer to revise.
+     * @param productId - The ID of the product to revise.
      */
     public async updateACustomersProduct(body: ReviseEntitlementPayload, id: string, productId: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -220,8 +225,9 @@ export class CustomersApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param aPIUpdateCustomerPayload 
-     * @param id 
+     * Update an existing customer.
+     * @param aPIUpdateCustomerPayload - The updated details of the customer.
+     * @param id - The ID of the customer to update.
      */
     public async updateCustomer(aPIUpdateCustomerPayload: APIUpdateCustomerPayload, id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;

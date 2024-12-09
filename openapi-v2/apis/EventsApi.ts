@@ -22,7 +22,8 @@ import { QueryResultAPIEvent } from '../models/QueryResultAPIEvent';
 export class EventsApiRequestFactory extends BaseAPIRequestFactory {
 
     /**
-     * @param id 
+     * Delete an event by ID.
+     * @param id - The ID of the event to delete.
      */
     public async deleteEvent(id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -52,7 +53,8 @@ export class EventsApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param id 
+     * Get a single event by ID.
+     * @param id - The ID of the event to fetch.
      */
     public async getEvent(id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -82,7 +84,8 @@ export class EventsApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param aPIIngestEventPayload 
+     * Ingest events to the system
+     * @param aPIIngestEventPayload - The events to ingest
      */
     public async ingestEventToTheSystem(aPIIngestEventPayload: Array<APIIngestEventPayload>, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -122,7 +125,8 @@ export class EventsApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param aPIQueryPayloadAPIEvent 
+     * Query events based on filters and pagination.
+     * @param aPIQueryPayloadAPIEvent - The query filters and pagination options.
      */
     public async queryEvents(aPIQueryPayloadAPIEvent: APIQueryPayloadAPIEvent, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;

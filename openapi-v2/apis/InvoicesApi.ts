@@ -22,7 +22,8 @@ import { QueryResultAPIInvoice } from '../models/QueryResultAPIInvoice';
 export class InvoicesApiRequestFactory extends BaseAPIRequestFactory {
 
     /**
-     * @param id 
+     * Calculate the total of an invoice.
+     * @param id - The ID of the invoice to calculate.
      */
     public async calculateInvoice(id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -52,7 +53,8 @@ export class InvoicesApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param aPICreateInvoicePayload 
+     * Create a new invoice.
+     * @param aPICreateInvoicePayload - The details of the invoice to create.
      */
     public async createInvoice(aPICreateInvoicePayload: APICreateInvoicePayload, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -92,7 +94,8 @@ export class InvoicesApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param id 
+     * Delete an invoice by ID.
+     * @param id - The ID of the invoice to delete.
      */
     public async deleteInvoice(id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -122,7 +125,8 @@ export class InvoicesApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param id 
+     * Get a single invoice by ID.
+     * @param id - The ID of the invoice to fetch.
      */
     public async getInvoice(id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -152,7 +156,8 @@ export class InvoicesApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param aPIQueryPayloadAPIInvoice 
+     * Query invoices based on filters and pagination.
+     * @param aPIQueryPayloadAPIInvoice - The query filters and pagination options.
      */
     public async queryInvoices(aPIQueryPayloadAPIInvoice: APIQueryPayloadAPIInvoice, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
@@ -192,8 +197,9 @@ export class InvoicesApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * @param aPIUpdateInvoicePayload 
-     * @param id 
+     * Update an existing invoice.
+     * @param aPIUpdateInvoicePayload - The updated details of the invoice.
+     * @param id - The ID of the invoice to update.
      */
     public async updateInvoice(aPIUpdateInvoicePayload: APIUpdateInvoicePayload, id: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;

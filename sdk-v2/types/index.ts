@@ -7,6 +7,7 @@ export * from './Entitlements';
 export {
   AggregationMethods,
   CriterionOperators,
+  PricingCadence,
 } from '../../openapi-v2';
 
 export type {

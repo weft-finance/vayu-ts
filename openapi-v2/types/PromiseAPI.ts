@@ -26,12 +26,12 @@ import { Criterion } from '../models/Criterion';
 import { CriterionOperators } from '../models/CriterionOperators';
 import { CriterionValue } from '../models/CriterionValue';
 import { EntitlementRevision } from '../models/EntitlementRevision';
-import { Event } from '../models/Event';
 import { IngestEventToTheSystem201Response } from '../models/IngestEventToTheSystem201Response';
 import { InvoiceProductBreakdown } from '../models/InvoiceProductBreakdown';
 import { Login200Response } from '../models/Login200Response';
 import { LoginRequest } from '../models/LoginRequest';
 import { Pricing } from '../models/Pricing';
+import { PricingCadence } from '../models/PricingCadence';
 import { PricingTiersInner } from '../models/PricingTiersInner';
 import { ProductBreakdown } from '../models/ProductBreakdown';
 import { QueryResultAPICustomer } from '../models/QueryResultAPICustomer';
@@ -40,7 +40,6 @@ import { QueryResultAPIEvent } from '../models/QueryResultAPIEvent';
 import { QueryResultAPIInvoice } from '../models/QueryResultAPIInvoice';
 import { QueryResultAPIProduct } from '../models/QueryResultAPIProduct';
 import { ReviseEntitlementPayload } from '../models/ReviseEntitlementPayload';
-import { UpdateEventPayload } from '../models/UpdateEventPayload';
 import { ObservableAuthenticationApi } from './ObservableAPI';
 
 import { AuthenticationApiRequestFactory, AuthenticationApiResponseProcessor} from "../apis/AuthenticationApi";
@@ -91,7 +90,8 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * @param aPICreateCustomerPayload 
+     * Create a new customer.
+     * @param aPICreateCustomerPayload - The details of the customer to create.
      */
     public createCustomerWithHttpInfo(aPICreateCustomerPayload: APICreateCustomerPayload, _options?: Configuration): Promise<HttpInfo<APICustomer>> {
         const result = this.api.createCustomerWithHttpInfo(aPICreateCustomerPayload, _options);
@@ -99,7 +99,8 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * @param aPICreateCustomerPayload 
+     * Create a new customer.
+     * @param aPICreateCustomerPayload - The details of the customer to create.
      */
     public createCustomer(aPICreateCustomerPayload: APICreateCustomerPayload, _options?: Configuration): Promise<APICustomer> {
         const result = this.api.createCustomer(aPICreateCustomerPayload, _options);
@@ -107,7 +108,8 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * @param id 
+     * Delete a customer by ID.
+     * @param id - The ID of the customer to delete.
      */
     public deleteCustomerWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<void>> {
         const result = this.api.deleteCustomerWithHttpInfo(id, _options);
@@ -115,7 +117,8 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * @param id 
+     * Delete a customer by ID.
+     * @param id - The ID of the customer to delete.
      */
     public deleteCustomer(id: string, _options?: Configuration): Promise<void> {
         const result = this.api.deleteCustomer(id, _options);
@@ -123,7 +126,8 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * @param id 
+     * Get a single customer by ID.
+     * @param id - The ID of the customer to fetch.
      */
     public getCustomerWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APICustomer>> {
         const result = this.api.getCustomerWithHttpInfo(id, _options);
@@ -131,7 +135,8 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * @param id 
+     * Get a single customer by ID.
+     * @param id - The ID of the customer to fetch.
      */
     public getCustomer(id: string, _options?: Configuration): Promise<APICustomer> {
         const result = this.api.getCustomer(id, _options);
@@ -139,7 +144,8 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * @param aPIQueryPayloadAPICustomer 
+     * Query customers based on filters and pagination.
+     * @param aPIQueryPayloadAPICustomer - The query filters and pagination options.
      */
     public queryCustomersWithHttpInfo(aPIQueryPayloadAPICustomer: APIQueryPayloadAPICustomer, _options?: Configuration): Promise<HttpInfo<QueryResultAPICustomer>> {
         const result = this.api.queryCustomersWithHttpInfo(aPIQueryPayloadAPICustomer, _options);
@@ -147,7 +153,8 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * @param aPIQueryPayloadAPICustomer 
+     * Query customers based on filters and pagination.
+     * @param aPIQueryPayloadAPICustomer - The query filters and pagination options.
      */
     public queryCustomers(aPIQueryPayloadAPICustomer: APIQueryPayloadAPICustomer, _options?: Configuration): Promise<QueryResultAPICustomer> {
         const result = this.api.queryCustomers(aPIQueryPayloadAPICustomer, _options);
@@ -155,9 +162,10 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * @param body 
-     * @param id 
-     * @param productId 
+     * Revise a customer\'s product.
+     * @param body - The details of the revision to apply.
+     * @param id - The ID of the customer to revise.
+     * @param productId - The ID of the product to revise.
      */
     public updateACustomersProductWithHttpInfo(body: ReviseEntitlementPayload, id: string, productId: string, _options?: Configuration): Promise<HttpInfo<APIEntitlement>> {
         const result = this.api.updateACustomersProductWithHttpInfo(body, id, productId, _options);
@@ -165,9 +173,10 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * @param body 
-     * @param id 
-     * @param productId 
+     * Revise a customer\'s product.
+     * @param body - The details of the revision to apply.
+     * @param id - The ID of the customer to revise.
+     * @param productId - The ID of the product to revise.
      */
     public updateACustomersProduct(body: ReviseEntitlementPayload, id: string, productId: string, _options?: Configuration): Promise<APIEntitlement> {
         const result = this.api.updateACustomersProduct(body, id, productId, _options);
@@ -175,8 +184,9 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * @param aPIUpdateCustomerPayload 
-     * @param id 
+     * Update an existing customer.
+     * @param aPIUpdateCustomerPayload - The updated details of the customer.
+     * @param id - The ID of the customer to update.
      */
     public updateCustomerWithHttpInfo(aPIUpdateCustomerPayload: APIUpdateCustomerPayload, id: string, _options?: Configuration): Promise<HttpInfo<APICustomer>> {
         const result = this.api.updateCustomerWithHttpInfo(aPIUpdateCustomerPayload, id, _options);
@@ -184,8 +194,9 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * @param aPIUpdateCustomerPayload 
-     * @param id 
+     * Update an existing customer.
+     * @param aPIUpdateCustomerPayload - The updated details of the customer.
+     * @param id - The ID of the customer to update.
      */
     public updateCustomer(aPIUpdateCustomerPayload: APIUpdateCustomerPayload, id: string, _options?: Configuration): Promise<APICustomer> {
         const result = this.api.updateCustomer(aPIUpdateCustomerPayload, id, _options);
@@ -212,7 +223,8 @@ export class PromiseEntitlementsApi {
     }
 
     /**
-     * @param id 
+     * Delete an entitlement by ID.
+     * @param id - The ID of the entitlement to delete.
      */
     public deleteEntitlementWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<void>> {
         const result = this.api.deleteEntitlementWithHttpInfo(id, _options);
@@ -220,7 +232,8 @@ export class PromiseEntitlementsApi {
     }
 
     /**
-     * @param id 
+     * Delete an entitlement by ID.
+     * @param id - The ID of the entitlement to delete.
      */
     public deleteEntitlement(id: string, _options?: Configuration): Promise<void> {
         const result = this.api.deleteEntitlement(id, _options);
@@ -228,7 +241,8 @@ export class PromiseEntitlementsApi {
     }
 
     /**
-     * @param id 
+     * Get a single entitlement by ID.
+     * @param id - The ID of the entitlement to fetch.
      */
     public getEntitlementWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APIEntitlement>> {
         const result = this.api.getEntitlementWithHttpInfo(id, _options);
@@ -236,7 +250,8 @@ export class PromiseEntitlementsApi {
     }
 
     /**
-     * @param id 
+     * Get a single entitlement by ID.
+     * @param id - The ID of the entitlement to fetch.
      */
     public getEntitlement(id: string, _options?: Configuration): Promise<APIEntitlement> {
         const result = this.api.getEntitlement(id, _options);
@@ -244,7 +259,8 @@ export class PromiseEntitlementsApi {
     }
 
     /**
-     * @param aPIQueryPayloadAPIEntitlement 
+     * Query entitlements based on filters and pagination.
+     * @param aPIQueryPayloadAPIEntitlement - The query filters and pagination options.
      */
     public queryEntitlementsWithHttpInfo(aPIQueryPayloadAPIEntitlement: APIQueryPayloadAPIEntitlement, _options?: Configuration): Promise<HttpInfo<QueryResultAPIEntitlement>> {
         const result = this.api.queryEntitlementsWithHttpInfo(aPIQueryPayloadAPIEntitlement, _options);
@@ -252,7 +268,8 @@ export class PromiseEntitlementsApi {
     }
 
     /**
-     * @param aPIQueryPayloadAPIEntitlement 
+     * Query entitlements based on filters and pagination.
+     * @param aPIQueryPayloadAPIEntitlement - The query filters and pagination options.
      */
     public queryEntitlements(aPIQueryPayloadAPIEntitlement: APIQueryPayloadAPIEntitlement, _options?: Configuration): Promise<QueryResultAPIEntitlement> {
         const result = this.api.queryEntitlements(aPIQueryPayloadAPIEntitlement, _options);
@@ -279,7 +296,8 @@ export class PromiseEventsApi {
     }
 
     /**
-     * @param id 
+     * Delete an event by ID.
+     * @param id - The ID of the event to delete.
      */
     public deleteEventWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<void>> {
         const result = this.api.deleteEventWithHttpInfo(id, _options);
@@ -287,7 +305,8 @@ export class PromiseEventsApi {
     }
 
     /**
-     * @param id 
+     * Delete an event by ID.
+     * @param id - The ID of the event to delete.
      */
     public deleteEvent(id: string, _options?: Configuration): Promise<void> {
         const result = this.api.deleteEvent(id, _options);
@@ -295,7 +314,8 @@ export class PromiseEventsApi {
     }
 
     /**
-     * @param id 
+     * Get a single event by ID.
+     * @param id - The ID of the event to fetch.
      */
     public getEventWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APIEvent>> {
         const result = this.api.getEventWithHttpInfo(id, _options);
@@ -303,7 +323,8 @@ export class PromiseEventsApi {
     }
 
     /**
-     * @param id 
+     * Get a single event by ID.
+     * @param id - The ID of the event to fetch.
      */
     public getEvent(id: string, _options?: Configuration): Promise<APIEvent> {
         const result = this.api.getEvent(id, _options);
@@ -311,7 +332,8 @@ export class PromiseEventsApi {
     }
 
     /**
-     * @param aPIIngestEventPayload 
+     * Ingest events to the system
+     * @param aPIIngestEventPayload - The events to ingest
      */
     public ingestEventToTheSystemWithHttpInfo(aPIIngestEventPayload: Array<APIIngestEventPayload>, _options?: Configuration): Promise<HttpInfo<IngestEventToTheSystem201Response>> {
         const result = this.api.ingestEventToTheSystemWithHttpInfo(aPIIngestEventPayload, _options);
@@ -319,7 +341,8 @@ export class PromiseEventsApi {
     }
 
     /**
-     * @param aPIIngestEventPayload 
+     * Ingest events to the system
+     * @param aPIIngestEventPayload - The events to ingest
      */
     public ingestEventToTheSystem(aPIIngestEventPayload: Array<APIIngestEventPayload>, _options?: Configuration): Promise<IngestEventToTheSystem201Response> {
         const result = this.api.ingestEventToTheSystem(aPIIngestEventPayload, _options);
@@ -327,7 +350,8 @@ export class PromiseEventsApi {
     }
 
     /**
-     * @param aPIQueryPayloadAPIEvent 
+     * Query events based on filters and pagination.
+     * @param aPIQueryPayloadAPIEvent - The query filters and pagination options.
      */
     public queryEventsWithHttpInfo(aPIQueryPayloadAPIEvent: APIQueryPayloadAPIEvent, _options?: Configuration): Promise<HttpInfo<QueryResultAPIEvent>> {
         const result = this.api.queryEventsWithHttpInfo(aPIQueryPayloadAPIEvent, _options);
@@ -335,7 +359,8 @@ export class PromiseEventsApi {
     }
 
     /**
-     * @param aPIQueryPayloadAPIEvent 
+     * Query events based on filters and pagination.
+     * @param aPIQueryPayloadAPIEvent - The query filters and pagination options.
      */
     public queryEvents(aPIQueryPayloadAPIEvent: APIQueryPayloadAPIEvent, _options?: Configuration): Promise<QueryResultAPIEvent> {
         const result = this.api.queryEvents(aPIQueryPayloadAPIEvent, _options);
@@ -362,7 +387,8 @@ export class PromiseInvoicesApi {
     }
 
     /**
-     * @param id 
+     * Calculate the total of an invoice.
+     * @param id - The ID of the invoice to calculate.
      */
     public calculateInvoiceWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APIInvoice>> {
         const result = this.api.calculateInvoiceWithHttpInfo(id, _options);
@@ -370,7 +396,8 @@ export class PromiseInvoicesApi {
     }
 
     /**
-     * @param id 
+     * Calculate the total of an invoice.
+     * @param id - The ID of the invoice to calculate.
      */
     public calculateInvoice(id: string, _options?: Configuration): Promise<APIInvoice> {
         const result = this.api.calculateInvoice(id, _options);
@@ -378,7 +405,8 @@ export class PromiseInvoicesApi {
     }
 
     /**
-     * @param aPICreateInvoicePayload 
+     * Create a new invoice.
+     * @param aPICreateInvoicePayload - The details of the invoice to create.
      */
     public createInvoiceWithHttpInfo(aPICreateInvoicePayload: APICreateInvoicePayload, _options?: Configuration): Promise<HttpInfo<APIInvoice>> {
         const result = this.api.createInvoiceWithHttpInfo(aPICreateInvoicePayload, _options);
@@ -386,7 +414,8 @@ export class PromiseInvoicesApi {
     }
 
     /**
-     * @param aPICreateInvoicePayload 
+     * Create a new invoice.
+     * @param aPICreateInvoicePayload - The details of the invoice to create.
      */
     public createInvoice(aPICreateInvoicePayload: APICreateInvoicePayload, _options?: Configuration): Promise<APIInvoice> {
         const result = this.api.createInvoice(aPICreateInvoicePayload, _options);
@@ -394,7 +423,8 @@ export class PromiseInvoicesApi {
     }
 
     /**
-     * @param id 
+     * Delete an invoice by ID.
+     * @param id - The ID of the invoice to delete.
      */
     public deleteInvoiceWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<void>> {
         const result = this.api.deleteInvoiceWithHttpInfo(id, _options);
@@ -402,7 +432,8 @@ export class PromiseInvoicesApi {
     }
 
     /**
-     * @param id 
+     * Delete an invoice by ID.
+     * @param id - The ID of the invoice to delete.
      */
     public deleteInvoice(id: string, _options?: Configuration): Promise<void> {
         const result = this.api.deleteInvoice(id, _options);
@@ -410,7 +441,8 @@ export class PromiseInvoicesApi {
     }
 
     /**
-     * @param id 
+     * Get a single invoice by ID.
+     * @param id - The ID of the invoice to fetch.
      */
     public getInvoiceWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APIInvoice>> {
         const result = this.api.getInvoiceWithHttpInfo(id, _options);
@@ -418,7 +450,8 @@ export class PromiseInvoicesApi {
     }
 
     /**
-     * @param id 
+     * Get a single invoice by ID.
+     * @param id - The ID of the invoice to fetch.
      */
     public getInvoice(id: string, _options?: Configuration): Promise<APIInvoice> {
         const result = this.api.getInvoice(id, _options);
@@ -426,7 +459,8 @@ export class PromiseInvoicesApi {
     }
 
     /**
-     * @param aPIQueryPayloadAPIInvoice 
+     * Query invoices based on filters and pagination.
+     * @param aPIQueryPayloadAPIInvoice - The query filters and pagination options.
      */
     public queryInvoicesWithHttpInfo(aPIQueryPayloadAPIInvoice: APIQueryPayloadAPIInvoice, _options?: Configuration): Promise<HttpInfo<QueryResultAPIInvoice>> {
         const result = this.api.queryInvoicesWithHttpInfo(aPIQueryPayloadAPIInvoice, _options);
@@ -434,7 +468,8 @@ export class PromiseInvoicesApi {
     }
 
     /**
-     * @param aPIQueryPayloadAPIInvoice 
+     * Query invoices based on filters and pagination.
+     * @param aPIQueryPayloadAPIInvoice - The query filters and pagination options.
      */
     public queryInvoices(aPIQueryPayloadAPIInvoice: APIQueryPayloadAPIInvoice, _options?: Configuration): Promise<QueryResultAPIInvoice> {
         const result = this.api.queryInvoices(aPIQueryPayloadAPIInvoice, _options);
@@ -442,8 +477,9 @@ export class PromiseInvoicesApi {
     }
 
     /**
-     * @param aPIUpdateInvoicePayload 
-     * @param id 
+     * Update an existing invoice.
+     * @param aPIUpdateInvoicePayload - The updated details of the invoice.
+     * @param id - The ID of the invoice to update.
      */
     public updateInvoiceWithHttpInfo(aPIUpdateInvoicePayload: APIUpdateInvoicePayload, id: string, _options?: Configuration): Promise<HttpInfo<APIInvoice>> {
         const result = this.api.updateInvoiceWithHttpInfo(aPIUpdateInvoicePayload, id, _options);
@@ -451,8 +487,9 @@ export class PromiseInvoicesApi {
     }
 
     /**
-     * @param aPIUpdateInvoicePayload 
-     * @param id 
+     * Update an existing invoice.
+     * @param aPIUpdateInvoicePayload - The updated details of the invoice.
+     * @param id - The ID of the invoice to update.
      */
     public updateInvoice(aPIUpdateInvoicePayload: APIUpdateInvoicePayload, id: string, _options?: Configuration): Promise<APIInvoice> {
         const result = this.api.updateInvoice(aPIUpdateInvoicePayload, id, _options);
@@ -479,7 +516,8 @@ export class PromiseProductsApi {
     }
 
     /**
-     * @param aPICreateProductPayload 
+     * Create a new product.
+     * @param aPICreateProductPayload - The details of the product to create.
      */
     public createProductWithHttpInfo(aPICreateProductPayload: APICreateProductPayload, _options?: Configuration): Promise<HttpInfo<APIProduct>> {
         const result = this.api.createProductWithHttpInfo(aPICreateProductPayload, _options);
@@ -487,7 +525,8 @@ export class PromiseProductsApi {
     }
 
     /**
-     * @param aPICreateProductPayload 
+     * Create a new product.
+     * @param aPICreateProductPayload - The details of the product to create.
      */
     public createProduct(aPICreateProductPayload: APICreateProductPayload, _options?: Configuration): Promise<APIProduct> {
         const result = this.api.createProduct(aPICreateProductPayload, _options);
@@ -495,7 +534,8 @@ export class PromiseProductsApi {
     }
 
     /**
-     * @param id 
+     * Delete a product by ID.
+     * @param id - The ID of the product to delete.
      */
     public deleteProductWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<void>> {
         const result = this.api.deleteProductWithHttpInfo(id, _options);
@@ -503,7 +543,8 @@ export class PromiseProductsApi {
     }
 
     /**
-     * @param id 
+     * Delete a product by ID.
+     * @param id - The ID of the product to delete.
      */
     public deleteProduct(id: string, _options?: Configuration): Promise<void> {
         const result = this.api.deleteProduct(id, _options);
@@ -511,7 +552,8 @@ export class PromiseProductsApi {
     }
 
     /**
-     * @param id 
+     * Get a single product by ID.
+     * @param id - The ID of the product to fetch.
      */
     public getProductWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APIProduct>> {
         const result = this.api.getProductWithHttpInfo(id, _options);
@@ -519,7 +561,8 @@ export class PromiseProductsApi {
     }
 
     /**
-     * @param id 
+     * Get a single product by ID.
+     * @param id - The ID of the product to fetch.
      */
     public getProduct(id: string, _options?: Configuration): Promise<APIProduct> {
         const result = this.api.getProduct(id, _options);
@@ -527,7 +570,8 @@ export class PromiseProductsApi {
     }
 
     /**
-     * @param aPIQueryPayloadAPIProduct 
+     * Query products based on filters and pagination.
+     * @param aPIQueryPayloadAPIProduct - The query filters and pagination details.
      */
     public queryProductsWithHttpInfo(aPIQueryPayloadAPIProduct: APIQueryPayloadAPIProduct, _options?: Configuration): Promise<HttpInfo<QueryResultAPIProduct>> {
         const result = this.api.queryProductsWithHttpInfo(aPIQueryPayloadAPIProduct, _options);
@@ -535,7 +579,8 @@ export class PromiseProductsApi {
     }
 
     /**
-     * @param aPIQueryPayloadAPIProduct 
+     * Query products based on filters and pagination.
+     * @param aPIQueryPayloadAPIProduct - The query filters and pagination details.
      */
     public queryProducts(aPIQueryPayloadAPIProduct: APIQueryPayloadAPIProduct, _options?: Configuration): Promise<QueryResultAPIProduct> {
         const result = this.api.queryProducts(aPIQueryPayloadAPIProduct, _options);
@@ -543,8 +588,9 @@ export class PromiseProductsApi {
     }
 
     /**
-     * @param aPIUpdateProductPayload 
-     * @param id 
+     * Update an existing product.
+     * @param aPIUpdateProductPayload - The updated details of the product.
+     * @param id - The ID of the product to update.
      */
     public updateProductWithHttpInfo(aPIUpdateProductPayload: APIUpdateProductPayload, id: string, _options?: Configuration): Promise<HttpInfo<APIProduct>> {
         const result = this.api.updateProductWithHttpInfo(aPIUpdateProductPayload, id, _options);
@@ -552,8 +598,9 @@ export class PromiseProductsApi {
     }
 
     /**
-     * @param aPIUpdateProductPayload 
-     * @param id 
+     * Update an existing product.
+     * @param aPIUpdateProductPayload - The updated details of the product.
+     * @param id - The ID of the product to update.
      */
     public updateProduct(aPIUpdateProductPayload: APIUpdateProductPayload, id: string, _options?: Configuration): Promise<APIProduct> {
         const result = this.api.updateProduct(aPIUpdateProductPayload, id, _options);
