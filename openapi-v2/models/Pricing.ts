@@ -10,12 +10,14 @@
  * Do not edit the class manually.
  */
 
+import { PricingCadence } from '../models/PricingCadence';
 import { PricingTiersInner } from '../models/PricingTiersInner';
 import { HttpFile } from '../http/http';
 
 export class Pricing {
     'commitment'?: number;
     'tiers': Array<PricingTiersInner>;
+    'cadence'?: PricingCadence;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -31,6 +33,12 @@ export class Pricing {
             "baseName": "tiers",
             "type": "Array<PricingTiersInner>",
             "format": ""
+        },
+        {
+            "name": "cadence",
+            "baseName": "cadence",
+            "type": "PricingCadence",
+            "format": ""
         }    ];
 
     static getAttributeTypeMap() {
@@ -40,4 +48,6 @@ export class Pricing {
     public constructor() {
     }
 }
+
+
 
