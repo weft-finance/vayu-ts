@@ -1,4 +1,5 @@
 import { CustomersClient,
+  EntitlementsClient,
   EventsClient,
   InvoicesClient,
   ProductsClient } from './clients';
@@ -33,6 +34,10 @@ export class Vayu {
 
   get invoices() {
     return new InvoicesClient();
+  }
+
+  get entitlements() {
+    return new EntitlementsClient();
   }
 }
 

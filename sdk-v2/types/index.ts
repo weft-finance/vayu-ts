@@ -2,6 +2,7 @@ export * from './Customers';
 export * from './Events';
 export * from './Invoices';
 export * from './Products';
+export * from './Entitlements';
 
 export {
   AggregationMethods,
