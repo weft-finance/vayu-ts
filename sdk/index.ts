@@ -5,8 +5,7 @@ import { ContractsClient,
   MetersClient,
   PlansClient,
   WebhooksClient,
-  ProductConsumptionsClient
- } from './clients';
+  ProductConsumptionsClient } from './clients';
 import { ConfigurationService } from './services';
 
 export class Vayu {

@@ -36,4 +36,8 @@ export class CustomersClient {
   async delete(id: string) {
     return this.client.deleteCustomer(id);
   }
+
+  async listCustomerProductsConsumptions(id: string) {
+    return this.client.getCustomerProductsConsumptions(id);
+  }
 }
