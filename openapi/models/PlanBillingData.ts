@@ -12,6 +12,7 @@
 
 import { BillingInterval } from '../models/BillingInterval';
 import { PaymentTerm } from '../models/PaymentTerm';
+import { PlanDuration } from '../models/PlanDuration';
 import { HttpFile } from '../http/http';
 
 /**
@@ -19,12 +20,14 @@ import { HttpFile } from '../http/http';
 */
 export class PlanBillingData {
     'billingInterval': BillingInterval;
-    'duration': number;
+    'duration': PlanDuration;
     'paymentTerm': PaymentTerm;
     'autoRenewal': boolean;
     'proRated': boolean;
 
     static readonly discriminator: string | undefined = undefined;
+
+    static readonly mapping: {[index: string]: string} | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
@@ -36,7 +39,7 @@ export class PlanBillingData {
         {
             "name": "duration",
             "baseName": "duration",
-            "type": "number",
+            "type": "PlanDuration",
             "format": ""
         },
         {
@@ -65,6 +68,5 @@ export class PlanBillingData {
     public constructor() {
     }
 }
-
 
 

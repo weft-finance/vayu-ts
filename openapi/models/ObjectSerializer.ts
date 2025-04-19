@@ -37,6 +37,7 @@ export * from '../models/FullDayPeriod';
 export * from '../models/GetCommitmentReportResponse';
 export * from '../models/GetContractResponse';
 export * from '../models/GetContractResponseContract';
+export * from '../models/GetCustomerProductsConsumptionsResponse';
 export * from '../models/GetCustomerResponse';
 export * from '../models/GetEventResponse';
 export * from '../models/GetEventResponseEvent';
@@ -46,6 +47,8 @@ export * from '../models/GetMeterResponse';
 export * from '../models/GetMeterResponseMeter';
 export * from '../models/GetPlanResponse';
 export * from '../models/GetPlanResponsePlan';
+export * from '../models/GetProductConsumptionResponse';
+export * from '../models/GetProductConsumptionResponseProductConsumption';
 export * from '../models/GetProductsUsageReportResponse';
 export * from '../models/GrantCreditsRequest';
 export * from '../models/InvalidEvent';
@@ -70,11 +73,14 @@ export * from '../models/NetSuiteSyncInvoicesResponse';
 export * from '../models/NotificationEventType';
 export * from '../models/PaymentTerm';
 export * from '../models/PlanBillingData';
+export * from '../models/PlanDuration';
 export * from '../models/PlanStatus';
+export * from '../models/ProductConsumption';
 export * from '../models/QueryEventsResponse';
 export * from '../models/QueryEventsResponseEventsInner';
 export * from '../models/SendEventsRequest';
 export * from '../models/SendEventsResponse';
+export * from '../models/UnlimitedDuration';
 export * from '../models/UpdateCustomerRequest';
 export * from '../models/UpdateCustomerResponse';
 export * from '../models/UpdateMeterRequest';
@@ -117,9 +123,10 @@ import { EventsDryRunResponseObjectEvent } from '../models/EventsDryRunResponseO
 import { EventsDryRunResponseObjectMeterWithValuesInner } from '../models/EventsDryRunResponseObjectMeterWithValuesInner';
 import { Filter } from '../models/Filter';
 import { FullDayPeriod } from '../models/FullDayPeriod';
-import { GetCommitmentReportResponse                } from '../models/GetCommitmentReportResponse';
+import { GetCommitmentReportResponse                  } from '../models/GetCommitmentReportResponse';
 import { GetContractResponse } from '../models/GetContractResponse';
 import { GetContractResponseContract } from '../models/GetContractResponseContract';
+import { GetCustomerProductsConsumptionsResponse } from '../models/GetCustomerProductsConsumptionsResponse';
 import { GetCustomerResponse } from '../models/GetCustomerResponse';
 import { GetEventResponse } from '../models/GetEventResponse';
 import { GetEventResponseEvent } from '../models/GetEventResponseEvent';
@@ -129,7 +136,9 @@ import { GetMeterResponse } from '../models/GetMeterResponse';
 import { GetMeterResponseMeter } from '../models/GetMeterResponseMeter';
 import { GetPlanResponse } from '../models/GetPlanResponse';
 import { GetPlanResponsePlan       } from '../models/GetPlanResponsePlan';
-import { GetProductsUsageReportResponse                } from '../models/GetProductsUsageReportResponse';
+import { GetProductConsumptionResponse } from '../models/GetProductConsumptionResponse';
+import { GetProductConsumptionResponseProductConsumption } from '../models/GetProductConsumptionResponseProductConsumption';
+import { GetProductsUsageReportResponse                  } from '../models/GetProductsUsageReportResponse';
 import { GrantCreditsRequest } from '../models/GrantCreditsRequest';
 import { InvalidEvent } from '../models/InvalidEvent';
 import { LineItem } from '../models/LineItem';
@@ -153,11 +162,14 @@ import { NetSuiteSyncInvoicesResponse } from '../models/NetSuiteSyncInvoicesResp
 import { NotificationEventType } from '../models/NotificationEventType';
 import { PaymentTerm } from '../models/PaymentTerm';
 import { PlanBillingData      } from '../models/PlanBillingData';
+import { PlanDuration } from '../models/PlanDuration';
 import { PlanStatus } from '../models/PlanStatus';
+import { ProductConsumption } from '../models/ProductConsumption';
 import { QueryEventsResponse } from '../models/QueryEventsResponse';
 import { QueryEventsResponseEventsInner } from '../models/QueryEventsResponseEventsInner';
 import { SendEventsRequest } from '../models/SendEventsRequest';
 import { SendEventsResponse } from '../models/SendEventsResponse';
+import { UnlimitedDuration } from '../models/UnlimitedDuration';
 import { UpdateCustomerRequest } from '../models/UpdateCustomerRequest';
 import { UpdateCustomerResponse } from '../models/UpdateCustomerResponse';
 import { UpdateMeterRequest } from '../models/UpdateMeterRequest';
@@ -187,6 +199,7 @@ let enumsMap: Set<string> = new Set<string>([
     "NotificationEventType",
     "PaymentTerm",
     "PlanStatus",
+    "UnlimitedDuration",
 ]);
 
 let typeMap: {[index: string]: any} = {
@@ -223,6 +236,7 @@ let typeMap: {[index: string]: any} = {
     "GetCommitmentReportResponse": GetCommitmentReportResponse,
     "GetContractResponse": GetContractResponse,
     "GetContractResponseContract": GetContractResponseContract,
+    "GetCustomerProductsConsumptionsResponse": GetCustomerProductsConsumptionsResponse,
     "GetCustomerResponse": GetCustomerResponse,
     "GetEventResponse": GetEventResponse,
     "GetEventResponseEvent": GetEventResponseEvent,
@@ -232,6 +246,8 @@ let typeMap: {[index: string]: any} = {
     "GetMeterResponseMeter": GetMeterResponseMeter,
     "GetPlanResponse": GetPlanResponse,
     "GetPlanResponsePlan": GetPlanResponsePlan,
+    "GetProductConsumptionResponse": GetProductConsumptionResponse,
+    "GetProductConsumptionResponseProductConsumption": GetProductConsumptionResponseProductConsumption,
     "GetProductsUsageReportResponse": GetProductsUsageReportResponse,
     "GrantCreditsRequest": GrantCreditsRequest,
     "InvalidEvent": InvalidEvent,
@@ -254,6 +270,8 @@ let typeMap: {[index: string]: any} = {
     "NetSuiteSyncInvoicesRequestDataItemItemsInner": NetSuiteSyncInvoicesRequestDataItemItemsInner,
     "NetSuiteSyncInvoicesResponse": NetSuiteSyncInvoicesResponse,
     "PlanBillingData": PlanBillingData,
+    "PlanDuration": PlanDuration,
+    "ProductConsumption": ProductConsumption,
     "QueryEventsResponse": QueryEventsResponse,
     "QueryEventsResponseEventsInner": QueryEventsResponseEventsInner,
     "SendEventsRequest": SendEventsRequest,
@@ -281,7 +299,7 @@ type MimeTypeDescriptor = {
  * the payload.
  */
 const parseMimeType = (mimeType: string): MimeTypeDescriptor => {
-    const [type, subtype] = mimeType.split('/');
+    const [type = '', subtype = ''] = mimeType.split('/');
     return {
         type,
         subtype,
@@ -317,6 +335,13 @@ const supportedMimeTypePredicatesWithPriority: MimeTypePredicate[] = [
     isFormUrlencodedMimeType,
 ];
 
+const nullableSuffix = " | null";
+const optionalSuffix = " | undefined";
+const arrayPrefix = "Array<";
+const arraySuffix = ">";
+const mapPrefix = "{ [key: string]: ";
+const mapSuffix = "; }";
+
 export class ObjectSerializer {
     public static findCorrectType(data: any, expectedType: string) {
         if (data == undefined) {
@@ -341,8 +366,11 @@ export class ObjectSerializer {
             } else {
                 if (data[discriminatorProperty]) {
                     var discriminatorType = data[discriminatorProperty];
-                    if(typeMap[discriminatorType]){
-                        return discriminatorType; // use the type given in the discriminator
+                    let mapping = typeMap[expectedType].mapping;
+                    if (mapping != undefined && mapping[discriminatorType]) {
+                        return mapping[discriminatorType]; // use the type given in the discriminator
+                    } else if(typeMap[discriminatorType]) {
+                        return discriminatorType;
                     } else {
                         return expectedType; // discriminator did not map to a type
                     }
@@ -353,17 +381,33 @@ export class ObjectSerializer {
         }
     }
 
-    public static serialize(data: any, type: string, format: string) {
+    public static serialize(data: any, type: string, format: string): any {
         if (data == undefined) {
             return data;
         } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
             return data;
-        } else if (type.lastIndexOf("Array<", 0) === 0) { // string.startsWith pre es6
-            let subType: string = type.replace("Array<", ""); // Array<Type> => Type>
-            subType = subType.substring(0, subType.length - 1); // Type> => Type
+        } else if (type.endsWith(nullableSuffix)) {
+            let subType: string = type.slice(0, -nullableSuffix.length); // Type | null => Type
+            return ObjectSerializer.serialize(data, subType, format);
+        } else if (type.endsWith(optionalSuffix)) {
+            let subType: string = type.slice(0, -optionalSuffix.length); // Type | undefined => Type
+            return ObjectSerializer.serialize(data, subType, format);
+        } else if (type.startsWith(arrayPrefix)) {
+            let subType: string = type.slice(arrayPrefix.length, -arraySuffix.length); // Array<Type> => Type
             let transformedData: any[] = [];
             for (let date of data) {
                 transformedData.push(ObjectSerializer.serialize(date, subType, format));
+            }
+            return transformedData;
+        } else if (type.startsWith(mapPrefix)) {
+            let subType: string = type.slice(mapPrefix.length, -mapSuffix.length); // { [key: string]: Type; } => Type
+            let transformedData: { [key: string]: any } = {};
+            for (let key in data) {
+                transformedData[key] = ObjectSerializer.serialize(
+                    data[key],
+                    subType,
+                    format,
+                );
             }
             return transformedData;
         } else if (type === "Date") {
@@ -398,19 +442,35 @@ export class ObjectSerializer {
         }
     }
 
-    public static deserialize(data: any, type: string, format: string) {
+    public static deserialize(data: any, type: string, format: string): any {
         // polymorphism may change the actual type.
         type = ObjectSerializer.findCorrectType(data, type);
         if (data == undefined) {
             return data;
         } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
             return data;
-        } else if (type.lastIndexOf("Array<", 0) === 0) { // string.startsWith pre es6
-            let subType: string = type.replace("Array<", ""); // Array<Type> => Type>
-            subType = subType.substring(0, subType.length - 1); // Type> => Type
+        } else if (type.endsWith(nullableSuffix)) {
+            let subType: string = type.slice(0, -nullableSuffix.length); // Type | null => Type
+            return ObjectSerializer.deserialize(data, subType, format);
+        } else if (type.endsWith(optionalSuffix)) {
+            let subType: string = type.slice(0, -optionalSuffix.length); // Type | undefined => Type
+            return ObjectSerializer.deserialize(data, subType, format);
+        } else if (type.startsWith(arrayPrefix)) {
+            let subType: string = type.slice(arrayPrefix.length, -arraySuffix.length); // Array<Type> => Type
             let transformedData: any[] = [];
             for (let date of data) {
                 transformedData.push(ObjectSerializer.deserialize(date, subType, format));
+            }
+            return transformedData;
+        } else if (type.startsWith(mapPrefix)) {
+            let subType: string = type.slice(mapPrefix.length, -mapSuffix.length); // { [key: string]: Type; } => Type
+            let transformedData: { [key: string]: any } = {};
+            for (let key in data) {
+                transformedData[key] = ObjectSerializer.deserialize(
+                    data[key],
+                    subType,
+                    format,
+                );
             }
             return transformedData;
         } else if (type === "Date") {
@@ -446,7 +506,7 @@ export class ObjectSerializer {
         if (mediaType === undefined) {
             return undefined;
         }
-        return mediaType.split(";")[0].trim().toLowerCase();
+        return (mediaType.split(";")[0] ?? '').trim().toLowerCase();
     }
 
     /**
@@ -461,7 +521,7 @@ export class ObjectSerializer {
             return "application/json";
         }
 
-        const normalMediaTypes = mediaTypes.map(this.normalizeMediaType);
+        const normalMediaTypes = mediaTypes.map(ObjectSerializer.normalizeMediaType);
 
         for (const predicate of supportedMimeTypePredicatesWithPriority) {
             for (const mediaType of normalMediaTypes) {

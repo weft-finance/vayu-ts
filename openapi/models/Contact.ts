@@ -15,9 +15,11 @@ import { HttpFile } from '../http/http';
 export class Contact {
     'name'?: string;
     'email': string;
-    'isPrimary'?: boolean;
+    'receiveInvoiceEmail'?: boolean;
 
     static readonly discriminator: string | undefined = undefined;
+
+    static readonly mapping: {[index: string]: string} | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
@@ -33,8 +35,8 @@ export class Contact {
             "format": "email"
         },
         {
-            "name": "isPrimary",
-            "baseName": "isPrimary",
+            "name": "receiveInvoiceEmail",
+            "baseName": "receiveInvoiceEmail",
             "type": "boolean",
             "format": ""
         }    ];
@@ -46,4 +48,3 @@ export class Contact {
     public constructor() {
     }
 }
-

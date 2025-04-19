@@ -19,7 +19,9 @@ export class GetCommitmentReportResponse {
     'customerName': string;
     'startDate': Date;
     'endDate': Date;
+    'contractName'?: string;
     'contractStartDate': Date;
+    'contractEndDate'?: Date;
     'daysToContractEnd'?: number;
     'productVariantName': string;
     'commitmentConsumptionCurrencyAmount': number;
@@ -32,6 +34,8 @@ export class GetCommitmentReportResponse {
     'currency': Currency;
 
     static readonly discriminator: string | undefined = undefined;
+
+    static readonly mapping: {[index: string]: string} | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
@@ -59,8 +63,20 @@ export class GetCommitmentReportResponse {
             "format": "date-time"
         },
         {
+            "name": "contractName",
+            "baseName": "contractName",
+            "type": "string",
+            "format": ""
+        },
+        {
             "name": "contractStartDate",
             "baseName": "contractStartDate",
+            "type": "Date",
+            "format": "date-time"
+        },
+        {
+            "name": "contractEndDate",
+            "baseName": "contractEndDate",
             "type": "Date",
             "format": "date-time"
         },
@@ -132,6 +148,5 @@ export class GetCommitmentReportResponse {
     public constructor() {
     }
 }
-
 
 

@@ -1,5 +1,6 @@
 import { ResponseContext, RequestContext, HttpFile, HttpInfo } from '../http/http';
-import { Configuration} from '../configuration'
+import { Configuration, ConfigurationOptions } from '../configuration'
+import type { Middleware } from '../middleware';
 
 import { Address } from '../models/Address';
 import { AggregationMethod } from '../models/AggregationMethod';
@@ -40,6 +41,7 @@ import { FullDayPeriod } from '../models/FullDayPeriod';
 import { GetCommitmentReportResponse } from '../models/GetCommitmentReportResponse';
 import { GetContractResponse } from '../models/GetContractResponse';
 import { GetContractResponseContract } from '../models/GetContractResponseContract';
+import { GetCustomerProductsConsumptionsResponse } from '../models/GetCustomerProductsConsumptionsResponse';
 import { GetCustomerResponse } from '../models/GetCustomerResponse';
 import { GetEventResponse } from '../models/GetEventResponse';
 import { GetEventResponseEvent } from '../models/GetEventResponseEvent';
@@ -49,6 +51,8 @@ import { GetMeterResponse } from '../models/GetMeterResponse';
 import { GetMeterResponseMeter } from '../models/GetMeterResponseMeter';
 import { GetPlanResponse } from '../models/GetPlanResponse';
 import { GetPlanResponsePlan } from '../models/GetPlanResponsePlan';
+import { GetProductConsumptionResponse } from '../models/GetProductConsumptionResponse';
+import { GetProductConsumptionResponseProductConsumption } from '../models/GetProductConsumptionResponseProductConsumption';
 import { GetProductsUsageReportResponse } from '../models/GetProductsUsageReportResponse';
 import { GrantCreditsRequest } from '../models/GrantCreditsRequest';
 import { InvalidEvent } from '../models/InvalidEvent';
@@ -73,11 +77,14 @@ import { NetSuiteSyncInvoicesResponse } from '../models/NetSuiteSyncInvoicesResp
 import { NotificationEventType } from '../models/NotificationEventType';
 import { PaymentTerm } from '../models/PaymentTerm';
 import { PlanBillingData } from '../models/PlanBillingData';
+import { PlanDuration } from '../models/PlanDuration';
 import { PlanStatus } from '../models/PlanStatus';
+import { ProductConsumption } from '../models/ProductConsumption';
 import { QueryEventsResponse } from '../models/QueryEventsResponse';
 import { QueryEventsResponseEventsInner } from '../models/QueryEventsResponseEventsInner';
 import { SendEventsRequest } from '../models/SendEventsRequest';
 import { SendEventsResponse } from '../models/SendEventsResponse';
+import { UnlimitedDuration } from '../models/UnlimitedDuration';
 import { UpdateCustomerRequest } from '../models/UpdateCustomerRequest';
 import { UpdateCustomerResponse } from '../models/UpdateCustomerResponse';
 import { UpdateMeterRequest } from '../models/UpdateMeterRequest';
@@ -108,7 +115,7 @@ export class ObjectAuthApi {
      * Login by obtaining a new access token
      * @param param the request object
      */
-    public loginWithHttpInfo(param: AuthApiLoginRequest, options?: Configuration): Promise<HttpInfo<LoginResponse>> {
+    public loginWithHttpInfo(param: AuthApiLoginRequest, options?: ConfigurationOptions): Promise<HttpInfo<LoginResponse>> {
         return this.api.loginWithHttpInfo(param.loginRequest,  options).toPromise();
     }
 
@@ -117,7 +124,7 @@ export class ObjectAuthApi {
      * Login by obtaining a new access token
      * @param param the request object
      */
-    public login(param: AuthApiLoginRequest, options?: Configuration): Promise<LoginResponse> {
+    public login(param: AuthApiLoginRequest, options?: ConfigurationOptions): Promise<LoginResponse> {
         return this.api.login(param.loginRequest,  options).toPromise();
     }
 
@@ -138,6 +145,7 @@ export interface ContractsApiCreateContractRequest {
 export interface ContractsApiDeleteContractRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof ContractsApideleteContract
      */
@@ -147,6 +155,7 @@ export interface ContractsApiDeleteContractRequest {
 export interface ContractsApiGetContractRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof ContractsApigetContract
      */
@@ -156,12 +165,15 @@ export interface ContractsApiGetContractRequest {
 export interface ContractsApiListContractsRequest {
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof ContractsApilistContracts
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof ContractsApilistContracts
      */
@@ -180,7 +192,7 @@ export class ObjectContractsApi {
      * Create Contract
      * @param param the request object
      */
-    public createContractWithHttpInfo(param: ContractsApiCreateContractRequest, options?: Configuration): Promise<HttpInfo<CreateContractResponse>> {
+    public createContractWithHttpInfo(param: ContractsApiCreateContractRequest, options?: ConfigurationOptions): Promise<HttpInfo<CreateContractResponse>> {
         return this.api.createContractWithHttpInfo(param.createContractRequest,  options).toPromise();
     }
 
@@ -189,7 +201,7 @@ export class ObjectContractsApi {
      * Create Contract
      * @param param the request object
      */
-    public createContract(param: ContractsApiCreateContractRequest, options?: Configuration): Promise<CreateContractResponse> {
+    public createContract(param: ContractsApiCreateContractRequest, options?: ConfigurationOptions): Promise<CreateContractResponse> {
         return this.api.createContract(param.createContractRequest,  options).toPromise();
     }
 
@@ -198,7 +210,7 @@ export class ObjectContractsApi {
      * Delete Contract
      * @param param the request object
      */
-    public deleteContractWithHttpInfo(param: ContractsApiDeleteContractRequest, options?: Configuration): Promise<HttpInfo<DeleteContractResponse>> {
+    public deleteContractWithHttpInfo(param: ContractsApiDeleteContractRequest, options?: ConfigurationOptions): Promise<HttpInfo<DeleteContractResponse>> {
         return this.api.deleteContractWithHttpInfo(param.contractId,  options).toPromise();
     }
 
@@ -207,7 +219,7 @@ export class ObjectContractsApi {
      * Delete Contract
      * @param param the request object
      */
-    public deleteContract(param: ContractsApiDeleteContractRequest, options?: Configuration): Promise<DeleteContractResponse> {
+    public deleteContract(param: ContractsApiDeleteContractRequest, options?: ConfigurationOptions): Promise<DeleteContractResponse> {
         return this.api.deleteContract(param.contractId,  options).toPromise();
     }
 
@@ -216,7 +228,7 @@ export class ObjectContractsApi {
      * Get Contract
      * @param param the request object
      */
-    public getContractWithHttpInfo(param: ContractsApiGetContractRequest, options?: Configuration): Promise<HttpInfo<GetContractResponse>> {
+    public getContractWithHttpInfo(param: ContractsApiGetContractRequest, options?: ConfigurationOptions): Promise<HttpInfo<GetContractResponse>> {
         return this.api.getContractWithHttpInfo(param.contractId,  options).toPromise();
     }
 
@@ -225,7 +237,7 @@ export class ObjectContractsApi {
      * Get Contract
      * @param param the request object
      */
-    public getContract(param: ContractsApiGetContractRequest, options?: Configuration): Promise<GetContractResponse> {
+    public getContract(param: ContractsApiGetContractRequest, options?: ConfigurationOptions): Promise<GetContractResponse> {
         return this.api.getContract(param.contractId,  options).toPromise();
     }
 
@@ -234,7 +246,7 @@ export class ObjectContractsApi {
      * List Contracts
      * @param param the request object
      */
-    public listContractsWithHttpInfo(param: ContractsApiListContractsRequest = {}, options?: Configuration): Promise<HttpInfo<ListContractsResponse>> {
+    public listContractsWithHttpInfo(param: ContractsApiListContractsRequest = {}, options?: ConfigurationOptions): Promise<HttpInfo<ListContractsResponse>> {
         return this.api.listContractsWithHttpInfo(param.limit, param.cursor,  options).toPromise();
     }
 
@@ -243,7 +255,7 @@ export class ObjectContractsApi {
      * List Contracts
      * @param param the request object
      */
-    public listContracts(param: ContractsApiListContractsRequest = {}, options?: Configuration): Promise<ListContractsResponse> {
+    public listContracts(param: ContractsApiListContractsRequest = {}, options?: ConfigurationOptions): Promise<ListContractsResponse> {
         return this.api.listContracts(param.limit, param.cursor,  options).toPromise();
     }
 
@@ -273,18 +285,22 @@ export interface CreditsApiGrantCreditsRequest {
 export interface CreditsApiListCreditLedgerEntriesRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CreditsApilistCreditLedgerEntries
      */
     customerId: string
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof CreditsApilistCreditLedgerEntries
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CreditsApilistCreditLedgerEntries
      */
@@ -303,7 +319,7 @@ export class ObjectCreditsApi {
      * Deduct credits from customer credit ledger
      * @param param the request object
      */
-    public deductCreditsWithHttpInfo(param: CreditsApiDeductCreditsRequest, options?: Configuration): Promise<HttpInfo<void>> {
+    public deductCreditsWithHttpInfo(param: CreditsApiDeductCreditsRequest, options?: ConfigurationOptions): Promise<HttpInfo<void>> {
         return this.api.deductCreditsWithHttpInfo(param.deductCreditsRequest,  options).toPromise();
     }
 
@@ -312,7 +328,7 @@ export class ObjectCreditsApi {
      * Deduct credits from customer credit ledger
      * @param param the request object
      */
-    public deductCredits(param: CreditsApiDeductCreditsRequest, options?: Configuration): Promise<void> {
+    public deductCredits(param: CreditsApiDeductCreditsRequest, options?: ConfigurationOptions): Promise<void> {
         return this.api.deductCredits(param.deductCreditsRequest,  options).toPromise();
     }
 
@@ -321,7 +337,7 @@ export class ObjectCreditsApi {
      * Grant credits to a customer credit ledger
      * @param param the request object
      */
-    public grantCreditsWithHttpInfo(param: CreditsApiGrantCreditsRequest, options?: Configuration): Promise<HttpInfo<void>> {
+    public grantCreditsWithHttpInfo(param: CreditsApiGrantCreditsRequest, options?: ConfigurationOptions): Promise<HttpInfo<void>> {
         return this.api.grantCreditsWithHttpInfo(param.grantCreditsRequest,  options).toPromise();
     }
 
@@ -330,7 +346,7 @@ export class ObjectCreditsApi {
      * Grant credits to a customer credit ledger
      * @param param the request object
      */
-    public grantCredits(param: CreditsApiGrantCreditsRequest, options?: Configuration): Promise<void> {
+    public grantCredits(param: CreditsApiGrantCreditsRequest, options?: ConfigurationOptions): Promise<void> {
         return this.api.grantCredits(param.grantCreditsRequest,  options).toPromise();
     }
 
@@ -339,7 +355,7 @@ export class ObjectCreditsApi {
      * Retrieve credit ledger entries for customer.
      * @param param the request object
      */
-    public listCreditLedgerEntriesWithHttpInfo(param: CreditsApiListCreditLedgerEntriesRequest, options?: Configuration): Promise<HttpInfo<ListCreditLedgerEntriesResponse>> {
+    public listCreditLedgerEntriesWithHttpInfo(param: CreditsApiListCreditLedgerEntriesRequest, options?: ConfigurationOptions): Promise<HttpInfo<ListCreditLedgerEntriesResponse>> {
         return this.api.listCreditLedgerEntriesWithHttpInfo(param.customerId, param.limit, param.cursor,  options).toPromise();
     }
 
@@ -348,7 +364,7 @@ export class ObjectCreditsApi {
      * Retrieve credit ledger entries for customer.
      * @param param the request object
      */
-    public listCreditLedgerEntries(param: CreditsApiListCreditLedgerEntriesRequest, options?: Configuration): Promise<ListCreditLedgerEntriesResponse> {
+    public listCreditLedgerEntries(param: CreditsApiListCreditLedgerEntriesRequest, options?: ConfigurationOptions): Promise<ListCreditLedgerEntriesResponse> {
         return this.api.listCreditLedgerEntries(param.customerId, param.limit, param.cursor,  options).toPromise();
     }
 
@@ -369,6 +385,7 @@ export interface CustomersApiCreateCustomerRequest {
 export interface CustomersApiDeleteCustomerRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApideleteCustomer
      */
@@ -378,6 +395,7 @@ export interface CustomersApiDeleteCustomerRequest {
 export interface CustomersApiGetCustomerRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApigetCustomer
      */
@@ -387,21 +405,35 @@ export interface CustomersApiGetCustomerRequest {
 export interface CustomersApiGetCustomerByExternalIdRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApigetCustomerByExternalId
      */
     externalId: string
 }
 
+export interface CustomersApiGetCustomerProductsConsumptionsRequest {
+    /**
+     * 
+     * Defaults to: undefined
+     * @type string
+     * @memberof CustomersApigetCustomerProductsConsumptions
+     */
+    customerId: string
+}
+
 export interface CustomersApiListCustomersRequest {
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof CustomersApilistCustomers
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApilistCustomers
      */
@@ -417,6 +449,7 @@ export interface CustomersApiUpdateCustomerRequest {
     updateCustomerRequest: UpdateCustomerRequest
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApiupdateCustomer
      */
@@ -435,7 +468,7 @@ export class ObjectCustomersApi {
      * Create Customer
      * @param param the request object
      */
-    public createCustomerWithHttpInfo(param: CustomersApiCreateCustomerRequest, options?: Configuration): Promise<HttpInfo<CreateCustomerResponse>> {
+    public createCustomerWithHttpInfo(param: CustomersApiCreateCustomerRequest, options?: ConfigurationOptions): Promise<HttpInfo<CreateCustomerResponse>> {
         return this.api.createCustomerWithHttpInfo(param.createCustomerRequest,  options).toPromise();
     }
 
@@ -444,7 +477,7 @@ export class ObjectCustomersApi {
      * Create Customer
      * @param param the request object
      */
-    public createCustomer(param: CustomersApiCreateCustomerRequest, options?: Configuration): Promise<CreateCustomerResponse> {
+    public createCustomer(param: CustomersApiCreateCustomerRequest, options?: ConfigurationOptions): Promise<CreateCustomerResponse> {
         return this.api.createCustomer(param.createCustomerRequest,  options).toPromise();
     }
 
@@ -453,7 +486,7 @@ export class ObjectCustomersApi {
      * Delete Customer
      * @param param the request object
      */
-    public deleteCustomerWithHttpInfo(param: CustomersApiDeleteCustomerRequest, options?: Configuration): Promise<HttpInfo<DeleteCustomerResponse>> {
+    public deleteCustomerWithHttpInfo(param: CustomersApiDeleteCustomerRequest, options?: ConfigurationOptions): Promise<HttpInfo<DeleteCustomerResponse>> {
         return this.api.deleteCustomerWithHttpInfo(param.customerId,  options).toPromise();
     }
 
@@ -462,7 +495,7 @@ export class ObjectCustomersApi {
      * Delete Customer
      * @param param the request object
      */
-    public deleteCustomer(param: CustomersApiDeleteCustomerRequest, options?: Configuration): Promise<DeleteCustomerResponse> {
+    public deleteCustomer(param: CustomersApiDeleteCustomerRequest, options?: ConfigurationOptions): Promise<DeleteCustomerResponse> {
         return this.api.deleteCustomer(param.customerId,  options).toPromise();
     }
 
@@ -471,7 +504,7 @@ export class ObjectCustomersApi {
      * Get Customer
      * @param param the request object
      */
-    public getCustomerWithHttpInfo(param: CustomersApiGetCustomerRequest, options?: Configuration): Promise<HttpInfo<GetCustomerResponse>> {
+    public getCustomerWithHttpInfo(param: CustomersApiGetCustomerRequest, options?: ConfigurationOptions): Promise<HttpInfo<GetCustomerResponse>> {
         return this.api.getCustomerWithHttpInfo(param.customerId,  options).toPromise();
     }
 
@@ -480,7 +513,7 @@ export class ObjectCustomersApi {
      * Get Customer
      * @param param the request object
      */
-    public getCustomer(param: CustomersApiGetCustomerRequest, options?: Configuration): Promise<GetCustomerResponse> {
+    public getCustomer(param: CustomersApiGetCustomerRequest, options?: ConfigurationOptions): Promise<GetCustomerResponse> {
         return this.api.getCustomer(param.customerId,  options).toPromise();
     }
 
@@ -489,7 +522,7 @@ export class ObjectCustomersApi {
      * Get customer by externalId
      * @param param the request object
      */
-    public getCustomerByExternalIdWithHttpInfo(param: CustomersApiGetCustomerByExternalIdRequest, options?: Configuration): Promise<HttpInfo<GetCustomerResponse>> {
+    public getCustomerByExternalIdWithHttpInfo(param: CustomersApiGetCustomerByExternalIdRequest, options?: ConfigurationOptions): Promise<HttpInfo<GetCustomerResponse>> {
         return this.api.getCustomerByExternalIdWithHttpInfo(param.externalId,  options).toPromise();
     }
 
@@ -498,8 +531,26 @@ export class ObjectCustomersApi {
      * Get customer by externalId
      * @param param the request object
      */
-    public getCustomerByExternalId(param: CustomersApiGetCustomerByExternalIdRequest, options?: Configuration): Promise<GetCustomerResponse> {
+    public getCustomerByExternalId(param: CustomersApiGetCustomerByExternalIdRequest, options?: ConfigurationOptions): Promise<GetCustomerResponse> {
         return this.api.getCustomerByExternalId(param.externalId,  options).toPromise();
+    }
+
+    /**
+     * Use this endpoint to get the products consumptions by the customer id.
+     * Get products consumptions by customer id
+     * @param param the request object
+     */
+    public getCustomerProductsConsumptionsWithHttpInfo(param: CustomersApiGetCustomerProductsConsumptionsRequest, options?: ConfigurationOptions): Promise<HttpInfo<GetCustomerProductsConsumptionsResponse>> {
+        return this.api.getCustomerProductsConsumptionsWithHttpInfo(param.customerId,  options).toPromise();
+    }
+
+    /**
+     * Use this endpoint to get the products consumptions by the customer id.
+     * Get products consumptions by customer id
+     * @param param the request object
+     */
+    public getCustomerProductsConsumptions(param: CustomersApiGetCustomerProductsConsumptionsRequest, options?: ConfigurationOptions): Promise<GetCustomerProductsConsumptionsResponse> {
+        return this.api.getCustomerProductsConsumptions(param.customerId,  options).toPromise();
     }
 
     /**
@@ -507,7 +558,7 @@ export class ObjectCustomersApi {
      * List Customers
      * @param param the request object
      */
-    public listCustomersWithHttpInfo(param: CustomersApiListCustomersRequest = {}, options?: Configuration): Promise<HttpInfo<ListCustomersResponse>> {
+    public listCustomersWithHttpInfo(param: CustomersApiListCustomersRequest = {}, options?: ConfigurationOptions): Promise<HttpInfo<ListCustomersResponse>> {
         return this.api.listCustomersWithHttpInfo(param.limit, param.cursor,  options).toPromise();
     }
 
@@ -516,7 +567,7 @@ export class ObjectCustomersApi {
      * List Customers
      * @param param the request object
      */
-    public listCustomers(param: CustomersApiListCustomersRequest = {}, options?: Configuration): Promise<ListCustomersResponse> {
+    public listCustomers(param: CustomersApiListCustomersRequest = {}, options?: ConfigurationOptions): Promise<ListCustomersResponse> {
         return this.api.listCustomers(param.limit, param.cursor,  options).toPromise();
     }
 
@@ -525,7 +576,7 @@ export class ObjectCustomersApi {
      * Update Customer
      * @param param the request object
      */
-    public updateCustomerWithHttpInfo(param: CustomersApiUpdateCustomerRequest, options?: Configuration): Promise<HttpInfo<UpdateCustomerResponse>> {
+    public updateCustomerWithHttpInfo(param: CustomersApiUpdateCustomerRequest, options?: ConfigurationOptions): Promise<HttpInfo<UpdateCustomerResponse>> {
         return this.api.updateCustomerWithHttpInfo(param.updateCustomerRequest, param.customerId,  options).toPromise();
     }
 
@@ -534,7 +585,7 @@ export class ObjectCustomersApi {
      * Update Customer
      * @param param the request object
      */
-    public updateCustomer(param: CustomersApiUpdateCustomerRequest, options?: Configuration): Promise<UpdateCustomerResponse> {
+    public updateCustomer(param: CustomersApiUpdateCustomerRequest, options?: ConfigurationOptions): Promise<UpdateCustomerResponse> {
         return this.api.updateCustomer(param.updateCustomerRequest, param.customerId,  options).toPromise();
     }
 
@@ -546,6 +597,7 @@ import { EventsApiRequestFactory, EventsApiResponseProcessor} from "../apis/Even
 export interface EventsApiDeleteEventByRefIdRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof EventsApideleteEventByRefId
      */
@@ -555,6 +607,7 @@ export interface EventsApiDeleteEventByRefIdRequest {
 export interface EventsApiGetEventByRefIdRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof EventsApigetEventByRefId
      */
@@ -564,30 +617,36 @@ export interface EventsApiGetEventByRefIdRequest {
 export interface EventsApiQueryEventsRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type Date
      * @memberof EventsApiqueryEvents
      */
     startTime: Date
     /**
      * 
+     * Defaults to: undefined
      * @type Date
      * @memberof EventsApiqueryEvents
      */
     endTime: Date
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof EventsApiqueryEvents
      */
     eventName?: string
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof EventsApiqueryEvents
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof EventsApiqueryEvents
      */
@@ -624,7 +683,7 @@ export class ObjectEventsApi {
      * Delete an event by refId
      * @param param the request object
      */
-    public deleteEventByRefIdWithHttpInfo(param: EventsApiDeleteEventByRefIdRequest, options?: Configuration): Promise<HttpInfo<DeleteEventResponse>> {
+    public deleteEventByRefIdWithHttpInfo(param: EventsApiDeleteEventByRefIdRequest, options?: ConfigurationOptions): Promise<HttpInfo<DeleteEventResponse>> {
         return this.api.deleteEventByRefIdWithHttpInfo(param.refId,  options).toPromise();
     }
 
@@ -633,7 +692,7 @@ export class ObjectEventsApi {
      * Delete an event by refId
      * @param param the request object
      */
-    public deleteEventByRefId(param: EventsApiDeleteEventByRefIdRequest, options?: Configuration): Promise<DeleteEventResponse> {
+    public deleteEventByRefId(param: EventsApiDeleteEventByRefIdRequest, options?: ConfigurationOptions): Promise<DeleteEventResponse> {
         return this.api.deleteEventByRefId(param.refId,  options).toPromise();
     }
 
@@ -642,7 +701,7 @@ export class ObjectEventsApi {
      * Get event by refId
      * @param param the request object
      */
-    public getEventByRefIdWithHttpInfo(param: EventsApiGetEventByRefIdRequest, options?: Configuration): Promise<HttpInfo<GetEventResponse>> {
+    public getEventByRefIdWithHttpInfo(param: EventsApiGetEventByRefIdRequest, options?: ConfigurationOptions): Promise<HttpInfo<GetEventResponse>> {
         return this.api.getEventByRefIdWithHttpInfo(param.refId,  options).toPromise();
     }
 
@@ -651,7 +710,7 @@ export class ObjectEventsApi {
      * Get event by refId
      * @param param the request object
      */
-    public getEventByRefId(param: EventsApiGetEventByRefIdRequest, options?: Configuration): Promise<GetEventResponse> {
+    public getEventByRefId(param: EventsApiGetEventByRefIdRequest, options?: ConfigurationOptions): Promise<GetEventResponse> {
         return this.api.getEventByRefId(param.refId,  options).toPromise();
     }
 
@@ -660,7 +719,7 @@ export class ObjectEventsApi {
      * Query events by timestamp period and optional event name
      * @param param the request object
      */
-    public queryEventsWithHttpInfo(param: EventsApiQueryEventsRequest, options?: Configuration): Promise<HttpInfo<QueryEventsResponse>> {
+    public queryEventsWithHttpInfo(param: EventsApiQueryEventsRequest, options?: ConfigurationOptions): Promise<HttpInfo<QueryEventsResponse>> {
         return this.api.queryEventsWithHttpInfo(param.startTime, param.endTime, param.eventName, param.limit, param.cursor,  options).toPromise();
     }
 
@@ -669,7 +728,7 @@ export class ObjectEventsApi {
      * Query events by timestamp period and optional event name
      * @param param the request object
      */
-    public queryEvents(param: EventsApiQueryEventsRequest, options?: Configuration): Promise<QueryEventsResponse> {
+    public queryEvents(param: EventsApiQueryEventsRequest, options?: ConfigurationOptions): Promise<QueryEventsResponse> {
         return this.api.queryEvents(param.startTime, param.endTime, param.eventName, param.limit, param.cursor,  options).toPromise();
     }
 
@@ -678,7 +737,7 @@ export class ObjectEventsApi {
      * Submit a batch of events for ingestion
      * @param param the request object
      */
-    public sendEventsWithHttpInfo(param: EventsApiSendEventsRequest, options?: Configuration): Promise<HttpInfo<SendEventsResponse>> {
+    public sendEventsWithHttpInfo(param: EventsApiSendEventsRequest, options?: ConfigurationOptions): Promise<HttpInfo<SendEventsResponse>> {
         return this.api.sendEventsWithHttpInfo(param.sendEventsRequest,  options).toPromise();
     }
 
@@ -687,7 +746,7 @@ export class ObjectEventsApi {
      * Submit a batch of events for ingestion
      * @param param the request object
      */
-    public sendEvents(param: EventsApiSendEventsRequest, options?: Configuration): Promise<SendEventsResponse> {
+    public sendEvents(param: EventsApiSendEventsRequest, options?: ConfigurationOptions): Promise<SendEventsResponse> {
         return this.api.sendEvents(param.sendEventsRequest,  options).toPromise();
     }
 
@@ -696,7 +755,7 @@ export class ObjectEventsApi {
      * Submit a batch of events for testing
      * @param param the request object
      */
-    public sendEventsDryRunWithHttpInfo(param: EventsApiSendEventsDryRunRequest, options?: Configuration): Promise<HttpInfo<EventsDryRunResponse>> {
+    public sendEventsDryRunWithHttpInfo(param: EventsApiSendEventsDryRunRequest, options?: ConfigurationOptions): Promise<HttpInfo<EventsDryRunResponse>> {
         return this.api.sendEventsDryRunWithHttpInfo(param.eventsDryRunRequest,  options).toPromise();
     }
 
@@ -705,7 +764,7 @@ export class ObjectEventsApi {
      * Submit a batch of events for testing
      * @param param the request object
      */
-    public sendEventsDryRun(param: EventsApiSendEventsDryRunRequest, options?: Configuration): Promise<EventsDryRunResponse> {
+    public sendEventsDryRun(param: EventsApiSendEventsDryRunRequest, options?: ConfigurationOptions): Promise<EventsDryRunResponse> {
         return this.api.sendEventsDryRun(param.eventsDryRunRequest,  options).toPromise();
     }
 
@@ -744,7 +803,7 @@ export class ObjectIntegrationsApi {
      * Export sales order to NetSuite
      * @param param the request object
      */
-    public exportNetSuiteSalesOrderWithHttpInfo(param: IntegrationsApiExportNetSuiteSalesOrderRequest, options?: Configuration): Promise<HttpInfo<void>> {
+    public exportNetSuiteSalesOrderWithHttpInfo(param: IntegrationsApiExportNetSuiteSalesOrderRequest, options?: ConfigurationOptions): Promise<HttpInfo<void>> {
         return this.api.exportNetSuiteSalesOrderWithHttpInfo(param.netSuiteExportSalesOrderRequest,  options).toPromise();
     }
 
@@ -753,7 +812,7 @@ export class ObjectIntegrationsApi {
      * Export sales order to NetSuite
      * @param param the request object
      */
-    public exportNetSuiteSalesOrder(param: IntegrationsApiExportNetSuiteSalesOrderRequest, options?: Configuration): Promise<void> {
+    public exportNetSuiteSalesOrder(param: IntegrationsApiExportNetSuiteSalesOrderRequest, options?: ConfigurationOptions): Promise<void> {
         return this.api.exportNetSuiteSalesOrder(param.netSuiteExportSalesOrderRequest,  options).toPromise();
     }
 
@@ -762,7 +821,7 @@ export class ObjectIntegrationsApi {
      * Sync invoices to NetSuite
      * @param param the request object
      */
-    public netSuiteSyncInvoicesWithHttpInfo(param: IntegrationsApiNetSuiteSyncInvoicesRequest, options?: Configuration): Promise<HttpInfo<NetSuiteSyncInvoicesResponse>> {
+    public netSuiteSyncInvoicesWithHttpInfo(param: IntegrationsApiNetSuiteSyncInvoicesRequest, options?: ConfigurationOptions): Promise<HttpInfo<NetSuiteSyncInvoicesResponse>> {
         return this.api.netSuiteSyncInvoicesWithHttpInfo(param.netSuiteSyncInvoicesRequest,  options).toPromise();
     }
 
@@ -771,7 +830,7 @@ export class ObjectIntegrationsApi {
      * Sync invoices to NetSuite
      * @param param the request object
      */
-    public netSuiteSyncInvoices(param: IntegrationsApiNetSuiteSyncInvoicesRequest, options?: Configuration): Promise<NetSuiteSyncInvoicesResponse> {
+    public netSuiteSyncInvoices(param: IntegrationsApiNetSuiteSyncInvoicesRequest, options?: ConfigurationOptions): Promise<NetSuiteSyncInvoicesResponse> {
         return this.api.netSuiteSyncInvoices(param.netSuiteSyncInvoicesRequest,  options).toPromise();
     }
 
@@ -783,6 +842,7 @@ import { InvoicesApiRequestFactory, InvoicesApiResponseProcessor} from "../apis/
 export interface InvoicesApiGetInvoiceRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof InvoicesApigetInvoice
      */
@@ -792,12 +852,15 @@ export interface InvoicesApiGetInvoiceRequest {
 export interface InvoicesApiListInvoicesRequest {
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof InvoicesApilistInvoices
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof InvoicesApilistInvoices
      */
@@ -816,7 +879,7 @@ export class ObjectInvoicesApi {
      * Get Invoice
      * @param param the request object
      */
-    public getInvoiceWithHttpInfo(param: InvoicesApiGetInvoiceRequest, options?: Configuration): Promise<HttpInfo<GetInvoiceResponse>> {
+    public getInvoiceWithHttpInfo(param: InvoicesApiGetInvoiceRequest, options?: ConfigurationOptions): Promise<HttpInfo<GetInvoiceResponse>> {
         return this.api.getInvoiceWithHttpInfo(param.invoiceId,  options).toPromise();
     }
 
@@ -825,7 +888,7 @@ export class ObjectInvoicesApi {
      * Get Invoice
      * @param param the request object
      */
-    public getInvoice(param: InvoicesApiGetInvoiceRequest, options?: Configuration): Promise<GetInvoiceResponse> {
+    public getInvoice(param: InvoicesApiGetInvoiceRequest, options?: ConfigurationOptions): Promise<GetInvoiceResponse> {
         return this.api.getInvoice(param.invoiceId,  options).toPromise();
     }
 
@@ -834,7 +897,7 @@ export class ObjectInvoicesApi {
      * List Invoices
      * @param param the request object
      */
-    public listInvoicesWithHttpInfo(param: InvoicesApiListInvoicesRequest = {}, options?: Configuration): Promise<HttpInfo<ListInvoicesResponse>> {
+    public listInvoicesWithHttpInfo(param: InvoicesApiListInvoicesRequest = {}, options?: ConfigurationOptions): Promise<HttpInfo<ListInvoicesResponse>> {
         return this.api.listInvoicesWithHttpInfo(param.limit, param.cursor,  options).toPromise();
     }
 
@@ -843,7 +906,7 @@ export class ObjectInvoicesApi {
      * List Invoices
      * @param param the request object
      */
-    public listInvoices(param: InvoicesApiListInvoicesRequest = {}, options?: Configuration): Promise<ListInvoicesResponse> {
+    public listInvoices(param: InvoicesApiListInvoicesRequest = {}, options?: ConfigurationOptions): Promise<ListInvoicesResponse> {
         return this.api.listInvoices(param.limit, param.cursor,  options).toPromise();
     }
 
@@ -855,6 +918,7 @@ import { MetersApiRequestFactory, MetersApiResponseProcessor} from "../apis/Mete
 export interface MetersApiDeleteMeterRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof MetersApideleteMeter
      */
@@ -864,6 +928,7 @@ export interface MetersApiDeleteMeterRequest {
 export interface MetersApiGetMeterRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof MetersApigetMeter
      */
@@ -873,12 +938,15 @@ export interface MetersApiGetMeterRequest {
 export interface MetersApiListMetersRequest {
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof MetersApilistMeters
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof MetersApilistMeters
      */
@@ -894,6 +962,7 @@ export interface MetersApiUpdateMeterRequest {
     updateMeterRequest: UpdateMeterRequest
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof MetersApiupdateMeter
      */
@@ -912,7 +981,7 @@ export class ObjectMetersApi {
      * Delete Meter
      * @param param the request object
      */
-    public deleteMeterWithHttpInfo(param: MetersApiDeleteMeterRequest, options?: Configuration): Promise<HttpInfo<DeleteMeterResponse>> {
+    public deleteMeterWithHttpInfo(param: MetersApiDeleteMeterRequest, options?: ConfigurationOptions): Promise<HttpInfo<DeleteMeterResponse>> {
         return this.api.deleteMeterWithHttpInfo(param.meterId,  options).toPromise();
     }
 
@@ -921,7 +990,7 @@ export class ObjectMetersApi {
      * Delete Meter
      * @param param the request object
      */
-    public deleteMeter(param: MetersApiDeleteMeterRequest, options?: Configuration): Promise<DeleteMeterResponse> {
+    public deleteMeter(param: MetersApiDeleteMeterRequest, options?: ConfigurationOptions): Promise<DeleteMeterResponse> {
         return this.api.deleteMeter(param.meterId,  options).toPromise();
     }
 
@@ -930,7 +999,7 @@ export class ObjectMetersApi {
      * Get Meter
      * @param param the request object
      */
-    public getMeterWithHttpInfo(param: MetersApiGetMeterRequest, options?: Configuration): Promise<HttpInfo<GetMeterResponse>> {
+    public getMeterWithHttpInfo(param: MetersApiGetMeterRequest, options?: ConfigurationOptions): Promise<HttpInfo<GetMeterResponse>> {
         return this.api.getMeterWithHttpInfo(param.meterId,  options).toPromise();
     }
 
@@ -939,7 +1008,7 @@ export class ObjectMetersApi {
      * Get Meter
      * @param param the request object
      */
-    public getMeter(param: MetersApiGetMeterRequest, options?: Configuration): Promise<GetMeterResponse> {
+    public getMeter(param: MetersApiGetMeterRequest, options?: ConfigurationOptions): Promise<GetMeterResponse> {
         return this.api.getMeter(param.meterId,  options).toPromise();
     }
 
@@ -948,7 +1017,7 @@ export class ObjectMetersApi {
      * List Meters
      * @param param the request object
      */
-    public listMetersWithHttpInfo(param: MetersApiListMetersRequest = {}, options?: Configuration): Promise<HttpInfo<ListMetersResponse>> {
+    public listMetersWithHttpInfo(param: MetersApiListMetersRequest = {}, options?: ConfigurationOptions): Promise<HttpInfo<ListMetersResponse>> {
         return this.api.listMetersWithHttpInfo(param.limit, param.cursor,  options).toPromise();
     }
 
@@ -957,7 +1026,7 @@ export class ObjectMetersApi {
      * List Meters
      * @param param the request object
      */
-    public listMeters(param: MetersApiListMetersRequest = {}, options?: Configuration): Promise<ListMetersResponse> {
+    public listMeters(param: MetersApiListMetersRequest = {}, options?: ConfigurationOptions): Promise<ListMetersResponse> {
         return this.api.listMeters(param.limit, param.cursor,  options).toPromise();
     }
 
@@ -966,7 +1035,7 @@ export class ObjectMetersApi {
      * Update Meter
      * @param param the request object
      */
-    public updateMeterWithHttpInfo(param: MetersApiUpdateMeterRequest, options?: Configuration): Promise<HttpInfo<UpdateMeterResponse>> {
+    public updateMeterWithHttpInfo(param: MetersApiUpdateMeterRequest, options?: ConfigurationOptions): Promise<HttpInfo<UpdateMeterResponse>> {
         return this.api.updateMeterWithHttpInfo(param.updateMeterRequest, param.meterId,  options).toPromise();
     }
 
@@ -975,7 +1044,7 @@ export class ObjectMetersApi {
      * Update Meter
      * @param param the request object
      */
-    public updateMeter(param: MetersApiUpdateMeterRequest, options?: Configuration): Promise<UpdateMeterResponse> {
+    public updateMeter(param: MetersApiUpdateMeterRequest, options?: ConfigurationOptions): Promise<UpdateMeterResponse> {
         return this.api.updateMeter(param.updateMeterRequest, param.meterId,  options).toPromise();
     }
 
@@ -987,6 +1056,7 @@ import { PlansApiRequestFactory, PlansApiResponseProcessor} from "../apis/PlansA
 export interface PlansApiDeletePlanRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof PlansApideletePlan
      */
@@ -996,6 +1066,7 @@ export interface PlansApiDeletePlanRequest {
 export interface PlansApiGetPlanRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof PlansApigetPlan
      */
@@ -1005,12 +1076,15 @@ export interface PlansApiGetPlanRequest {
 export interface PlansApiListPlansRequest {
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof PlansApilistPlans
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof PlansApilistPlans
      */
@@ -1029,7 +1103,7 @@ export class ObjectPlansApi {
      * Delete Plan
      * @param param the request object
      */
-    public deletePlanWithHttpInfo(param: PlansApiDeletePlanRequest, options?: Configuration): Promise<HttpInfo<DeletePlanResponse>> {
+    public deletePlanWithHttpInfo(param: PlansApiDeletePlanRequest, options?: ConfigurationOptions): Promise<HttpInfo<DeletePlanResponse>> {
         return this.api.deletePlanWithHttpInfo(param.planId,  options).toPromise();
     }
 
@@ -1038,7 +1112,7 @@ export class ObjectPlansApi {
      * Delete Plan
      * @param param the request object
      */
-    public deletePlan(param: PlansApiDeletePlanRequest, options?: Configuration): Promise<DeletePlanResponse> {
+    public deletePlan(param: PlansApiDeletePlanRequest, options?: ConfigurationOptions): Promise<DeletePlanResponse> {
         return this.api.deletePlan(param.planId,  options).toPromise();
     }
 
@@ -1047,7 +1121,7 @@ export class ObjectPlansApi {
      * Get Plan
      * @param param the request object
      */
-    public getPlanWithHttpInfo(param: PlansApiGetPlanRequest, options?: Configuration): Promise<HttpInfo<GetPlanResponse>> {
+    public getPlanWithHttpInfo(param: PlansApiGetPlanRequest, options?: ConfigurationOptions): Promise<HttpInfo<GetPlanResponse>> {
         return this.api.getPlanWithHttpInfo(param.planId,  options).toPromise();
     }
 
@@ -1056,7 +1130,7 @@ export class ObjectPlansApi {
      * Get Plan
      * @param param the request object
      */
-    public getPlan(param: PlansApiGetPlanRequest, options?: Configuration): Promise<GetPlanResponse> {
+    public getPlan(param: PlansApiGetPlanRequest, options?: ConfigurationOptions): Promise<GetPlanResponse> {
         return this.api.getPlan(param.planId,  options).toPromise();
     }
 
@@ -1065,7 +1139,7 @@ export class ObjectPlansApi {
      * List Plans
      * @param param the request object
      */
-    public listPlansWithHttpInfo(param: PlansApiListPlansRequest = {}, options?: Configuration): Promise<HttpInfo<ListPlansResponse>> {
+    public listPlansWithHttpInfo(param: PlansApiListPlansRequest = {}, options?: ConfigurationOptions): Promise<HttpInfo<ListPlansResponse>> {
         return this.api.listPlansWithHttpInfo(param.limit, param.cursor,  options).toPromise();
     }
 
@@ -1074,8 +1148,48 @@ export class ObjectPlansApi {
      * List Plans
      * @param param the request object
      */
-    public listPlans(param: PlansApiListPlansRequest = {}, options?: Configuration): Promise<ListPlansResponse> {
+    public listPlans(param: PlansApiListPlansRequest = {}, options?: ConfigurationOptions): Promise<ListPlansResponse> {
         return this.api.listPlans(param.limit, param.cursor,  options).toPromise();
+    }
+
+}
+
+import { ObservableProductConsumptionsApi } from "./ObservableAPI";
+import { ProductConsumptionsApiRequestFactory, ProductConsumptionsApiResponseProcessor} from "../apis/ProductConsumptionsApi";
+
+export interface ProductConsumptionsApiGetProductConsumptionRequest {
+    /**
+     * 
+     * Defaults to: undefined
+     * @type string
+     * @memberof ProductConsumptionsApigetProductConsumption
+     */
+    productId: string
+}
+
+export class ObjectProductConsumptionsApi {
+    private api: ObservableProductConsumptionsApi
+
+    public constructor(configuration: Configuration, requestFactory?: ProductConsumptionsApiRequestFactory, responseProcessor?: ProductConsumptionsApiResponseProcessor) {
+        this.api = new ObservableProductConsumptionsApi(configuration, requestFactory, responseProcessor);
+    }
+
+    /**
+     * Use this action to get the consumption data for a product
+     * Get product consumption
+     * @param param the request object
+     */
+    public getProductConsumptionWithHttpInfo(param: ProductConsumptionsApiGetProductConsumptionRequest, options?: ConfigurationOptions): Promise<HttpInfo<GetProductConsumptionResponse>> {
+        return this.api.getProductConsumptionWithHttpInfo(param.productId,  options).toPromise();
+    }
+
+    /**
+     * Use this action to get the consumption data for a product
+     * Get product consumption
+     * @param param the request object
+     */
+    public getProductConsumption(param: ProductConsumptionsApiGetProductConsumptionRequest, options?: ConfigurationOptions): Promise<GetProductConsumptionResponse> {
+        return this.api.getProductConsumption(param.productId,  options).toPromise();
     }
 
 }
@@ -1086,6 +1200,7 @@ import { ReportsApiRequestFactory, ReportsApiResponseProcessor} from "../apis/Re
 export interface ReportsApiGetCommitmentReportResponseRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof ReportsApigetCommitmentReportResponse
      */
@@ -1095,18 +1210,22 @@ export interface ReportsApiGetCommitmentReportResponseRequest {
 export interface ReportsApiGetProductsUsageReportRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof ReportsApigetProductsUsageReport
      */
     reportId?: string
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof ReportsApigetProductsUsageReport
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof ReportsApigetProductsUsageReport
      */
@@ -1124,7 +1243,7 @@ export class ObjectReportsApi {
      * Get commitment report 
      * @param param the request object
      */
-    public getCommitmentReportResponseWithHttpInfo(param: ReportsApiGetCommitmentReportResponseRequest = {}, options?: Configuration): Promise<HttpInfo<GetCommitmentReportResponse>> {
+    public getCommitmentReportResponseWithHttpInfo(param: ReportsApiGetCommitmentReportResponseRequest = {}, options?: ConfigurationOptions): Promise<HttpInfo<GetCommitmentReportResponse>> {
         return this.api.getCommitmentReportResponseWithHttpInfo(param.reportId,  options).toPromise();
     }
 
@@ -1132,7 +1251,7 @@ export class ObjectReportsApi {
      * Get commitment report 
      * @param param the request object
      */
-    public getCommitmentReportResponse(param: ReportsApiGetCommitmentReportResponseRequest = {}, options?: Configuration): Promise<GetCommitmentReportResponse> {
+    public getCommitmentReportResponse(param: ReportsApiGetCommitmentReportResponseRequest = {}, options?: ConfigurationOptions): Promise<GetCommitmentReportResponse> {
         return this.api.getCommitmentReportResponse(param.reportId,  options).toPromise();
     }
 
@@ -1141,7 +1260,7 @@ export class ObjectReportsApi {
      * Get products usage report
      * @param param the request object
      */
-    public getProductsUsageReportWithHttpInfo(param: ReportsApiGetProductsUsageReportRequest = {}, options?: Configuration): Promise<HttpInfo<GetProductsUsageReportResponse>> {
+    public getProductsUsageReportWithHttpInfo(param: ReportsApiGetProductsUsageReportRequest = {}, options?: ConfigurationOptions): Promise<HttpInfo<GetProductsUsageReportResponse>> {
         return this.api.getProductsUsageReportWithHttpInfo(param.reportId, param.limit, param.cursor,  options).toPromise();
     }
 
@@ -1150,7 +1269,7 @@ export class ObjectReportsApi {
      * Get products usage report
      * @param param the request object
      */
-    public getProductsUsageReport(param: ReportsApiGetProductsUsageReportRequest = {}, options?: Configuration): Promise<GetProductsUsageReportResponse> {
+    public getProductsUsageReport(param: ReportsApiGetProductsUsageReportRequest = {}, options?: ConfigurationOptions): Promise<GetProductsUsageReportResponse> {
         return this.api.getProductsUsageReport(param.reportId, param.limit, param.cursor,  options).toPromise();
     }
 
@@ -1180,7 +1299,7 @@ export class ObjectWebhooksApi {
      * Subscribe to webhooks
      * @param param the request object
      */
-    public webhookSubscribeWithHttpInfo(param: WebhooksApiWebhookSubscribeRequest, options?: Configuration): Promise<HttpInfo<void>> {
+    public webhookSubscribeWithHttpInfo(param: WebhooksApiWebhookSubscribeRequest, options?: ConfigurationOptions): Promise<HttpInfo<void>> {
         return this.api.webhookSubscribeWithHttpInfo(param.webhookSubscribeRequest,  options).toPromise();
     }
 
@@ -1189,7 +1308,7 @@ export class ObjectWebhooksApi {
      * Subscribe to webhooks
      * @param param the request object
      */
-    public webhookSubscribe(param: WebhooksApiWebhookSubscribeRequest, options?: Configuration): Promise<void> {
+    public webhookSubscribe(param: WebhooksApiWebhookSubscribeRequest, options?: ConfigurationOptions): Promise<void> {
         return this.api.webhookSubscribe(param.webhookSubscribeRequest,  options).toPromise();
     }
 

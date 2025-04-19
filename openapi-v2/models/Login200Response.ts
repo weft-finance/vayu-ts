@@ -17,6 +17,8 @@ export class Login200Response {
 
     static readonly discriminator: string | undefined = undefined;
 
+    static readonly mapping: {[index: string]: string} | undefined = undefined;
+
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
             "name": "accessToken",
@@ -32,4 +34,3 @@ export class Login200Response {
     public constructor() {
     }
 }
-

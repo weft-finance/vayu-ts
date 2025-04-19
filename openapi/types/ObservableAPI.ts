@@ -1,5 +1,6 @@
 import { ResponseContext, RequestContext, HttpFile, HttpInfo } from '../http/http';
-import { Configuration} from '../configuration'
+import { Configuration, ConfigurationOptions } from '../configuration'
+import type { Middleware } from '../middleware';
 import { Observable, of, from } from '../rxjsStub';
 import {mergeMap, map} from  '../rxjsStub';
 import { Address } from '../models/Address';
@@ -41,6 +42,7 @@ import { FullDayPeriod } from '../models/FullDayPeriod';
 import { GetCommitmentReportResponse } from '../models/GetCommitmentReportResponse';
 import { GetContractResponse } from '../models/GetContractResponse';
 import { GetContractResponseContract } from '../models/GetContractResponseContract';
+import { GetCustomerProductsConsumptionsResponse } from '../models/GetCustomerProductsConsumptionsResponse';
 import { GetCustomerResponse } from '../models/GetCustomerResponse';
 import { GetEventResponse } from '../models/GetEventResponse';
 import { GetEventResponseEvent } from '../models/GetEventResponseEvent';
@@ -50,6 +52,8 @@ import { GetMeterResponse } from '../models/GetMeterResponse';
 import { GetMeterResponseMeter } from '../models/GetMeterResponseMeter';
 import { GetPlanResponse } from '../models/GetPlanResponse';
 import { GetPlanResponsePlan } from '../models/GetPlanResponsePlan';
+import { GetProductConsumptionResponse } from '../models/GetProductConsumptionResponse';
+import { GetProductConsumptionResponseProductConsumption } from '../models/GetProductConsumptionResponseProductConsumption';
 import { GetProductsUsageReportResponse } from '../models/GetProductsUsageReportResponse';
 import { GrantCreditsRequest } from '../models/GrantCreditsRequest';
 import { InvalidEvent } from '../models/InvalidEvent';
@@ -74,11 +78,14 @@ import { NetSuiteSyncInvoicesResponse } from '../models/NetSuiteSyncInvoicesResp
 import { NotificationEventType } from '../models/NotificationEventType';
 import { PaymentTerm } from '../models/PaymentTerm';
 import { PlanBillingData } from '../models/PlanBillingData';
+import { PlanDuration } from '../models/PlanDuration';
 import { PlanStatus } from '../models/PlanStatus';
+import { ProductConsumption } from '../models/ProductConsumption';
 import { QueryEventsResponse } from '../models/QueryEventsResponse';
 import { QueryEventsResponseEventsInner } from '../models/QueryEventsResponseEventsInner';
 import { SendEventsRequest } from '../models/SendEventsRequest';
 import { SendEventsResponse } from '../models/SendEventsResponse';
+import { UnlimitedDuration } from '../models/UnlimitedDuration';
 import { UpdateCustomerRequest } from '../models/UpdateCustomerRequest';
 import { UpdateCustomerResponse } from '../models/UpdateCustomerResponse';
 import { UpdateMeterRequest } from '../models/UpdateMeterRequest';
@@ -104,21 +111,50 @@ export class ObservableAuthApi {
     /**
      * This endpoint is designed to acquire a temporary access token.     Submit the auth token in the request body to obtain a new access token.     Use this new token for subsequent API calls. Token is set to expire every hour.
      * Login by obtaining a new access token
-     * @param loginRequest 
+     * @param loginRequest
      */
-    public loginWithHttpInfo(loginRequest: LoginRequest, _options?: Configuration): Observable<HttpInfo<LoginResponse>> {
-        const requestContextPromise = this.requestFactory.login(loginRequest, _options);
+    public loginWithHttpInfo(loginRequest: LoginRequest, _options?: ConfigurationOptions): Observable<HttpInfo<LoginResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.login(loginRequest, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.loginWithHttpInfo(rsp)));
@@ -128,9 +164,9 @@ export class ObservableAuthApi {
     /**
      * This endpoint is designed to acquire a temporary access token.     Submit the auth token in the request body to obtain a new access token.     Use this new token for subsequent API calls. Token is set to expire every hour.
      * Login by obtaining a new access token
-     * @param loginRequest 
+     * @param loginRequest
      */
-    public login(loginRequest: LoginRequest, _options?: Configuration): Observable<LoginResponse> {
+    public login(loginRequest: LoginRequest, _options?: ConfigurationOptions): Observable<LoginResponse> {
         return this.loginWithHttpInfo(loginRequest, _options).pipe(map((apiResponse: HttpInfo<LoginResponse>) => apiResponse.data));
     }
 
@@ -155,21 +191,50 @@ export class ObservableContractsApi {
     /**
      * Create a new Contract.
      * Create Contract
-     * @param createContractRequest 
+     * @param createContractRequest
      */
-    public createContractWithHttpInfo(createContractRequest: CreateContractRequest, _options?: Configuration): Observable<HttpInfo<CreateContractResponse>> {
-        const requestContextPromise = this.requestFactory.createContract(createContractRequest, _options);
+    public createContractWithHttpInfo(createContractRequest: CreateContractRequest, _options?: ConfigurationOptions): Observable<HttpInfo<CreateContractResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.createContract(createContractRequest, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.createContractWithHttpInfo(rsp)));
@@ -179,30 +244,59 @@ export class ObservableContractsApi {
     /**
      * Create a new Contract.
      * Create Contract
-     * @param createContractRequest 
+     * @param createContractRequest
      */
-    public createContract(createContractRequest: CreateContractRequest, _options?: Configuration): Observable<CreateContractResponse> {
+    public createContract(createContractRequest: CreateContractRequest, _options?: ConfigurationOptions): Observable<CreateContractResponse> {
         return this.createContractWithHttpInfo(createContractRequest, _options).pipe(map((apiResponse: HttpInfo<CreateContractResponse>) => apiResponse.data));
     }
 
     /**
      * Delete a Contract by id.
      * Delete Contract
-     * @param contractId 
+     * @param contractId
      */
-    public deleteContractWithHttpInfo(contractId: string, _options?: Configuration): Observable<HttpInfo<DeleteContractResponse>> {
-        const requestContextPromise = this.requestFactory.deleteContract(contractId, _options);
+    public deleteContractWithHttpInfo(contractId: string, _options?: ConfigurationOptions): Observable<HttpInfo<DeleteContractResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.deleteContract(contractId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteContractWithHttpInfo(rsp)));
@@ -212,30 +306,59 @@ export class ObservableContractsApi {
     /**
      * Delete a Contract by id.
      * Delete Contract
-     * @param contractId 
+     * @param contractId
      */
-    public deleteContract(contractId: string, _options?: Configuration): Observable<DeleteContractResponse> {
+    public deleteContract(contractId: string, _options?: ConfigurationOptions): Observable<DeleteContractResponse> {
         return this.deleteContractWithHttpInfo(contractId, _options).pipe(map((apiResponse: HttpInfo<DeleteContractResponse>) => apiResponse.data));
     }
 
     /**
      * Get a Contract by id.
      * Get Contract
-     * @param contractId 
+     * @param contractId
      */
-    public getContractWithHttpInfo(contractId: string, _options?: Configuration): Observable<HttpInfo<GetContractResponse>> {
-        const requestContextPromise = this.requestFactory.getContract(contractId, _options);
+    public getContractWithHttpInfo(contractId: string, _options?: ConfigurationOptions): Observable<HttpInfo<GetContractResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.getContract(contractId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getContractWithHttpInfo(rsp)));
@@ -245,31 +368,60 @@ export class ObservableContractsApi {
     /**
      * Get a Contract by id.
      * Get Contract
-     * @param contractId 
+     * @param contractId
      */
-    public getContract(contractId: string, _options?: Configuration): Observable<GetContractResponse> {
+    public getContract(contractId: string, _options?: ConfigurationOptions): Observable<GetContractResponse> {
         return this.getContractWithHttpInfo(contractId, _options).pipe(map((apiResponse: HttpInfo<GetContractResponse>) => apiResponse.data));
     }
 
     /**
      * Get a list of Contracts.
      * List Contracts
-     * @param limit 
-     * @param cursor 
+     * @param [limit]
+     * @param [cursor]
      */
-    public listContractsWithHttpInfo(limit?: number, cursor?: string, _options?: Configuration): Observable<HttpInfo<ListContractsResponse>> {
-        const requestContextPromise = this.requestFactory.listContracts(limit, cursor, _options);
+    public listContractsWithHttpInfo(limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<HttpInfo<ListContractsResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.listContracts(limit, cursor, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.listContractsWithHttpInfo(rsp)));
@@ -279,10 +431,10 @@ export class ObservableContractsApi {
     /**
      * Get a list of Contracts.
      * List Contracts
-     * @param limit 
-     * @param cursor 
+     * @param [limit]
+     * @param [cursor]
      */
-    public listContracts(limit?: number, cursor?: string, _options?: Configuration): Observable<ListContractsResponse> {
+    public listContracts(limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<ListContractsResponse> {
         return this.listContractsWithHttpInfo(limit, cursor, _options).pipe(map((apiResponse: HttpInfo<ListContractsResponse>) => apiResponse.data));
     }
 
@@ -307,21 +459,50 @@ export class ObservableCreditsApi {
     /**
      * This endpoint is used to deduct credits from the specified customer account.      Submit the credit amount and customer ID in the request body to deduct the credits.      The deducted credits will be subtracted from the customer\'s account.
      * Deduct credits from customer credit ledger
-     * @param deductCreditsRequest 
+     * @param deductCreditsRequest
      */
-    public deductCreditsWithHttpInfo(deductCreditsRequest: DeductCreditsRequest, _options?: Configuration): Observable<HttpInfo<void>> {
-        const requestContextPromise = this.requestFactory.deductCredits(deductCreditsRequest, _options);
+    public deductCreditsWithHttpInfo(deductCreditsRequest: DeductCreditsRequest, _options?: ConfigurationOptions): Observable<HttpInfo<void>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.deductCredits(deductCreditsRequest, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deductCreditsWithHttpInfo(rsp)));
@@ -331,30 +512,59 @@ export class ObservableCreditsApi {
     /**
      * This endpoint is used to deduct credits from the specified customer account.      Submit the credit amount and customer ID in the request body to deduct the credits.      The deducted credits will be subtracted from the customer\'s account.
      * Deduct credits from customer credit ledger
-     * @param deductCreditsRequest 
+     * @param deductCreditsRequest
      */
-    public deductCredits(deductCreditsRequest: DeductCreditsRequest, _options?: Configuration): Observable<void> {
+    public deductCredits(deductCreditsRequest: DeductCreditsRequest, _options?: ConfigurationOptions): Observable<void> {
         return this.deductCreditsWithHttpInfo(deductCreditsRequest, _options).pipe(map((apiResponse: HttpInfo<void>) => apiResponse.data));
     }
 
     /**
      * This endpoint is used to grant credits to a customer.     Submit the credit amount and customer ID in the request body to grant the credits.     The granted credits will be added to the customer\'s account.
      * Grant credits to a customer credit ledger
-     * @param grantCreditsRequest 
+     * @param grantCreditsRequest
      */
-    public grantCreditsWithHttpInfo(grantCreditsRequest: GrantCreditsRequest, _options?: Configuration): Observable<HttpInfo<void>> {
-        const requestContextPromise = this.requestFactory.grantCredits(grantCreditsRequest, _options);
+    public grantCreditsWithHttpInfo(grantCreditsRequest: GrantCreditsRequest, _options?: ConfigurationOptions): Observable<HttpInfo<void>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.grantCredits(grantCreditsRequest, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.grantCreditsWithHttpInfo(rsp)));
@@ -364,32 +574,61 @@ export class ObservableCreditsApi {
     /**
      * This endpoint is used to grant credits to a customer.     Submit the credit amount and customer ID in the request body to grant the credits.     The granted credits will be added to the customer\'s account.
      * Grant credits to a customer credit ledger
-     * @param grantCreditsRequest 
+     * @param grantCreditsRequest
      */
-    public grantCredits(grantCreditsRequest: GrantCreditsRequest, _options?: Configuration): Observable<void> {
+    public grantCredits(grantCreditsRequest: GrantCreditsRequest, _options?: ConfigurationOptions): Observable<void> {
         return this.grantCreditsWithHttpInfo(grantCreditsRequest, _options).pipe(map((apiResponse: HttpInfo<void>) => apiResponse.data));
     }
 
     /**
      * This endpoint is used to retrieve the credit ledger entries for a specific customer.
      * Retrieve credit ledger entries for customer.
-     * @param customerId 
-     * @param limit 
-     * @param cursor 
+     * @param customerId
+     * @param [limit]
+     * @param [cursor]
      */
-    public listCreditLedgerEntriesWithHttpInfo(customerId: string, limit?: number, cursor?: string, _options?: Configuration): Observable<HttpInfo<ListCreditLedgerEntriesResponse>> {
-        const requestContextPromise = this.requestFactory.listCreditLedgerEntries(customerId, limit, cursor, _options);
+    public listCreditLedgerEntriesWithHttpInfo(customerId: string, limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<HttpInfo<ListCreditLedgerEntriesResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.listCreditLedgerEntries(customerId, limit, cursor, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.listCreditLedgerEntriesWithHttpInfo(rsp)));
@@ -399,11 +638,11 @@ export class ObservableCreditsApi {
     /**
      * This endpoint is used to retrieve the credit ledger entries for a specific customer.
      * Retrieve credit ledger entries for customer.
-     * @param customerId 
-     * @param limit 
-     * @param cursor 
+     * @param customerId
+     * @param [limit]
+     * @param [cursor]
      */
-    public listCreditLedgerEntries(customerId: string, limit?: number, cursor?: string, _options?: Configuration): Observable<ListCreditLedgerEntriesResponse> {
+    public listCreditLedgerEntries(customerId: string, limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<ListCreditLedgerEntriesResponse> {
         return this.listCreditLedgerEntriesWithHttpInfo(customerId, limit, cursor, _options).pipe(map((apiResponse: HttpInfo<ListCreditLedgerEntriesResponse>) => apiResponse.data));
     }
 
@@ -428,21 +667,50 @@ export class ObservableCustomersApi {
     /**
      * Create a new Customer.
      * Create Customer
-     * @param createCustomerRequest 
+     * @param createCustomerRequest
      */
-    public createCustomerWithHttpInfo(createCustomerRequest: CreateCustomerRequest, _options?: Configuration): Observable<HttpInfo<CreateCustomerResponse>> {
-        const requestContextPromise = this.requestFactory.createCustomer(createCustomerRequest, _options);
+    public createCustomerWithHttpInfo(createCustomerRequest: CreateCustomerRequest, _options?: ConfigurationOptions): Observable<HttpInfo<CreateCustomerResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.createCustomer(createCustomerRequest, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.createCustomerWithHttpInfo(rsp)));
@@ -452,30 +720,59 @@ export class ObservableCustomersApi {
     /**
      * Create a new Customer.
      * Create Customer
-     * @param createCustomerRequest 
+     * @param createCustomerRequest
      */
-    public createCustomer(createCustomerRequest: CreateCustomerRequest, _options?: Configuration): Observable<CreateCustomerResponse> {
+    public createCustomer(createCustomerRequest: CreateCustomerRequest, _options?: ConfigurationOptions): Observable<CreateCustomerResponse> {
         return this.createCustomerWithHttpInfo(createCustomerRequest, _options).pipe(map((apiResponse: HttpInfo<CreateCustomerResponse>) => apiResponse.data));
     }
 
     /**
      * Delete a Customer by id.
      * Delete Customer
-     * @param customerId 
+     * @param customerId
      */
-    public deleteCustomerWithHttpInfo(customerId: string, _options?: Configuration): Observable<HttpInfo<DeleteCustomerResponse>> {
-        const requestContextPromise = this.requestFactory.deleteCustomer(customerId, _options);
+    public deleteCustomerWithHttpInfo(customerId: string, _options?: ConfigurationOptions): Observable<HttpInfo<DeleteCustomerResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.deleteCustomer(customerId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteCustomerWithHttpInfo(rsp)));
@@ -485,30 +782,59 @@ export class ObservableCustomersApi {
     /**
      * Delete a Customer by id.
      * Delete Customer
-     * @param customerId 
+     * @param customerId
      */
-    public deleteCustomer(customerId: string, _options?: Configuration): Observable<DeleteCustomerResponse> {
+    public deleteCustomer(customerId: string, _options?: ConfigurationOptions): Observable<DeleteCustomerResponse> {
         return this.deleteCustomerWithHttpInfo(customerId, _options).pipe(map((apiResponse: HttpInfo<DeleteCustomerResponse>) => apiResponse.data));
     }
 
     /**
      * Get a Customer by id.
      * Get Customer
-     * @param customerId 
+     * @param customerId
      */
-    public getCustomerWithHttpInfo(customerId: string, _options?: Configuration): Observable<HttpInfo<GetCustomerResponse>> {
-        const requestContextPromise = this.requestFactory.getCustomer(customerId, _options);
+    public getCustomerWithHttpInfo(customerId: string, _options?: ConfigurationOptions): Observable<HttpInfo<GetCustomerResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.getCustomer(customerId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getCustomerWithHttpInfo(rsp)));
@@ -518,30 +844,59 @@ export class ObservableCustomersApi {
     /**
      * Get a Customer by id.
      * Get Customer
-     * @param customerId 
+     * @param customerId
      */
-    public getCustomer(customerId: string, _options?: Configuration): Observable<GetCustomerResponse> {
+    public getCustomer(customerId: string, _options?: ConfigurationOptions): Observable<GetCustomerResponse> {
         return this.getCustomerWithHttpInfo(customerId, _options).pipe(map((apiResponse: HttpInfo<GetCustomerResponse>) => apiResponse.data));
     }
 
     /**
      * Use this endpoint to get a specific customer using its external Id.
      * Get customer by externalId
-     * @param externalId 
+     * @param externalId
      */
-    public getCustomerByExternalIdWithHttpInfo(externalId: string, _options?: Configuration): Observable<HttpInfo<GetCustomerResponse>> {
-        const requestContextPromise = this.requestFactory.getCustomerByExternalId(externalId, _options);
+    public getCustomerByExternalIdWithHttpInfo(externalId: string, _options?: ConfigurationOptions): Observable<HttpInfo<GetCustomerResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.getCustomerByExternalId(externalId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getCustomerByExternalIdWithHttpInfo(rsp)));
@@ -551,31 +906,122 @@ export class ObservableCustomersApi {
     /**
      * Use this endpoint to get a specific customer using its external Id.
      * Get customer by externalId
-     * @param externalId 
+     * @param externalId
      */
-    public getCustomerByExternalId(externalId: string, _options?: Configuration): Observable<GetCustomerResponse> {
+    public getCustomerByExternalId(externalId: string, _options?: ConfigurationOptions): Observable<GetCustomerResponse> {
         return this.getCustomerByExternalIdWithHttpInfo(externalId, _options).pipe(map((apiResponse: HttpInfo<GetCustomerResponse>) => apiResponse.data));
     }
 
     /**
-     * Get a list of Customers.
-     * List Customers
-     * @param limit 
-     * @param cursor 
+     * Use this endpoint to get the products consumptions by the customer id.
+     * Get products consumptions by customer id
+     * @param customerId
      */
-    public listCustomersWithHttpInfo(limit?: number, cursor?: string, _options?: Configuration): Observable<HttpInfo<ListCustomersResponse>> {
-        const requestContextPromise = this.requestFactory.listCustomers(limit, cursor, _options);
+    public getCustomerProductsConsumptionsWithHttpInfo(customerId: string, _options?: ConfigurationOptions): Observable<HttpInfo<GetCustomerProductsConsumptionsResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.getCustomerProductsConsumptions(customerId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getCustomerProductsConsumptionsWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * Use this endpoint to get the products consumptions by the customer id.
+     * Get products consumptions by customer id
+     * @param customerId
+     */
+    public getCustomerProductsConsumptions(customerId: string, _options?: ConfigurationOptions): Observable<GetCustomerProductsConsumptionsResponse> {
+        return this.getCustomerProductsConsumptionsWithHttpInfo(customerId, _options).pipe(map((apiResponse: HttpInfo<GetCustomerProductsConsumptionsResponse>) => apiResponse.data));
+    }
+
+    /**
+     * Get a list of Customers.
+     * List Customers
+     * @param [limit]
+     * @param [cursor]
+     */
+    public listCustomersWithHttpInfo(limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<HttpInfo<ListCustomersResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
+
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.listCustomers(limit, cursor, _config);
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (const middleware of allMiddleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.listCustomersWithHttpInfo(rsp)));
@@ -585,32 +1031,61 @@ export class ObservableCustomersApi {
     /**
      * Get a list of Customers.
      * List Customers
-     * @param limit 
-     * @param cursor 
+     * @param [limit]
+     * @param [cursor]
      */
-    public listCustomers(limit?: number, cursor?: string, _options?: Configuration): Observable<ListCustomersResponse> {
+    public listCustomers(limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<ListCustomersResponse> {
         return this.listCustomersWithHttpInfo(limit, cursor, _options).pipe(map((apiResponse: HttpInfo<ListCustomersResponse>) => apiResponse.data));
     }
 
     /**
      * Update a Customer by id.
      * Update Customer
-     * @param updateCustomerRequest 
-     * @param customerId 
+     * @param updateCustomerRequest
+     * @param customerId
      */
-    public updateCustomerWithHttpInfo(updateCustomerRequest: UpdateCustomerRequest, customerId: string, _options?: Configuration): Observable<HttpInfo<UpdateCustomerResponse>> {
-        const requestContextPromise = this.requestFactory.updateCustomer(updateCustomerRequest, customerId, _options);
+    public updateCustomerWithHttpInfo(updateCustomerRequest: UpdateCustomerRequest, customerId: string, _options?: ConfigurationOptions): Observable<HttpInfo<UpdateCustomerResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.updateCustomer(updateCustomerRequest, customerId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.updateCustomerWithHttpInfo(rsp)));
@@ -620,10 +1095,10 @@ export class ObservableCustomersApi {
     /**
      * Update a Customer by id.
      * Update Customer
-     * @param updateCustomerRequest 
-     * @param customerId 
+     * @param updateCustomerRequest
+     * @param customerId
      */
-    public updateCustomer(updateCustomerRequest: UpdateCustomerRequest, customerId: string, _options?: Configuration): Observable<UpdateCustomerResponse> {
+    public updateCustomer(updateCustomerRequest: UpdateCustomerRequest, customerId: string, _options?: ConfigurationOptions): Observable<UpdateCustomerResponse> {
         return this.updateCustomerWithHttpInfo(updateCustomerRequest, customerId, _options).pipe(map((apiResponse: HttpInfo<UpdateCustomerResponse>) => apiResponse.data));
     }
 
@@ -648,21 +1123,50 @@ export class ObservableEventsApi {
     /**
      * Use this endpoint to remove a specific event using its reference ID.
      * Delete an event by refId
-     * @param refId 
+     * @param refId
      */
-    public deleteEventByRefIdWithHttpInfo(refId: string, _options?: Configuration): Observable<HttpInfo<DeleteEventResponse>> {
-        const requestContextPromise = this.requestFactory.deleteEventByRefId(refId, _options);
+    public deleteEventByRefIdWithHttpInfo(refId: string, _options?: ConfigurationOptions): Observable<HttpInfo<DeleteEventResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.deleteEventByRefId(refId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteEventByRefIdWithHttpInfo(rsp)));
@@ -672,30 +1176,59 @@ export class ObservableEventsApi {
     /**
      * Use this endpoint to remove a specific event using its reference ID.
      * Delete an event by refId
-     * @param refId 
+     * @param refId
      */
-    public deleteEventByRefId(refId: string, _options?: Configuration): Observable<DeleteEventResponse> {
+    public deleteEventByRefId(refId: string, _options?: ConfigurationOptions): Observable<DeleteEventResponse> {
         return this.deleteEventByRefIdWithHttpInfo(refId, _options).pipe(map((apiResponse: HttpInfo<DeleteEventResponse>) => apiResponse.data));
     }
 
     /**
      * Use this endpoint to get a specific event using its reference ID.
      * Get event by refId
-     * @param refId 
+     * @param refId
      */
-    public getEventByRefIdWithHttpInfo(refId: string, _options?: Configuration): Observable<HttpInfo<GetEventResponse>> {
-        const requestContextPromise = this.requestFactory.getEventByRefId(refId, _options);
+    public getEventByRefIdWithHttpInfo(refId: string, _options?: ConfigurationOptions): Observable<HttpInfo<GetEventResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.getEventByRefId(refId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getEventByRefIdWithHttpInfo(rsp)));
@@ -705,34 +1238,63 @@ export class ObservableEventsApi {
     /**
      * Use this endpoint to get a specific event using its reference ID.
      * Get event by refId
-     * @param refId 
+     * @param refId
      */
-    public getEventByRefId(refId: string, _options?: Configuration): Observable<GetEventResponse> {
+    public getEventByRefId(refId: string, _options?: ConfigurationOptions): Observable<GetEventResponse> {
         return this.getEventByRefIdWithHttpInfo(refId, _options).pipe(map((apiResponse: HttpInfo<GetEventResponse>) => apiResponse.data));
     }
 
     /**
      * Fetch events occurring within a specified timestamp range. An optional event name can be provided to further filter the events.
      * Query events by timestamp period and optional event name
-     * @param startTime 
-     * @param endTime 
-     * @param eventName 
-     * @param limit 
-     * @param cursor 
+     * @param startTime
+     * @param endTime
+     * @param [eventName]
+     * @param [limit]
+     * @param [cursor]
      */
-    public queryEventsWithHttpInfo(startTime: Date, endTime: Date, eventName?: string, limit?: number, cursor?: string, _options?: Configuration): Observable<HttpInfo<QueryEventsResponse>> {
-        const requestContextPromise = this.requestFactory.queryEvents(startTime, endTime, eventName, limit, cursor, _options);
+    public queryEventsWithHttpInfo(startTime: Date, endTime: Date, eventName?: string, limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<HttpInfo<QueryEventsResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.queryEvents(startTime, endTime, eventName, limit, cursor, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.queryEventsWithHttpInfo(rsp)));
@@ -742,13 +1304,13 @@ export class ObservableEventsApi {
     /**
      * Fetch events occurring within a specified timestamp range. An optional event name can be provided to further filter the events.
      * Query events by timestamp period and optional event name
-     * @param startTime 
-     * @param endTime 
-     * @param eventName 
-     * @param limit 
-     * @param cursor 
+     * @param startTime
+     * @param endTime
+     * @param [eventName]
+     * @param [limit]
+     * @param [cursor]
      */
-    public queryEvents(startTime: Date, endTime: Date, eventName?: string, limit?: number, cursor?: string, _options?: Configuration): Observable<QueryEventsResponse> {
+    public queryEvents(startTime: Date, endTime: Date, eventName?: string, limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<QueryEventsResponse> {
         return this.queryEventsWithHttpInfo(startTime, endTime, eventName, limit, cursor, _options).pipe(map((apiResponse: HttpInfo<QueryEventsResponse>) => apiResponse.data));
     }
 
@@ -757,19 +1319,48 @@ export class ObservableEventsApi {
      * Submit a batch of events for ingestion
      * @param sendEventsRequest An array of events following the EventInput schema. This request body should be included in the PUT request to \&#39;/events\&#39;       Up to 1000 events or a total payload max size of 256KB
      */
-    public sendEventsWithHttpInfo(sendEventsRequest: SendEventsRequest, _options?: Configuration): Observable<HttpInfo<SendEventsResponse>> {
-        const requestContextPromise = this.requestFactory.sendEvents(sendEventsRequest, _options);
+    public sendEventsWithHttpInfo(sendEventsRequest: SendEventsRequest, _options?: ConfigurationOptions): Observable<HttpInfo<SendEventsResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.sendEvents(sendEventsRequest, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.sendEventsWithHttpInfo(rsp)));
@@ -781,7 +1372,7 @@ export class ObservableEventsApi {
      * Submit a batch of events for ingestion
      * @param sendEventsRequest An array of events following the EventInput schema. This request body should be included in the PUT request to \&#39;/events\&#39;       Up to 1000 events or a total payload max size of 256KB
      */
-    public sendEvents(sendEventsRequest: SendEventsRequest, _options?: Configuration): Observable<SendEventsResponse> {
+    public sendEvents(sendEventsRequest: SendEventsRequest, _options?: ConfigurationOptions): Observable<SendEventsResponse> {
         return this.sendEventsWithHttpInfo(sendEventsRequest, _options).pipe(map((apiResponse: HttpInfo<SendEventsResponse>) => apiResponse.data));
     }
 
@@ -790,19 +1381,48 @@ export class ObservableEventsApi {
      * Submit a batch of events for testing
      * @param eventsDryRunRequest An array of events following the EventInput schema. This request body should be included in the PUT request to \&#39;/events\&#39;       Up to 1000 events or a total payload max size of 256KB
      */
-    public sendEventsDryRunWithHttpInfo(eventsDryRunRequest: EventsDryRunRequest, _options?: Configuration): Observable<HttpInfo<EventsDryRunResponse>> {
-        const requestContextPromise = this.requestFactory.sendEventsDryRun(eventsDryRunRequest, _options);
+    public sendEventsDryRunWithHttpInfo(eventsDryRunRequest: EventsDryRunRequest, _options?: ConfigurationOptions): Observable<HttpInfo<EventsDryRunResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.sendEventsDryRun(eventsDryRunRequest, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.sendEventsDryRunWithHttpInfo(rsp)));
@@ -814,7 +1434,7 @@ export class ObservableEventsApi {
      * Submit a batch of events for testing
      * @param eventsDryRunRequest An array of events following the EventInput schema. This request body should be included in the PUT request to \&#39;/events\&#39;       Up to 1000 events or a total payload max size of 256KB
      */
-    public sendEventsDryRun(eventsDryRunRequest: EventsDryRunRequest, _options?: Configuration): Observable<EventsDryRunResponse> {
+    public sendEventsDryRun(eventsDryRunRequest: EventsDryRunRequest, _options?: ConfigurationOptions): Observable<EventsDryRunResponse> {
         return this.sendEventsDryRunWithHttpInfo(eventsDryRunRequest, _options).pipe(map((apiResponse: HttpInfo<EventsDryRunResponse>) => apiResponse.data));
     }
 
@@ -839,21 +1459,50 @@ export class ObservableIntegrationsApi {
     /**
      * This endpoint is used to export sales order to NetSuite.
      * Export sales order to NetSuite
-     * @param netSuiteExportSalesOrderRequest 
+     * @param netSuiteExportSalesOrderRequest
      */
-    public exportNetSuiteSalesOrderWithHttpInfo(netSuiteExportSalesOrderRequest: NetSuiteExportSalesOrderRequest, _options?: Configuration): Observable<HttpInfo<void>> {
-        const requestContextPromise = this.requestFactory.exportNetSuiteSalesOrder(netSuiteExportSalesOrderRequest, _options);
+    public exportNetSuiteSalesOrderWithHttpInfo(netSuiteExportSalesOrderRequest: NetSuiteExportSalesOrderRequest, _options?: ConfigurationOptions): Observable<HttpInfo<void>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.exportNetSuiteSalesOrder(netSuiteExportSalesOrderRequest, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.exportNetSuiteSalesOrderWithHttpInfo(rsp)));
@@ -863,30 +1512,59 @@ export class ObservableIntegrationsApi {
     /**
      * This endpoint is used to export sales order to NetSuite.
      * Export sales order to NetSuite
-     * @param netSuiteExportSalesOrderRequest 
+     * @param netSuiteExportSalesOrderRequest
      */
-    public exportNetSuiteSalesOrder(netSuiteExportSalesOrderRequest: NetSuiteExportSalesOrderRequest, _options?: Configuration): Observable<void> {
+    public exportNetSuiteSalesOrder(netSuiteExportSalesOrderRequest: NetSuiteExportSalesOrderRequest, _options?: ConfigurationOptions): Observable<void> {
         return this.exportNetSuiteSalesOrderWithHttpInfo(netSuiteExportSalesOrderRequest, _options).pipe(map((apiResponse: HttpInfo<void>) => apiResponse.data));
     }
 
     /**
      * This endpoint is used to sync invoices to NetSuite.
      * Sync invoices to NetSuite
-     * @param netSuiteSyncInvoicesRequest 
+     * @param netSuiteSyncInvoicesRequest
      */
-    public netSuiteSyncInvoicesWithHttpInfo(netSuiteSyncInvoicesRequest: NetSuiteSyncInvoicesRequest, _options?: Configuration): Observable<HttpInfo<NetSuiteSyncInvoicesResponse>> {
-        const requestContextPromise = this.requestFactory.netSuiteSyncInvoices(netSuiteSyncInvoicesRequest, _options);
+    public netSuiteSyncInvoicesWithHttpInfo(netSuiteSyncInvoicesRequest: NetSuiteSyncInvoicesRequest, _options?: ConfigurationOptions): Observable<HttpInfo<NetSuiteSyncInvoicesResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.netSuiteSyncInvoices(netSuiteSyncInvoicesRequest, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.netSuiteSyncInvoicesWithHttpInfo(rsp)));
@@ -896,9 +1574,9 @@ export class ObservableIntegrationsApi {
     /**
      * This endpoint is used to sync invoices to NetSuite.
      * Sync invoices to NetSuite
-     * @param netSuiteSyncInvoicesRequest 
+     * @param netSuiteSyncInvoicesRequest
      */
-    public netSuiteSyncInvoices(netSuiteSyncInvoicesRequest: NetSuiteSyncInvoicesRequest, _options?: Configuration): Observable<NetSuiteSyncInvoicesResponse> {
+    public netSuiteSyncInvoices(netSuiteSyncInvoicesRequest: NetSuiteSyncInvoicesRequest, _options?: ConfigurationOptions): Observable<NetSuiteSyncInvoicesResponse> {
         return this.netSuiteSyncInvoicesWithHttpInfo(netSuiteSyncInvoicesRequest, _options).pipe(map((apiResponse: HttpInfo<NetSuiteSyncInvoicesResponse>) => apiResponse.data));
     }
 
@@ -923,21 +1601,50 @@ export class ObservableInvoicesApi {
     /**
      * Get a Invoice by id.
      * Get Invoice
-     * @param invoiceId 
+     * @param invoiceId
      */
-    public getInvoiceWithHttpInfo(invoiceId: string, _options?: Configuration): Observable<HttpInfo<GetInvoiceResponse>> {
-        const requestContextPromise = this.requestFactory.getInvoice(invoiceId, _options);
+    public getInvoiceWithHttpInfo(invoiceId: string, _options?: ConfigurationOptions): Observable<HttpInfo<GetInvoiceResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.getInvoice(invoiceId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getInvoiceWithHttpInfo(rsp)));
@@ -947,31 +1654,60 @@ export class ObservableInvoicesApi {
     /**
      * Get a Invoice by id.
      * Get Invoice
-     * @param invoiceId 
+     * @param invoiceId
      */
-    public getInvoice(invoiceId: string, _options?: Configuration): Observable<GetInvoiceResponse> {
+    public getInvoice(invoiceId: string, _options?: ConfigurationOptions): Observable<GetInvoiceResponse> {
         return this.getInvoiceWithHttpInfo(invoiceId, _options).pipe(map((apiResponse: HttpInfo<GetInvoiceResponse>) => apiResponse.data));
     }
 
     /**
      * Get a list of Invoices.
      * List Invoices
-     * @param limit 
-     * @param cursor 
+     * @param [limit]
+     * @param [cursor]
      */
-    public listInvoicesWithHttpInfo(limit?: number, cursor?: string, _options?: Configuration): Observable<HttpInfo<ListInvoicesResponse>> {
-        const requestContextPromise = this.requestFactory.listInvoices(limit, cursor, _options);
+    public listInvoicesWithHttpInfo(limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<HttpInfo<ListInvoicesResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.listInvoices(limit, cursor, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.listInvoicesWithHttpInfo(rsp)));
@@ -981,10 +1717,10 @@ export class ObservableInvoicesApi {
     /**
      * Get a list of Invoices.
      * List Invoices
-     * @param limit 
-     * @param cursor 
+     * @param [limit]
+     * @param [cursor]
      */
-    public listInvoices(limit?: number, cursor?: string, _options?: Configuration): Observable<ListInvoicesResponse> {
+    public listInvoices(limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<ListInvoicesResponse> {
         return this.listInvoicesWithHttpInfo(limit, cursor, _options).pipe(map((apiResponse: HttpInfo<ListInvoicesResponse>) => apiResponse.data));
     }
 
@@ -1009,21 +1745,50 @@ export class ObservableMetersApi {
     /**
      * Delete a Meter by id.
      * Delete Meter
-     * @param meterId 
+     * @param meterId
      */
-    public deleteMeterWithHttpInfo(meterId: string, _options?: Configuration): Observable<HttpInfo<DeleteMeterResponse>> {
-        const requestContextPromise = this.requestFactory.deleteMeter(meterId, _options);
+    public deleteMeterWithHttpInfo(meterId: string, _options?: ConfigurationOptions): Observable<HttpInfo<DeleteMeterResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.deleteMeter(meterId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteMeterWithHttpInfo(rsp)));
@@ -1033,30 +1798,59 @@ export class ObservableMetersApi {
     /**
      * Delete a Meter by id.
      * Delete Meter
-     * @param meterId 
+     * @param meterId
      */
-    public deleteMeter(meterId: string, _options?: Configuration): Observable<DeleteMeterResponse> {
+    public deleteMeter(meterId: string, _options?: ConfigurationOptions): Observable<DeleteMeterResponse> {
         return this.deleteMeterWithHttpInfo(meterId, _options).pipe(map((apiResponse: HttpInfo<DeleteMeterResponse>) => apiResponse.data));
     }
 
     /**
      * Get a Meter by id.
      * Get Meter
-     * @param meterId 
+     * @param meterId
      */
-    public getMeterWithHttpInfo(meterId: string, _options?: Configuration): Observable<HttpInfo<GetMeterResponse>> {
-        const requestContextPromise = this.requestFactory.getMeter(meterId, _options);
+    public getMeterWithHttpInfo(meterId: string, _options?: ConfigurationOptions): Observable<HttpInfo<GetMeterResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.getMeter(meterId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getMeterWithHttpInfo(rsp)));
@@ -1066,31 +1860,60 @@ export class ObservableMetersApi {
     /**
      * Get a Meter by id.
      * Get Meter
-     * @param meterId 
+     * @param meterId
      */
-    public getMeter(meterId: string, _options?: Configuration): Observable<GetMeterResponse> {
+    public getMeter(meterId: string, _options?: ConfigurationOptions): Observable<GetMeterResponse> {
         return this.getMeterWithHttpInfo(meterId, _options).pipe(map((apiResponse: HttpInfo<GetMeterResponse>) => apiResponse.data));
     }
 
     /**
      * Get a list of Meters.
      * List Meters
-     * @param limit 
-     * @param cursor 
+     * @param [limit]
+     * @param [cursor]
      */
-    public listMetersWithHttpInfo(limit?: number, cursor?: string, _options?: Configuration): Observable<HttpInfo<ListMetersResponse>> {
-        const requestContextPromise = this.requestFactory.listMeters(limit, cursor, _options);
+    public listMetersWithHttpInfo(limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<HttpInfo<ListMetersResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.listMeters(limit, cursor, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.listMetersWithHttpInfo(rsp)));
@@ -1100,32 +1923,61 @@ export class ObservableMetersApi {
     /**
      * Get a list of Meters.
      * List Meters
-     * @param limit 
-     * @param cursor 
+     * @param [limit]
+     * @param [cursor]
      */
-    public listMeters(limit?: number, cursor?: string, _options?: Configuration): Observable<ListMetersResponse> {
+    public listMeters(limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<ListMetersResponse> {
         return this.listMetersWithHttpInfo(limit, cursor, _options).pipe(map((apiResponse: HttpInfo<ListMetersResponse>) => apiResponse.data));
     }
 
     /**
      * Update a Meter by id.
      * Update Meter
-     * @param updateMeterRequest 
-     * @param meterId 
+     * @param updateMeterRequest
+     * @param meterId
      */
-    public updateMeterWithHttpInfo(updateMeterRequest: UpdateMeterRequest, meterId: string, _options?: Configuration): Observable<HttpInfo<UpdateMeterResponse>> {
-        const requestContextPromise = this.requestFactory.updateMeter(updateMeterRequest, meterId, _options);
+    public updateMeterWithHttpInfo(updateMeterRequest: UpdateMeterRequest, meterId: string, _options?: ConfigurationOptions): Observable<HttpInfo<UpdateMeterResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.updateMeter(updateMeterRequest, meterId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.updateMeterWithHttpInfo(rsp)));
@@ -1135,10 +1987,10 @@ export class ObservableMetersApi {
     /**
      * Update a Meter by id.
      * Update Meter
-     * @param updateMeterRequest 
-     * @param meterId 
+     * @param updateMeterRequest
+     * @param meterId
      */
-    public updateMeter(updateMeterRequest: UpdateMeterRequest, meterId: string, _options?: Configuration): Observable<UpdateMeterResponse> {
+    public updateMeter(updateMeterRequest: UpdateMeterRequest, meterId: string, _options?: ConfigurationOptions): Observable<UpdateMeterResponse> {
         return this.updateMeterWithHttpInfo(updateMeterRequest, meterId, _options).pipe(map((apiResponse: HttpInfo<UpdateMeterResponse>) => apiResponse.data));
     }
 
@@ -1163,21 +2015,50 @@ export class ObservablePlansApi {
     /**
      * Delete a Plan by id.
      * Delete Plan
-     * @param planId 
+     * @param planId
      */
-    public deletePlanWithHttpInfo(planId: string, _options?: Configuration): Observable<HttpInfo<DeletePlanResponse>> {
-        const requestContextPromise = this.requestFactory.deletePlan(planId, _options);
+    public deletePlanWithHttpInfo(planId: string, _options?: ConfigurationOptions): Observable<HttpInfo<DeletePlanResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.deletePlan(planId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deletePlanWithHttpInfo(rsp)));
@@ -1187,30 +2068,59 @@ export class ObservablePlansApi {
     /**
      * Delete a Plan by id.
      * Delete Plan
-     * @param planId 
+     * @param planId
      */
-    public deletePlan(planId: string, _options?: Configuration): Observable<DeletePlanResponse> {
+    public deletePlan(planId: string, _options?: ConfigurationOptions): Observable<DeletePlanResponse> {
         return this.deletePlanWithHttpInfo(planId, _options).pipe(map((apiResponse: HttpInfo<DeletePlanResponse>) => apiResponse.data));
     }
 
     /**
      * Get a Plan by id.
      * Get Plan
-     * @param planId 
+     * @param planId
      */
-    public getPlanWithHttpInfo(planId: string, _options?: Configuration): Observable<HttpInfo<GetPlanResponse>> {
-        const requestContextPromise = this.requestFactory.getPlan(planId, _options);
+    public getPlanWithHttpInfo(planId: string, _options?: ConfigurationOptions): Observable<HttpInfo<GetPlanResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.getPlan(planId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getPlanWithHttpInfo(rsp)));
@@ -1220,31 +2130,60 @@ export class ObservablePlansApi {
     /**
      * Get a Plan by id.
      * Get Plan
-     * @param planId 
+     * @param planId
      */
-    public getPlan(planId: string, _options?: Configuration): Observable<GetPlanResponse> {
+    public getPlan(planId: string, _options?: ConfigurationOptions): Observable<GetPlanResponse> {
         return this.getPlanWithHttpInfo(planId, _options).pipe(map((apiResponse: HttpInfo<GetPlanResponse>) => apiResponse.data));
     }
 
     /**
      * Get a list of Plans.
      * List Plans
-     * @param limit 
-     * @param cursor 
+     * @param [limit]
+     * @param [cursor]
      */
-    public listPlansWithHttpInfo(limit?: number, cursor?: string, _options?: Configuration): Observable<HttpInfo<ListPlansResponse>> {
-        const requestContextPromise = this.requestFactory.listPlans(limit, cursor, _options);
+    public listPlansWithHttpInfo(limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<HttpInfo<ListPlansResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.listPlans(limit, cursor, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.listPlansWithHttpInfo(rsp)));
@@ -1254,11 +2193,91 @@ export class ObservablePlansApi {
     /**
      * Get a list of Plans.
      * List Plans
-     * @param limit 
-     * @param cursor 
+     * @param [limit]
+     * @param [cursor]
      */
-    public listPlans(limit?: number, cursor?: string, _options?: Configuration): Observable<ListPlansResponse> {
+    public listPlans(limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<ListPlansResponse> {
         return this.listPlansWithHttpInfo(limit, cursor, _options).pipe(map((apiResponse: HttpInfo<ListPlansResponse>) => apiResponse.data));
+    }
+
+}
+
+import { ProductConsumptionsApiRequestFactory, ProductConsumptionsApiResponseProcessor} from "../apis/ProductConsumptionsApi";
+export class ObservableProductConsumptionsApi {
+    private requestFactory: ProductConsumptionsApiRequestFactory;
+    private responseProcessor: ProductConsumptionsApiResponseProcessor;
+    private configuration: Configuration;
+
+    public constructor(
+        configuration: Configuration,
+        requestFactory?: ProductConsumptionsApiRequestFactory,
+        responseProcessor?: ProductConsumptionsApiResponseProcessor
+    ) {
+        this.configuration = configuration;
+        this.requestFactory = requestFactory || new ProductConsumptionsApiRequestFactory(configuration);
+        this.responseProcessor = responseProcessor || new ProductConsumptionsApiResponseProcessor();
+    }
+
+    /**
+     * Use this action to get the consumption data for a product
+     * Get product consumption
+     * @param productId
+     */
+    public getProductConsumptionWithHttpInfo(productId: string, _options?: ConfigurationOptions): Observable<HttpInfo<GetProductConsumptionResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
+
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.getProductConsumption(productId, _config);
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (const middleware of allMiddleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (const middleware of allMiddleware.reverse()) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getProductConsumptionWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * Use this action to get the consumption data for a product
+     * Get product consumption
+     * @param productId
+     */
+    public getProductConsumption(productId: string, _options?: ConfigurationOptions): Observable<GetProductConsumptionResponse> {
+        return this.getProductConsumptionWithHttpInfo(productId, _options).pipe(map((apiResponse: HttpInfo<GetProductConsumptionResponse>) => apiResponse.data));
     }
 
 }
@@ -1281,21 +2300,50 @@ export class ObservableReportsApi {
 
     /**
      * Get commitment report 
-     * @param reportId 
+     * @param [reportId]
      */
-    public getCommitmentReportResponseWithHttpInfo(reportId?: string, _options?: Configuration): Observable<HttpInfo<GetCommitmentReportResponse>> {
-        const requestContextPromise = this.requestFactory.getCommitmentReportResponse(reportId, _options);
+    public getCommitmentReportResponseWithHttpInfo(reportId?: string, _options?: ConfigurationOptions): Observable<HttpInfo<GetCommitmentReportResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.getCommitmentReportResponse(reportId, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getCommitmentReportResponseWithHttpInfo(rsp)));
@@ -1304,32 +2352,61 @@ export class ObservableReportsApi {
 
     /**
      * Get commitment report 
-     * @param reportId 
+     * @param [reportId]
      */
-    public getCommitmentReportResponse(reportId?: string, _options?: Configuration): Observable<GetCommitmentReportResponse> {
+    public getCommitmentReportResponse(reportId?: string, _options?: ConfigurationOptions): Observable<GetCommitmentReportResponse> {
         return this.getCommitmentReportResponseWithHttpInfo(reportId, _options).pipe(map((apiResponse: HttpInfo<GetCommitmentReportResponse>) => apiResponse.data));
     }
 
     /**
      * Use this endpoint to get the products usage report.
      * Get products usage report
-     * @param reportId 
-     * @param limit 
-     * @param cursor 
+     * @param [reportId]
+     * @param [limit]
+     * @param [cursor]
      */
-    public getProductsUsageReportWithHttpInfo(reportId?: string, limit?: number, cursor?: string, _options?: Configuration): Observable<HttpInfo<GetProductsUsageReportResponse>> {
-        const requestContextPromise = this.requestFactory.getProductsUsageReport(reportId, limit, cursor, _options);
+    public getProductsUsageReportWithHttpInfo(reportId?: string, limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<HttpInfo<GetProductsUsageReportResponse>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.getProductsUsageReport(reportId, limit, cursor, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getProductsUsageReportWithHttpInfo(rsp)));
@@ -1339,11 +2416,11 @@ export class ObservableReportsApi {
     /**
      * Use this endpoint to get the products usage report.
      * Get products usage report
-     * @param reportId 
-     * @param limit 
-     * @param cursor 
+     * @param [reportId]
+     * @param [limit]
+     * @param [cursor]
      */
-    public getProductsUsageReport(reportId?: string, limit?: number, cursor?: string, _options?: Configuration): Observable<GetProductsUsageReportResponse> {
+    public getProductsUsageReport(reportId?: string, limit?: number, cursor?: string, _options?: ConfigurationOptions): Observable<GetProductsUsageReportResponse> {
         return this.getProductsUsageReportWithHttpInfo(reportId, limit, cursor, _options).pipe(map((apiResponse: HttpInfo<GetProductsUsageReportResponse>) => apiResponse.data));
     }
 
@@ -1370,19 +2447,48 @@ export class ObservableWebhooksApi {
      * Subscribe to webhooks
      * @param webhookSubscribeRequest Subscribe to webhooks and receive event notifications.
      */
-    public webhookSubscribeWithHttpInfo(webhookSubscribeRequest: WebhookSubscribeRequest, _options?: Configuration): Observable<HttpInfo<void>> {
-        const requestContextPromise = this.requestFactory.webhookSubscribe(webhookSubscribeRequest, _options);
+    public webhookSubscribeWithHttpInfo(webhookSubscribeRequest: WebhookSubscribeRequest, _options?: ConfigurationOptions): Observable<HttpInfo<void>> {
+    let _config = this.configuration;
+    let allMiddleware: Middleware[] = [];
+    if (_options && _options.middleware){
+      const middlewareMergeStrategy = _options.middlewareMergeStrategy || 'replace' // default to replace behavior
+      // call-time middleware provided
+      const calltimeMiddleware: Middleware[] = _options.middleware;
 
+      switch(middlewareMergeStrategy){
+      case 'append':
+        allMiddleware = this.configuration.middleware.concat(calltimeMiddleware);
+        break;
+      case 'prepend':
+        allMiddleware = calltimeMiddleware.concat(this.configuration.middleware)
+        break;
+      case 'replace':
+        allMiddleware = calltimeMiddleware
+        break;
+      default: 
+        throw new Error(`unrecognized middleware merge strategy '${middlewareMergeStrategy}'`)
+      }
+	}
+	if (_options){
+    _config = {
+      baseServer: _options.baseServer || this.configuration.baseServer,
+      httpApi: _options.httpApi || this.configuration.httpApi,
+      authMethods: _options.authMethods || this.configuration.authMethods,
+      middleware: allMiddleware || this.configuration.middleware
+		};
+	}
+
+        const requestContextPromise = this.requestFactory.webhookSubscribe(webhookSubscribeRequest, _config);
         // build promise chain
         let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
+        for (const middleware of allMiddleware) {
             middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
         }
 
         return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
             pipe(mergeMap((response: ResponseContext) => {
                 let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
+                for (const middleware of allMiddleware.reverse()) {
                     middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
                 }
                 return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.webhookSubscribeWithHttpInfo(rsp)));
@@ -1394,7 +2500,7 @@ export class ObservableWebhooksApi {
      * Subscribe to webhooks
      * @param webhookSubscribeRequest Subscribe to webhooks and receive event notifications.
      */
-    public webhookSubscribe(webhookSubscribeRequest: WebhookSubscribeRequest, _options?: Configuration): Observable<void> {
+    public webhookSubscribe(webhookSubscribeRequest: WebhookSubscribeRequest, _options?: ConfigurationOptions): Observable<void> {
         return this.webhookSubscribeWithHttpInfo(webhookSubscribeRequest, _options).pipe(map((apiResponse: HttpInfo<void>) => apiResponse.data));
     }
 

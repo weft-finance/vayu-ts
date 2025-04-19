@@ -1,5 +1,6 @@
 import { ResponseContext, RequestContext, HttpFile, HttpInfo } from '../http/http';
-import { Configuration} from '../configuration'
+import { Configuration, ConfigurationOptions } from '../configuration'
+import type { Middleware } from '../middleware';
 
 import { APICreateCustomerPayload } from '../models/APICreateCustomerPayload';
 import { APICreateInvoicePayload } from '../models/APICreateInvoicePayload';
@@ -63,14 +64,14 @@ export class ObjectAuthenticationApi {
     /**
      * @param param the request object
      */
-    public loginWithHttpInfo(param: AuthenticationApiLoginRequest, options?: Configuration): Promise<HttpInfo<Login200Response>> {
+    public loginWithHttpInfo(param: AuthenticationApiLoginRequest, options?: ConfigurationOptions): Promise<HttpInfo<Login200Response>> {
         return this.api.loginWithHttpInfo(param.loginRequest,  options).toPromise();
     }
 
     /**
      * @param param the request object
      */
-    public login(param: AuthenticationApiLoginRequest, options?: Configuration): Promise<Login200Response> {
+    public login(param: AuthenticationApiLoginRequest, options?: ConfigurationOptions): Promise<Login200Response> {
         return this.api.login(param.loginRequest,  options).toPromise();
     }
 
@@ -91,6 +92,7 @@ export interface CustomersApiCreateCustomerRequest {
 export interface CustomersApiDeleteCustomerRequest {
     /**
      * - The ID of the customer to delete.
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApideleteCustomer
      */
@@ -100,6 +102,7 @@ export interface CustomersApiDeleteCustomerRequest {
 export interface CustomersApiGetCustomerRequest {
     /**
      * - The ID of the customer to fetch.
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApigetCustomer
      */
@@ -124,12 +127,14 @@ export interface CustomersApiUpdateACustomersProductRequest {
     body: ReviseEntitlementPayload
     /**
      * - The ID of the customer to revise.
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApiupdateACustomersProduct
      */
     id: string
     /**
      * - The ID of the product to revise.
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApiupdateACustomersProduct
      */
@@ -145,6 +150,7 @@ export interface CustomersApiUpdateCustomerRequest {
     aPIUpdateCustomerPayload: APIUpdateCustomerPayload
     /**
      * - The ID of the customer to update.
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApiupdateCustomer
      */
@@ -162,7 +168,7 @@ export class ObjectCustomersApi {
      * Create a new customer.
      * @param param the request object
      */
-    public createCustomerWithHttpInfo(param: CustomersApiCreateCustomerRequest, options?: Configuration): Promise<HttpInfo<APICustomer>> {
+    public createCustomerWithHttpInfo(param: CustomersApiCreateCustomerRequest, options?: ConfigurationOptions): Promise<HttpInfo<APICustomer>> {
         return this.api.createCustomerWithHttpInfo(param.aPICreateCustomerPayload,  options).toPromise();
     }
 
@@ -170,7 +176,7 @@ export class ObjectCustomersApi {
      * Create a new customer.
      * @param param the request object
      */
-    public createCustomer(param: CustomersApiCreateCustomerRequest, options?: Configuration): Promise<APICustomer> {
+    public createCustomer(param: CustomersApiCreateCustomerRequest, options?: ConfigurationOptions): Promise<APICustomer> {
         return this.api.createCustomer(param.aPICreateCustomerPayload,  options).toPromise();
     }
 
@@ -178,7 +184,7 @@ export class ObjectCustomersApi {
      * Delete a customer by ID.
      * @param param the request object
      */
-    public deleteCustomerWithHttpInfo(param: CustomersApiDeleteCustomerRequest, options?: Configuration): Promise<HttpInfo<void>> {
+    public deleteCustomerWithHttpInfo(param: CustomersApiDeleteCustomerRequest, options?: ConfigurationOptions): Promise<HttpInfo<void>> {
         return this.api.deleteCustomerWithHttpInfo(param.id,  options).toPromise();
     }
 
@@ -186,7 +192,7 @@ export class ObjectCustomersApi {
      * Delete a customer by ID.
      * @param param the request object
      */
-    public deleteCustomer(param: CustomersApiDeleteCustomerRequest, options?: Configuration): Promise<void> {
+    public deleteCustomer(param: CustomersApiDeleteCustomerRequest, options?: ConfigurationOptions): Promise<void> {
         return this.api.deleteCustomer(param.id,  options).toPromise();
     }
 
@@ -194,7 +200,7 @@ export class ObjectCustomersApi {
      * Get a single customer by ID.
      * @param param the request object
      */
-    public getCustomerWithHttpInfo(param: CustomersApiGetCustomerRequest, options?: Configuration): Promise<HttpInfo<APICustomer>> {
+    public getCustomerWithHttpInfo(param: CustomersApiGetCustomerRequest, options?: ConfigurationOptions): Promise<HttpInfo<APICustomer>> {
         return this.api.getCustomerWithHttpInfo(param.id,  options).toPromise();
     }
 
@@ -202,7 +208,7 @@ export class ObjectCustomersApi {
      * Get a single customer by ID.
      * @param param the request object
      */
-    public getCustomer(param: CustomersApiGetCustomerRequest, options?: Configuration): Promise<APICustomer> {
+    public getCustomer(param: CustomersApiGetCustomerRequest, options?: ConfigurationOptions): Promise<APICustomer> {
         return this.api.getCustomer(param.id,  options).toPromise();
     }
 
@@ -210,7 +216,7 @@ export class ObjectCustomersApi {
      * Query customers based on filters and pagination.
      * @param param the request object
      */
-    public queryCustomersWithHttpInfo(param: CustomersApiQueryCustomersRequest, options?: Configuration): Promise<HttpInfo<QueryResultAPICustomer>> {
+    public queryCustomersWithHttpInfo(param: CustomersApiQueryCustomersRequest, options?: ConfigurationOptions): Promise<HttpInfo<QueryResultAPICustomer>> {
         return this.api.queryCustomersWithHttpInfo(param.aPIQueryPayloadAPICustomer,  options).toPromise();
     }
 
@@ -218,7 +224,7 @@ export class ObjectCustomersApi {
      * Query customers based on filters and pagination.
      * @param param the request object
      */
-    public queryCustomers(param: CustomersApiQueryCustomersRequest, options?: Configuration): Promise<QueryResultAPICustomer> {
+    public queryCustomers(param: CustomersApiQueryCustomersRequest, options?: ConfigurationOptions): Promise<QueryResultAPICustomer> {
         return this.api.queryCustomers(param.aPIQueryPayloadAPICustomer,  options).toPromise();
     }
 
@@ -226,7 +232,7 @@ export class ObjectCustomersApi {
      * Revise a customer\'s product.
      * @param param the request object
      */
-    public updateACustomersProductWithHttpInfo(param: CustomersApiUpdateACustomersProductRequest, options?: Configuration): Promise<HttpInfo<APIEntitlement>> {
+    public updateACustomersProductWithHttpInfo(param: CustomersApiUpdateACustomersProductRequest, options?: ConfigurationOptions): Promise<HttpInfo<APIEntitlement>> {
         return this.api.updateACustomersProductWithHttpInfo(param.body, param.id, param.productId,  options).toPromise();
     }
 
@@ -234,7 +240,7 @@ export class ObjectCustomersApi {
      * Revise a customer\'s product.
      * @param param the request object
      */
-    public updateACustomersProduct(param: CustomersApiUpdateACustomersProductRequest, options?: Configuration): Promise<APIEntitlement> {
+    public updateACustomersProduct(param: CustomersApiUpdateACustomersProductRequest, options?: ConfigurationOptions): Promise<APIEntitlement> {
         return this.api.updateACustomersProduct(param.body, param.id, param.productId,  options).toPromise();
     }
 
@@ -242,7 +248,7 @@ export class ObjectCustomersApi {
      * Update an existing customer.
      * @param param the request object
      */
-    public updateCustomerWithHttpInfo(param: CustomersApiUpdateCustomerRequest, options?: Configuration): Promise<HttpInfo<APICustomer>> {
+    public updateCustomerWithHttpInfo(param: CustomersApiUpdateCustomerRequest, options?: ConfigurationOptions): Promise<HttpInfo<APICustomer>> {
         return this.api.updateCustomerWithHttpInfo(param.aPIUpdateCustomerPayload, param.id,  options).toPromise();
     }
 
@@ -250,7 +256,7 @@ export class ObjectCustomersApi {
      * Update an existing customer.
      * @param param the request object
      */
-    public updateCustomer(param: CustomersApiUpdateCustomerRequest, options?: Configuration): Promise<APICustomer> {
+    public updateCustomer(param: CustomersApiUpdateCustomerRequest, options?: ConfigurationOptions): Promise<APICustomer> {
         return this.api.updateCustomer(param.aPIUpdateCustomerPayload, param.id,  options).toPromise();
     }
 
@@ -262,6 +268,7 @@ import { EntitlementsApiRequestFactory, EntitlementsApiResponseProcessor} from "
 export interface EntitlementsApiDeleteEntitlementRequest {
     /**
      * - The ID of the entitlement to delete.
+     * Defaults to: undefined
      * @type string
      * @memberof EntitlementsApideleteEntitlement
      */
@@ -271,6 +278,7 @@ export interface EntitlementsApiDeleteEntitlementRequest {
 export interface EntitlementsApiGetEntitlementRequest {
     /**
      * - The ID of the entitlement to fetch.
+     * Defaults to: undefined
      * @type string
      * @memberof EntitlementsApigetEntitlement
      */
@@ -297,7 +305,7 @@ export class ObjectEntitlementsApi {
      * Delete an entitlement by ID.
      * @param param the request object
      */
-    public deleteEntitlementWithHttpInfo(param: EntitlementsApiDeleteEntitlementRequest, options?: Configuration): Promise<HttpInfo<void>> {
+    public deleteEntitlementWithHttpInfo(param: EntitlementsApiDeleteEntitlementRequest, options?: ConfigurationOptions): Promise<HttpInfo<void>> {
         return this.api.deleteEntitlementWithHttpInfo(param.id,  options).toPromise();
     }
 
@@ -305,7 +313,7 @@ export class ObjectEntitlementsApi {
      * Delete an entitlement by ID.
      * @param param the request object
      */
-    public deleteEntitlement(param: EntitlementsApiDeleteEntitlementRequest, options?: Configuration): Promise<void> {
+    public deleteEntitlement(param: EntitlementsApiDeleteEntitlementRequest, options?: ConfigurationOptions): Promise<void> {
         return this.api.deleteEntitlement(param.id,  options).toPromise();
     }
 
@@ -313,7 +321,7 @@ export class ObjectEntitlementsApi {
      * Get a single entitlement by ID.
      * @param param the request object
      */
-    public getEntitlementWithHttpInfo(param: EntitlementsApiGetEntitlementRequest, options?: Configuration): Promise<HttpInfo<APIEntitlement>> {
+    public getEntitlementWithHttpInfo(param: EntitlementsApiGetEntitlementRequest, options?: ConfigurationOptions): Promise<HttpInfo<APIEntitlement>> {
         return this.api.getEntitlementWithHttpInfo(param.id,  options).toPromise();
     }
 
@@ -321,7 +329,7 @@ export class ObjectEntitlementsApi {
      * Get a single entitlement by ID.
      * @param param the request object
      */
-    public getEntitlement(param: EntitlementsApiGetEntitlementRequest, options?: Configuration): Promise<APIEntitlement> {
+    public getEntitlement(param: EntitlementsApiGetEntitlementRequest, options?: ConfigurationOptions): Promise<APIEntitlement> {
         return this.api.getEntitlement(param.id,  options).toPromise();
     }
 
@@ -329,7 +337,7 @@ export class ObjectEntitlementsApi {
      * Query entitlements based on filters and pagination.
      * @param param the request object
      */
-    public queryEntitlementsWithHttpInfo(param: EntitlementsApiQueryEntitlementsRequest, options?: Configuration): Promise<HttpInfo<QueryResultAPIEntitlement>> {
+    public queryEntitlementsWithHttpInfo(param: EntitlementsApiQueryEntitlementsRequest, options?: ConfigurationOptions): Promise<HttpInfo<QueryResultAPIEntitlement>> {
         return this.api.queryEntitlementsWithHttpInfo(param.aPIQueryPayloadAPIEntitlement,  options).toPromise();
     }
 
@@ -337,7 +345,7 @@ export class ObjectEntitlementsApi {
      * Query entitlements based on filters and pagination.
      * @param param the request object
      */
-    public queryEntitlements(param: EntitlementsApiQueryEntitlementsRequest, options?: Configuration): Promise<QueryResultAPIEntitlement> {
+    public queryEntitlements(param: EntitlementsApiQueryEntitlementsRequest, options?: ConfigurationOptions): Promise<QueryResultAPIEntitlement> {
         return this.api.queryEntitlements(param.aPIQueryPayloadAPIEntitlement,  options).toPromise();
     }
 
@@ -349,6 +357,7 @@ import { EventsApiRequestFactory, EventsApiResponseProcessor} from "../apis/Even
 export interface EventsApiDeleteEventRequest {
     /**
      * - The ID of the event to delete.
+     * Defaults to: undefined
      * @type string
      * @memberof EventsApideleteEvent
      */
@@ -358,6 +367,7 @@ export interface EventsApiDeleteEventRequest {
 export interface EventsApiGetEventRequest {
     /**
      * - The ID of the event to fetch.
+     * Defaults to: undefined
      * @type string
      * @memberof EventsApigetEvent
      */
@@ -393,7 +403,7 @@ export class ObjectEventsApi {
      * Delete an event by ID.
      * @param param the request object
      */
-    public deleteEventWithHttpInfo(param: EventsApiDeleteEventRequest, options?: Configuration): Promise<HttpInfo<void>> {
+    public deleteEventWithHttpInfo(param: EventsApiDeleteEventRequest, options?: ConfigurationOptions): Promise<HttpInfo<void>> {
         return this.api.deleteEventWithHttpInfo(param.id,  options).toPromise();
     }
 
@@ -401,7 +411,7 @@ export class ObjectEventsApi {
      * Delete an event by ID.
      * @param param the request object
      */
-    public deleteEvent(param: EventsApiDeleteEventRequest, options?: Configuration): Promise<void> {
+    public deleteEvent(param: EventsApiDeleteEventRequest, options?: ConfigurationOptions): Promise<void> {
         return this.api.deleteEvent(param.id,  options).toPromise();
     }
 
@@ -409,7 +419,7 @@ export class ObjectEventsApi {
      * Get a single event by ID.
      * @param param the request object
      */
-    public getEventWithHttpInfo(param: EventsApiGetEventRequest, options?: Configuration): Promise<HttpInfo<APIEvent>> {
+    public getEventWithHttpInfo(param: EventsApiGetEventRequest, options?: ConfigurationOptions): Promise<HttpInfo<APIEvent>> {
         return this.api.getEventWithHttpInfo(param.id,  options).toPromise();
     }
 
@@ -417,7 +427,7 @@ export class ObjectEventsApi {
      * Get a single event by ID.
      * @param param the request object
      */
-    public getEvent(param: EventsApiGetEventRequest, options?: Configuration): Promise<APIEvent> {
+    public getEvent(param: EventsApiGetEventRequest, options?: ConfigurationOptions): Promise<APIEvent> {
         return this.api.getEvent(param.id,  options).toPromise();
     }
 
@@ -425,7 +435,7 @@ export class ObjectEventsApi {
      * Ingest events to the system
      * @param param the request object
      */
-    public ingestEventToTheSystemWithHttpInfo(param: EventsApiIngestEventToTheSystemRequest, options?: Configuration): Promise<HttpInfo<IngestEventToTheSystem201Response>> {
+    public ingestEventToTheSystemWithHttpInfo(param: EventsApiIngestEventToTheSystemRequest, options?: ConfigurationOptions): Promise<HttpInfo<IngestEventToTheSystem201Response>> {
         return this.api.ingestEventToTheSystemWithHttpInfo(param.aPIIngestEventPayload,  options).toPromise();
     }
 
@@ -433,7 +443,7 @@ export class ObjectEventsApi {
      * Ingest events to the system
      * @param param the request object
      */
-    public ingestEventToTheSystem(param: EventsApiIngestEventToTheSystemRequest, options?: Configuration): Promise<IngestEventToTheSystem201Response> {
+    public ingestEventToTheSystem(param: EventsApiIngestEventToTheSystemRequest, options?: ConfigurationOptions): Promise<IngestEventToTheSystem201Response> {
         return this.api.ingestEventToTheSystem(param.aPIIngestEventPayload,  options).toPromise();
     }
 
@@ -441,7 +451,7 @@ export class ObjectEventsApi {
      * Query events based on filters and pagination.
      * @param param the request object
      */
-    public queryEventsWithHttpInfo(param: EventsApiQueryEventsRequest, options?: Configuration): Promise<HttpInfo<QueryResultAPIEvent>> {
+    public queryEventsWithHttpInfo(param: EventsApiQueryEventsRequest, options?: ConfigurationOptions): Promise<HttpInfo<QueryResultAPIEvent>> {
         return this.api.queryEventsWithHttpInfo(param.aPIQueryPayloadAPIEvent,  options).toPromise();
     }
 
@@ -449,7 +459,7 @@ export class ObjectEventsApi {
      * Query events based on filters and pagination.
      * @param param the request object
      */
-    public queryEvents(param: EventsApiQueryEventsRequest, options?: Configuration): Promise<QueryResultAPIEvent> {
+    public queryEvents(param: EventsApiQueryEventsRequest, options?: ConfigurationOptions): Promise<QueryResultAPIEvent> {
         return this.api.queryEvents(param.aPIQueryPayloadAPIEvent,  options).toPromise();
     }
 
@@ -461,6 +471,7 @@ import { InvoicesApiRequestFactory, InvoicesApiResponseProcessor} from "../apis/
 export interface InvoicesApiCalculateInvoiceRequest {
     /**
      * - The ID of the invoice to calculate.
+     * Defaults to: undefined
      * @type string
      * @memberof InvoicesApicalculateInvoice
      */
@@ -479,6 +490,7 @@ export interface InvoicesApiCreateInvoiceRequest {
 export interface InvoicesApiDeleteInvoiceRequest {
     /**
      * - The ID of the invoice to delete.
+     * Defaults to: undefined
      * @type string
      * @memberof InvoicesApideleteInvoice
      */
@@ -488,6 +500,7 @@ export interface InvoicesApiDeleteInvoiceRequest {
 export interface InvoicesApiGetInvoiceRequest {
     /**
      * - The ID of the invoice to fetch.
+     * Defaults to: undefined
      * @type string
      * @memberof InvoicesApigetInvoice
      */
@@ -512,6 +525,7 @@ export interface InvoicesApiUpdateInvoiceRequest {
     aPIUpdateInvoicePayload: APIUpdateInvoicePayload
     /**
      * - The ID of the invoice to update.
+     * Defaults to: undefined
      * @type string
      * @memberof InvoicesApiupdateInvoice
      */
@@ -529,7 +543,7 @@ export class ObjectInvoicesApi {
      * Calculate the total of an invoice.
      * @param param the request object
      */
-    public calculateInvoiceWithHttpInfo(param: InvoicesApiCalculateInvoiceRequest, options?: Configuration): Promise<HttpInfo<APIInvoice>> {
+    public calculateInvoiceWithHttpInfo(param: InvoicesApiCalculateInvoiceRequest, options?: ConfigurationOptions): Promise<HttpInfo<APIInvoice>> {
         return this.api.calculateInvoiceWithHttpInfo(param.id,  options).toPromise();
     }
 
@@ -537,7 +551,7 @@ export class ObjectInvoicesApi {
      * Calculate the total of an invoice.
      * @param param the request object
      */
-    public calculateInvoice(param: InvoicesApiCalculateInvoiceRequest, options?: Configuration): Promise<APIInvoice> {
+    public calculateInvoice(param: InvoicesApiCalculateInvoiceRequest, options?: ConfigurationOptions): Promise<APIInvoice> {
         return this.api.calculateInvoice(param.id,  options).toPromise();
     }
 
@@ -545,7 +559,7 @@ export class ObjectInvoicesApi {
      * Create a new invoice.
      * @param param the request object
      */
-    public createInvoiceWithHttpInfo(param: InvoicesApiCreateInvoiceRequest, options?: Configuration): Promise<HttpInfo<APIInvoice>> {
+    public createInvoiceWithHttpInfo(param: InvoicesApiCreateInvoiceRequest, options?: ConfigurationOptions): Promise<HttpInfo<APIInvoice>> {
         return this.api.createInvoiceWithHttpInfo(param.aPICreateInvoicePayload,  options).toPromise();
     }
 
@@ -553,7 +567,7 @@ export class ObjectInvoicesApi {
      * Create a new invoice.
      * @param param the request object
      */
-    public createInvoice(param: InvoicesApiCreateInvoiceRequest, options?: Configuration): Promise<APIInvoice> {
+    public createInvoice(param: InvoicesApiCreateInvoiceRequest, options?: ConfigurationOptions): Promise<APIInvoice> {
         return this.api.createInvoice(param.aPICreateInvoicePayload,  options).toPromise();
     }
 
@@ -561,7 +575,7 @@ export class ObjectInvoicesApi {
      * Delete an invoice by ID.
      * @param param the request object
      */
-    public deleteInvoiceWithHttpInfo(param: InvoicesApiDeleteInvoiceRequest, options?: Configuration): Promise<HttpInfo<void>> {
+    public deleteInvoiceWithHttpInfo(param: InvoicesApiDeleteInvoiceRequest, options?: ConfigurationOptions): Promise<HttpInfo<void>> {
         return this.api.deleteInvoiceWithHttpInfo(param.id,  options).toPromise();
     }
 
@@ -569,7 +583,7 @@ export class ObjectInvoicesApi {
      * Delete an invoice by ID.
      * @param param the request object
      */
-    public deleteInvoice(param: InvoicesApiDeleteInvoiceRequest, options?: Configuration): Promise<void> {
+    public deleteInvoice(param: InvoicesApiDeleteInvoiceRequest, options?: ConfigurationOptions): Promise<void> {
         return this.api.deleteInvoice(param.id,  options).toPromise();
     }
 
@@ -577,7 +591,7 @@ export class ObjectInvoicesApi {
      * Get a single invoice by ID.
      * @param param the request object
      */
-    public getInvoiceWithHttpInfo(param: InvoicesApiGetInvoiceRequest, options?: Configuration): Promise<HttpInfo<APIInvoice>> {
+    public getInvoiceWithHttpInfo(param: InvoicesApiGetInvoiceRequest, options?: ConfigurationOptions): Promise<HttpInfo<APIInvoice>> {
         return this.api.getInvoiceWithHttpInfo(param.id,  options).toPromise();
     }
 
@@ -585,7 +599,7 @@ export class ObjectInvoicesApi {
      * Get a single invoice by ID.
      * @param param the request object
      */
-    public getInvoice(param: InvoicesApiGetInvoiceRequest, options?: Configuration): Promise<APIInvoice> {
+    public getInvoice(param: InvoicesApiGetInvoiceRequest, options?: ConfigurationOptions): Promise<APIInvoice> {
         return this.api.getInvoice(param.id,  options).toPromise();
     }
 
@@ -593,7 +607,7 @@ export class ObjectInvoicesApi {
      * Query invoices based on filters and pagination.
      * @param param the request object
      */
-    public queryInvoicesWithHttpInfo(param: InvoicesApiQueryInvoicesRequest, options?: Configuration): Promise<HttpInfo<QueryResultAPIInvoice>> {
+    public queryInvoicesWithHttpInfo(param: InvoicesApiQueryInvoicesRequest, options?: ConfigurationOptions): Promise<HttpInfo<QueryResultAPIInvoice>> {
         return this.api.queryInvoicesWithHttpInfo(param.aPIQueryPayloadAPIInvoice,  options).toPromise();
     }
 
@@ -601,7 +615,7 @@ export class ObjectInvoicesApi {
      * Query invoices based on filters and pagination.
      * @param param the request object
      */
-    public queryInvoices(param: InvoicesApiQueryInvoicesRequest, options?: Configuration): Promise<QueryResultAPIInvoice> {
+    public queryInvoices(param: InvoicesApiQueryInvoicesRequest, options?: ConfigurationOptions): Promise<QueryResultAPIInvoice> {
         return this.api.queryInvoices(param.aPIQueryPayloadAPIInvoice,  options).toPromise();
     }
 
@@ -609,7 +623,7 @@ export class ObjectInvoicesApi {
      * Update an existing invoice.
      * @param param the request object
      */
-    public updateInvoiceWithHttpInfo(param: InvoicesApiUpdateInvoiceRequest, options?: Configuration): Promise<HttpInfo<APIInvoice>> {
+    public updateInvoiceWithHttpInfo(param: InvoicesApiUpdateInvoiceRequest, options?: ConfigurationOptions): Promise<HttpInfo<APIInvoice>> {
         return this.api.updateInvoiceWithHttpInfo(param.aPIUpdateInvoicePayload, param.id,  options).toPromise();
     }
 
@@ -617,7 +631,7 @@ export class ObjectInvoicesApi {
      * Update an existing invoice.
      * @param param the request object
      */
-    public updateInvoice(param: InvoicesApiUpdateInvoiceRequest, options?: Configuration): Promise<APIInvoice> {
+    public updateInvoice(param: InvoicesApiUpdateInvoiceRequest, options?: ConfigurationOptions): Promise<APIInvoice> {
         return this.api.updateInvoice(param.aPIUpdateInvoicePayload, param.id,  options).toPromise();
     }
 
@@ -638,6 +652,7 @@ export interface ProductsApiCreateProductRequest {
 export interface ProductsApiDeleteProductRequest {
     /**
      * - The ID of the product to delete.
+     * Defaults to: undefined
      * @type string
      * @memberof ProductsApideleteProduct
      */
@@ -647,6 +662,7 @@ export interface ProductsApiDeleteProductRequest {
 export interface ProductsApiGetProductRequest {
     /**
      * - The ID of the product to fetch.
+     * Defaults to: undefined
      * @type string
      * @memberof ProductsApigetProduct
      */
@@ -671,6 +687,7 @@ export interface ProductsApiUpdateProductRequest {
     aPIUpdateProductPayload: APIUpdateProductPayload
     /**
      * - The ID of the product to update.
+     * Defaults to: undefined
      * @type string
      * @memberof ProductsApiupdateProduct
      */
@@ -688,7 +705,7 @@ export class ObjectProductsApi {
      * Create a new product.
      * @param param the request object
      */
-    public createProductWithHttpInfo(param: ProductsApiCreateProductRequest, options?: Configuration): Promise<HttpInfo<APIProduct>> {
+    public createProductWithHttpInfo(param: ProductsApiCreateProductRequest, options?: ConfigurationOptions): Promise<HttpInfo<APIProduct>> {
         return this.api.createProductWithHttpInfo(param.aPICreateProductPayload,  options).toPromise();
     }
 
@@ -696,7 +713,7 @@ export class ObjectProductsApi {
      * Create a new product.
      * @param param the request object
      */
-    public createProduct(param: ProductsApiCreateProductRequest, options?: Configuration): Promise<APIProduct> {
+    public createProduct(param: ProductsApiCreateProductRequest, options?: ConfigurationOptions): Promise<APIProduct> {
         return this.api.createProduct(param.aPICreateProductPayload,  options).toPromise();
     }
 
@@ -704,7 +721,7 @@ export class ObjectProductsApi {
      * Delete a product by ID.
      * @param param the request object
      */
-    public deleteProductWithHttpInfo(param: ProductsApiDeleteProductRequest, options?: Configuration): Promise<HttpInfo<void>> {
+    public deleteProductWithHttpInfo(param: ProductsApiDeleteProductRequest, options?: ConfigurationOptions): Promise<HttpInfo<void>> {
         return this.api.deleteProductWithHttpInfo(param.id,  options).toPromise();
     }
 
@@ -712,7 +729,7 @@ export class ObjectProductsApi {
      * Delete a product by ID.
      * @param param the request object
      */
-    public deleteProduct(param: ProductsApiDeleteProductRequest, options?: Configuration): Promise<void> {
+    public deleteProduct(param: ProductsApiDeleteProductRequest, options?: ConfigurationOptions): Promise<void> {
         return this.api.deleteProduct(param.id,  options).toPromise();
     }
 
@@ -720,7 +737,7 @@ export class ObjectProductsApi {
      * Get a single product by ID.
      * @param param the request object
      */
-    public getProductWithHttpInfo(param: ProductsApiGetProductRequest, options?: Configuration): Promise<HttpInfo<APIProduct>> {
+    public getProductWithHttpInfo(param: ProductsApiGetProductRequest, options?: ConfigurationOptions): Promise<HttpInfo<APIProduct>> {
         return this.api.getProductWithHttpInfo(param.id,  options).toPromise();
     }
 
@@ -728,7 +745,7 @@ export class ObjectProductsApi {
      * Get a single product by ID.
      * @param param the request object
      */
-    public getProduct(param: ProductsApiGetProductRequest, options?: Configuration): Promise<APIProduct> {
+    public getProduct(param: ProductsApiGetProductRequest, options?: ConfigurationOptions): Promise<APIProduct> {
         return this.api.getProduct(param.id,  options).toPromise();
     }
 
@@ -736,7 +753,7 @@ export class ObjectProductsApi {
      * Query products based on filters and pagination.
      * @param param the request object
      */
-    public queryProductsWithHttpInfo(param: ProductsApiQueryProductsRequest, options?: Configuration): Promise<HttpInfo<QueryResultAPIProduct>> {
+    public queryProductsWithHttpInfo(param: ProductsApiQueryProductsRequest, options?: ConfigurationOptions): Promise<HttpInfo<QueryResultAPIProduct>> {
         return this.api.queryProductsWithHttpInfo(param.aPIQueryPayloadAPIProduct,  options).toPromise();
     }
 
@@ -744,7 +761,7 @@ export class ObjectProductsApi {
      * Query products based on filters and pagination.
      * @param param the request object
      */
-    public queryProducts(param: ProductsApiQueryProductsRequest, options?: Configuration): Promise<QueryResultAPIProduct> {
+    public queryProducts(param: ProductsApiQueryProductsRequest, options?: ConfigurationOptions): Promise<QueryResultAPIProduct> {
         return this.api.queryProducts(param.aPIQueryPayloadAPIProduct,  options).toPromise();
     }
 
@@ -752,7 +769,7 @@ export class ObjectProductsApi {
      * Update an existing product.
      * @param param the request object
      */
-    public updateProductWithHttpInfo(param: ProductsApiUpdateProductRequest, options?: Configuration): Promise<HttpInfo<APIProduct>> {
+    public updateProductWithHttpInfo(param: ProductsApiUpdateProductRequest, options?: ConfigurationOptions): Promise<HttpInfo<APIProduct>> {
         return this.api.updateProductWithHttpInfo(param.aPIUpdateProductPayload, param.id,  options).toPromise();
     }
 
@@ -760,7 +777,7 @@ export class ObjectProductsApi {
      * Update an existing product.
      * @param param the request object
      */
-    public updateProduct(param: ProductsApiUpdateProductRequest, options?: Configuration): Promise<APIProduct> {
+    public updateProduct(param: ProductsApiUpdateProductRequest, options?: ConfigurationOptions): Promise<APIProduct> {
         return this.api.updateProduct(param.aPIUpdateProductPayload, param.id,  options).toPromise();
     }
 

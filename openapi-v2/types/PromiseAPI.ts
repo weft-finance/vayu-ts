@@ -1,5 +1,6 @@
 import { ResponseContext, RequestContext, HttpFile, HttpInfo } from '../http/http';
-import { Configuration} from '../configuration'
+import { Configuration, ConfigurationOptions, PromiseConfigurationOptions } from '../configuration'
+import { PromiseMiddleware, Middleware, PromiseMiddlewareWrapper } from '../middleware';
 
 import { APICreateCustomerPayload } from '../models/APICreateCustomerPayload';
 import { APICreateInvoicePayload } from '../models/APICreateInvoicePayload';
@@ -55,18 +56,42 @@ export class PromiseAuthenticationApi {
     }
 
     /**
-     * @param loginRequest 
+     * @param loginRequest
      */
-    public loginWithHttpInfo(loginRequest: LoginRequest, _options?: Configuration): Promise<HttpInfo<Login200Response>> {
-        const result = this.api.loginWithHttpInfo(loginRequest, _options);
+    public loginWithHttpInfo(loginRequest: LoginRequest, _options?: PromiseConfigurationOptions): Promise<HttpInfo<Login200Response>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.loginWithHttpInfo(loginRequest, observableOptions);
         return result.toPromise();
     }
 
     /**
-     * @param loginRequest 
+     * @param loginRequest
      */
-    public login(loginRequest: LoginRequest, _options?: Configuration): Promise<Login200Response> {
-        const result = this.api.login(loginRequest, _options);
+    public login(loginRequest: LoginRequest, _options?: PromiseConfigurationOptions): Promise<Login200Response> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.login(loginRequest, observableOptions);
         return result.toPromise();
     }
 
@@ -93,8 +118,20 @@ export class PromiseCustomersApi {
      * Create a new customer.
      * @param aPICreateCustomerPayload - The details of the customer to create.
      */
-    public createCustomerWithHttpInfo(aPICreateCustomerPayload: APICreateCustomerPayload, _options?: Configuration): Promise<HttpInfo<APICustomer>> {
-        const result = this.api.createCustomerWithHttpInfo(aPICreateCustomerPayload, _options);
+    public createCustomerWithHttpInfo(aPICreateCustomerPayload: APICreateCustomerPayload, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APICustomer>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.createCustomerWithHttpInfo(aPICreateCustomerPayload, observableOptions);
         return result.toPromise();
     }
 
@@ -102,8 +139,20 @@ export class PromiseCustomersApi {
      * Create a new customer.
      * @param aPICreateCustomerPayload - The details of the customer to create.
      */
-    public createCustomer(aPICreateCustomerPayload: APICreateCustomerPayload, _options?: Configuration): Promise<APICustomer> {
-        const result = this.api.createCustomer(aPICreateCustomerPayload, _options);
+    public createCustomer(aPICreateCustomerPayload: APICreateCustomerPayload, _options?: PromiseConfigurationOptions): Promise<APICustomer> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.createCustomer(aPICreateCustomerPayload, observableOptions);
         return result.toPromise();
     }
 
@@ -111,8 +160,20 @@ export class PromiseCustomersApi {
      * Delete a customer by ID.
      * @param id - The ID of the customer to delete.
      */
-    public deleteCustomerWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<void>> {
-        const result = this.api.deleteCustomerWithHttpInfo(id, _options);
+    public deleteCustomerWithHttpInfo(id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<void>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.deleteCustomerWithHttpInfo(id, observableOptions);
         return result.toPromise();
     }
 
@@ -120,8 +181,20 @@ export class PromiseCustomersApi {
      * Delete a customer by ID.
      * @param id - The ID of the customer to delete.
      */
-    public deleteCustomer(id: string, _options?: Configuration): Promise<void> {
-        const result = this.api.deleteCustomer(id, _options);
+    public deleteCustomer(id: string, _options?: PromiseConfigurationOptions): Promise<void> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.deleteCustomer(id, observableOptions);
         return result.toPromise();
     }
 
@@ -129,8 +202,20 @@ export class PromiseCustomersApi {
      * Get a single customer by ID.
      * @param id - The ID of the customer to fetch.
      */
-    public getCustomerWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APICustomer>> {
-        const result = this.api.getCustomerWithHttpInfo(id, _options);
+    public getCustomerWithHttpInfo(id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APICustomer>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.getCustomerWithHttpInfo(id, observableOptions);
         return result.toPromise();
     }
 
@@ -138,8 +223,20 @@ export class PromiseCustomersApi {
      * Get a single customer by ID.
      * @param id - The ID of the customer to fetch.
      */
-    public getCustomer(id: string, _options?: Configuration): Promise<APICustomer> {
-        const result = this.api.getCustomer(id, _options);
+    public getCustomer(id: string, _options?: PromiseConfigurationOptions): Promise<APICustomer> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.getCustomer(id, observableOptions);
         return result.toPromise();
     }
 
@@ -147,8 +244,20 @@ export class PromiseCustomersApi {
      * Query customers based on filters and pagination.
      * @param aPIQueryPayloadAPICustomer - The query filters and pagination options.
      */
-    public queryCustomersWithHttpInfo(aPIQueryPayloadAPICustomer: APIQueryPayloadAPICustomer, _options?: Configuration): Promise<HttpInfo<QueryResultAPICustomer>> {
-        const result = this.api.queryCustomersWithHttpInfo(aPIQueryPayloadAPICustomer, _options);
+    public queryCustomersWithHttpInfo(aPIQueryPayloadAPICustomer: APIQueryPayloadAPICustomer, _options?: PromiseConfigurationOptions): Promise<HttpInfo<QueryResultAPICustomer>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.queryCustomersWithHttpInfo(aPIQueryPayloadAPICustomer, observableOptions);
         return result.toPromise();
     }
 
@@ -156,8 +265,20 @@ export class PromiseCustomersApi {
      * Query customers based on filters and pagination.
      * @param aPIQueryPayloadAPICustomer - The query filters and pagination options.
      */
-    public queryCustomers(aPIQueryPayloadAPICustomer: APIQueryPayloadAPICustomer, _options?: Configuration): Promise<QueryResultAPICustomer> {
-        const result = this.api.queryCustomers(aPIQueryPayloadAPICustomer, _options);
+    public queryCustomers(aPIQueryPayloadAPICustomer: APIQueryPayloadAPICustomer, _options?: PromiseConfigurationOptions): Promise<QueryResultAPICustomer> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.queryCustomers(aPIQueryPayloadAPICustomer, observableOptions);
         return result.toPromise();
     }
 
@@ -167,8 +288,20 @@ export class PromiseCustomersApi {
      * @param id - The ID of the customer to revise.
      * @param productId - The ID of the product to revise.
      */
-    public updateACustomersProductWithHttpInfo(body: ReviseEntitlementPayload, id: string, productId: string, _options?: Configuration): Promise<HttpInfo<APIEntitlement>> {
-        const result = this.api.updateACustomersProductWithHttpInfo(body, id, productId, _options);
+    public updateACustomersProductWithHttpInfo(body: ReviseEntitlementPayload, id: string, productId: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APIEntitlement>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.updateACustomersProductWithHttpInfo(body, id, productId, observableOptions);
         return result.toPromise();
     }
 
@@ -178,8 +311,20 @@ export class PromiseCustomersApi {
      * @param id - The ID of the customer to revise.
      * @param productId - The ID of the product to revise.
      */
-    public updateACustomersProduct(body: ReviseEntitlementPayload, id: string, productId: string, _options?: Configuration): Promise<APIEntitlement> {
-        const result = this.api.updateACustomersProduct(body, id, productId, _options);
+    public updateACustomersProduct(body: ReviseEntitlementPayload, id: string, productId: string, _options?: PromiseConfigurationOptions): Promise<APIEntitlement> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.updateACustomersProduct(body, id, productId, observableOptions);
         return result.toPromise();
     }
 
@@ -188,8 +333,20 @@ export class PromiseCustomersApi {
      * @param aPIUpdateCustomerPayload - The updated details of the customer.
      * @param id - The ID of the customer to update.
      */
-    public updateCustomerWithHttpInfo(aPIUpdateCustomerPayload: APIUpdateCustomerPayload, id: string, _options?: Configuration): Promise<HttpInfo<APICustomer>> {
-        const result = this.api.updateCustomerWithHttpInfo(aPIUpdateCustomerPayload, id, _options);
+    public updateCustomerWithHttpInfo(aPIUpdateCustomerPayload: APIUpdateCustomerPayload, id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APICustomer>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.updateCustomerWithHttpInfo(aPIUpdateCustomerPayload, id, observableOptions);
         return result.toPromise();
     }
 
@@ -198,8 +355,20 @@ export class PromiseCustomersApi {
      * @param aPIUpdateCustomerPayload - The updated details of the customer.
      * @param id - The ID of the customer to update.
      */
-    public updateCustomer(aPIUpdateCustomerPayload: APIUpdateCustomerPayload, id: string, _options?: Configuration): Promise<APICustomer> {
-        const result = this.api.updateCustomer(aPIUpdateCustomerPayload, id, _options);
+    public updateCustomer(aPIUpdateCustomerPayload: APIUpdateCustomerPayload, id: string, _options?: PromiseConfigurationOptions): Promise<APICustomer> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.updateCustomer(aPIUpdateCustomerPayload, id, observableOptions);
         return result.toPromise();
     }
 
@@ -226,8 +395,20 @@ export class PromiseEntitlementsApi {
      * Delete an entitlement by ID.
      * @param id - The ID of the entitlement to delete.
      */
-    public deleteEntitlementWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<void>> {
-        const result = this.api.deleteEntitlementWithHttpInfo(id, _options);
+    public deleteEntitlementWithHttpInfo(id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<void>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.deleteEntitlementWithHttpInfo(id, observableOptions);
         return result.toPromise();
     }
 
@@ -235,8 +416,20 @@ export class PromiseEntitlementsApi {
      * Delete an entitlement by ID.
      * @param id - The ID of the entitlement to delete.
      */
-    public deleteEntitlement(id: string, _options?: Configuration): Promise<void> {
-        const result = this.api.deleteEntitlement(id, _options);
+    public deleteEntitlement(id: string, _options?: PromiseConfigurationOptions): Promise<void> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.deleteEntitlement(id, observableOptions);
         return result.toPromise();
     }
 
@@ -244,8 +437,20 @@ export class PromiseEntitlementsApi {
      * Get a single entitlement by ID.
      * @param id - The ID of the entitlement to fetch.
      */
-    public getEntitlementWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APIEntitlement>> {
-        const result = this.api.getEntitlementWithHttpInfo(id, _options);
+    public getEntitlementWithHttpInfo(id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APIEntitlement>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.getEntitlementWithHttpInfo(id, observableOptions);
         return result.toPromise();
     }
 
@@ -253,8 +458,20 @@ export class PromiseEntitlementsApi {
      * Get a single entitlement by ID.
      * @param id - The ID of the entitlement to fetch.
      */
-    public getEntitlement(id: string, _options?: Configuration): Promise<APIEntitlement> {
-        const result = this.api.getEntitlement(id, _options);
+    public getEntitlement(id: string, _options?: PromiseConfigurationOptions): Promise<APIEntitlement> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.getEntitlement(id, observableOptions);
         return result.toPromise();
     }
 
@@ -262,8 +479,20 @@ export class PromiseEntitlementsApi {
      * Query entitlements based on filters and pagination.
      * @param aPIQueryPayloadAPIEntitlement - The query filters and pagination options.
      */
-    public queryEntitlementsWithHttpInfo(aPIQueryPayloadAPIEntitlement: APIQueryPayloadAPIEntitlement, _options?: Configuration): Promise<HttpInfo<QueryResultAPIEntitlement>> {
-        const result = this.api.queryEntitlementsWithHttpInfo(aPIQueryPayloadAPIEntitlement, _options);
+    public queryEntitlementsWithHttpInfo(aPIQueryPayloadAPIEntitlement: APIQueryPayloadAPIEntitlement, _options?: PromiseConfigurationOptions): Promise<HttpInfo<QueryResultAPIEntitlement>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.queryEntitlementsWithHttpInfo(aPIQueryPayloadAPIEntitlement, observableOptions);
         return result.toPromise();
     }
 
@@ -271,8 +500,20 @@ export class PromiseEntitlementsApi {
      * Query entitlements based on filters and pagination.
      * @param aPIQueryPayloadAPIEntitlement - The query filters and pagination options.
      */
-    public queryEntitlements(aPIQueryPayloadAPIEntitlement: APIQueryPayloadAPIEntitlement, _options?: Configuration): Promise<QueryResultAPIEntitlement> {
-        const result = this.api.queryEntitlements(aPIQueryPayloadAPIEntitlement, _options);
+    public queryEntitlements(aPIQueryPayloadAPIEntitlement: APIQueryPayloadAPIEntitlement, _options?: PromiseConfigurationOptions): Promise<QueryResultAPIEntitlement> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.queryEntitlements(aPIQueryPayloadAPIEntitlement, observableOptions);
         return result.toPromise();
     }
 
@@ -299,8 +540,20 @@ export class PromiseEventsApi {
      * Delete an event by ID.
      * @param id - The ID of the event to delete.
      */
-    public deleteEventWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<void>> {
-        const result = this.api.deleteEventWithHttpInfo(id, _options);
+    public deleteEventWithHttpInfo(id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<void>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.deleteEventWithHttpInfo(id, observableOptions);
         return result.toPromise();
     }
 
@@ -308,8 +561,20 @@ export class PromiseEventsApi {
      * Delete an event by ID.
      * @param id - The ID of the event to delete.
      */
-    public deleteEvent(id: string, _options?: Configuration): Promise<void> {
-        const result = this.api.deleteEvent(id, _options);
+    public deleteEvent(id: string, _options?: PromiseConfigurationOptions): Promise<void> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.deleteEvent(id, observableOptions);
         return result.toPromise();
     }
 
@@ -317,8 +582,20 @@ export class PromiseEventsApi {
      * Get a single event by ID.
      * @param id - The ID of the event to fetch.
      */
-    public getEventWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APIEvent>> {
-        const result = this.api.getEventWithHttpInfo(id, _options);
+    public getEventWithHttpInfo(id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APIEvent>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.getEventWithHttpInfo(id, observableOptions);
         return result.toPromise();
     }
 
@@ -326,8 +603,20 @@ export class PromiseEventsApi {
      * Get a single event by ID.
      * @param id - The ID of the event to fetch.
      */
-    public getEvent(id: string, _options?: Configuration): Promise<APIEvent> {
-        const result = this.api.getEvent(id, _options);
+    public getEvent(id: string, _options?: PromiseConfigurationOptions): Promise<APIEvent> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.getEvent(id, observableOptions);
         return result.toPromise();
     }
 
@@ -335,8 +624,20 @@ export class PromiseEventsApi {
      * Ingest events to the system
      * @param aPIIngestEventPayload - The events to ingest
      */
-    public ingestEventToTheSystemWithHttpInfo(aPIIngestEventPayload: Array<APIIngestEventPayload>, _options?: Configuration): Promise<HttpInfo<IngestEventToTheSystem201Response>> {
-        const result = this.api.ingestEventToTheSystemWithHttpInfo(aPIIngestEventPayload, _options);
+    public ingestEventToTheSystemWithHttpInfo(aPIIngestEventPayload: Array<APIIngestEventPayload>, _options?: PromiseConfigurationOptions): Promise<HttpInfo<IngestEventToTheSystem201Response>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.ingestEventToTheSystemWithHttpInfo(aPIIngestEventPayload, observableOptions);
         return result.toPromise();
     }
 
@@ -344,8 +645,20 @@ export class PromiseEventsApi {
      * Ingest events to the system
      * @param aPIIngestEventPayload - The events to ingest
      */
-    public ingestEventToTheSystem(aPIIngestEventPayload: Array<APIIngestEventPayload>, _options?: Configuration): Promise<IngestEventToTheSystem201Response> {
-        const result = this.api.ingestEventToTheSystem(aPIIngestEventPayload, _options);
+    public ingestEventToTheSystem(aPIIngestEventPayload: Array<APIIngestEventPayload>, _options?: PromiseConfigurationOptions): Promise<IngestEventToTheSystem201Response> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.ingestEventToTheSystem(aPIIngestEventPayload, observableOptions);
         return result.toPromise();
     }
 
@@ -353,8 +666,20 @@ export class PromiseEventsApi {
      * Query events based on filters and pagination.
      * @param aPIQueryPayloadAPIEvent - The query filters and pagination options.
      */
-    public queryEventsWithHttpInfo(aPIQueryPayloadAPIEvent: APIQueryPayloadAPIEvent, _options?: Configuration): Promise<HttpInfo<QueryResultAPIEvent>> {
-        const result = this.api.queryEventsWithHttpInfo(aPIQueryPayloadAPIEvent, _options);
+    public queryEventsWithHttpInfo(aPIQueryPayloadAPIEvent: APIQueryPayloadAPIEvent, _options?: PromiseConfigurationOptions): Promise<HttpInfo<QueryResultAPIEvent>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.queryEventsWithHttpInfo(aPIQueryPayloadAPIEvent, observableOptions);
         return result.toPromise();
     }
 
@@ -362,8 +687,20 @@ export class PromiseEventsApi {
      * Query events based on filters and pagination.
      * @param aPIQueryPayloadAPIEvent - The query filters and pagination options.
      */
-    public queryEvents(aPIQueryPayloadAPIEvent: APIQueryPayloadAPIEvent, _options?: Configuration): Promise<QueryResultAPIEvent> {
-        const result = this.api.queryEvents(aPIQueryPayloadAPIEvent, _options);
+    public queryEvents(aPIQueryPayloadAPIEvent: APIQueryPayloadAPIEvent, _options?: PromiseConfigurationOptions): Promise<QueryResultAPIEvent> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.queryEvents(aPIQueryPayloadAPIEvent, observableOptions);
         return result.toPromise();
     }
 
@@ -390,8 +727,20 @@ export class PromiseInvoicesApi {
      * Calculate the total of an invoice.
      * @param id - The ID of the invoice to calculate.
      */
-    public calculateInvoiceWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APIInvoice>> {
-        const result = this.api.calculateInvoiceWithHttpInfo(id, _options);
+    public calculateInvoiceWithHttpInfo(id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APIInvoice>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.calculateInvoiceWithHttpInfo(id, observableOptions);
         return result.toPromise();
     }
 
@@ -399,8 +748,20 @@ export class PromiseInvoicesApi {
      * Calculate the total of an invoice.
      * @param id - The ID of the invoice to calculate.
      */
-    public calculateInvoice(id: string, _options?: Configuration): Promise<APIInvoice> {
-        const result = this.api.calculateInvoice(id, _options);
+    public calculateInvoice(id: string, _options?: PromiseConfigurationOptions): Promise<APIInvoice> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.calculateInvoice(id, observableOptions);
         return result.toPromise();
     }
 
@@ -408,8 +769,20 @@ export class PromiseInvoicesApi {
      * Create a new invoice.
      * @param aPICreateInvoicePayload - The details of the invoice to create.
      */
-    public createInvoiceWithHttpInfo(aPICreateInvoicePayload: APICreateInvoicePayload, _options?: Configuration): Promise<HttpInfo<APIInvoice>> {
-        const result = this.api.createInvoiceWithHttpInfo(aPICreateInvoicePayload, _options);
+    public createInvoiceWithHttpInfo(aPICreateInvoicePayload: APICreateInvoicePayload, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APIInvoice>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.createInvoiceWithHttpInfo(aPICreateInvoicePayload, observableOptions);
         return result.toPromise();
     }
 
@@ -417,8 +790,20 @@ export class PromiseInvoicesApi {
      * Create a new invoice.
      * @param aPICreateInvoicePayload - The details of the invoice to create.
      */
-    public createInvoice(aPICreateInvoicePayload: APICreateInvoicePayload, _options?: Configuration): Promise<APIInvoice> {
-        const result = this.api.createInvoice(aPICreateInvoicePayload, _options);
+    public createInvoice(aPICreateInvoicePayload: APICreateInvoicePayload, _options?: PromiseConfigurationOptions): Promise<APIInvoice> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.createInvoice(aPICreateInvoicePayload, observableOptions);
         return result.toPromise();
     }
 
@@ -426,8 +811,20 @@ export class PromiseInvoicesApi {
      * Delete an invoice by ID.
      * @param id - The ID of the invoice to delete.
      */
-    public deleteInvoiceWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<void>> {
-        const result = this.api.deleteInvoiceWithHttpInfo(id, _options);
+    public deleteInvoiceWithHttpInfo(id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<void>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.deleteInvoiceWithHttpInfo(id, observableOptions);
         return result.toPromise();
     }
 
@@ -435,8 +832,20 @@ export class PromiseInvoicesApi {
      * Delete an invoice by ID.
      * @param id - The ID of the invoice to delete.
      */
-    public deleteInvoice(id: string, _options?: Configuration): Promise<void> {
-        const result = this.api.deleteInvoice(id, _options);
+    public deleteInvoice(id: string, _options?: PromiseConfigurationOptions): Promise<void> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.deleteInvoice(id, observableOptions);
         return result.toPromise();
     }
 
@@ -444,8 +853,20 @@ export class PromiseInvoicesApi {
      * Get a single invoice by ID.
      * @param id - The ID of the invoice to fetch.
      */
-    public getInvoiceWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APIInvoice>> {
-        const result = this.api.getInvoiceWithHttpInfo(id, _options);
+    public getInvoiceWithHttpInfo(id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APIInvoice>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.getInvoiceWithHttpInfo(id, observableOptions);
         return result.toPromise();
     }
 
@@ -453,8 +874,20 @@ export class PromiseInvoicesApi {
      * Get a single invoice by ID.
      * @param id - The ID of the invoice to fetch.
      */
-    public getInvoice(id: string, _options?: Configuration): Promise<APIInvoice> {
-        const result = this.api.getInvoice(id, _options);
+    public getInvoice(id: string, _options?: PromiseConfigurationOptions): Promise<APIInvoice> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.getInvoice(id, observableOptions);
         return result.toPromise();
     }
 
@@ -462,8 +895,20 @@ export class PromiseInvoicesApi {
      * Query invoices based on filters and pagination.
      * @param aPIQueryPayloadAPIInvoice - The query filters and pagination options.
      */
-    public queryInvoicesWithHttpInfo(aPIQueryPayloadAPIInvoice: APIQueryPayloadAPIInvoice, _options?: Configuration): Promise<HttpInfo<QueryResultAPIInvoice>> {
-        const result = this.api.queryInvoicesWithHttpInfo(aPIQueryPayloadAPIInvoice, _options);
+    public queryInvoicesWithHttpInfo(aPIQueryPayloadAPIInvoice: APIQueryPayloadAPIInvoice, _options?: PromiseConfigurationOptions): Promise<HttpInfo<QueryResultAPIInvoice>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.queryInvoicesWithHttpInfo(aPIQueryPayloadAPIInvoice, observableOptions);
         return result.toPromise();
     }
 
@@ -471,8 +916,20 @@ export class PromiseInvoicesApi {
      * Query invoices based on filters and pagination.
      * @param aPIQueryPayloadAPIInvoice - The query filters and pagination options.
      */
-    public queryInvoices(aPIQueryPayloadAPIInvoice: APIQueryPayloadAPIInvoice, _options?: Configuration): Promise<QueryResultAPIInvoice> {
-        const result = this.api.queryInvoices(aPIQueryPayloadAPIInvoice, _options);
+    public queryInvoices(aPIQueryPayloadAPIInvoice: APIQueryPayloadAPIInvoice, _options?: PromiseConfigurationOptions): Promise<QueryResultAPIInvoice> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.queryInvoices(aPIQueryPayloadAPIInvoice, observableOptions);
         return result.toPromise();
     }
 
@@ -481,8 +938,20 @@ export class PromiseInvoicesApi {
      * @param aPIUpdateInvoicePayload - The updated details of the invoice.
      * @param id - The ID of the invoice to update.
      */
-    public updateInvoiceWithHttpInfo(aPIUpdateInvoicePayload: APIUpdateInvoicePayload, id: string, _options?: Configuration): Promise<HttpInfo<APIInvoice>> {
-        const result = this.api.updateInvoiceWithHttpInfo(aPIUpdateInvoicePayload, id, _options);
+    public updateInvoiceWithHttpInfo(aPIUpdateInvoicePayload: APIUpdateInvoicePayload, id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APIInvoice>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.updateInvoiceWithHttpInfo(aPIUpdateInvoicePayload, id, observableOptions);
         return result.toPromise();
     }
 
@@ -491,8 +960,20 @@ export class PromiseInvoicesApi {
      * @param aPIUpdateInvoicePayload - The updated details of the invoice.
      * @param id - The ID of the invoice to update.
      */
-    public updateInvoice(aPIUpdateInvoicePayload: APIUpdateInvoicePayload, id: string, _options?: Configuration): Promise<APIInvoice> {
-        const result = this.api.updateInvoice(aPIUpdateInvoicePayload, id, _options);
+    public updateInvoice(aPIUpdateInvoicePayload: APIUpdateInvoicePayload, id: string, _options?: PromiseConfigurationOptions): Promise<APIInvoice> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.updateInvoice(aPIUpdateInvoicePayload, id, observableOptions);
         return result.toPromise();
     }
 
@@ -519,8 +1000,20 @@ export class PromiseProductsApi {
      * Create a new product.
      * @param aPICreateProductPayload - The details of the product to create.
      */
-    public createProductWithHttpInfo(aPICreateProductPayload: APICreateProductPayload, _options?: Configuration): Promise<HttpInfo<APIProduct>> {
-        const result = this.api.createProductWithHttpInfo(aPICreateProductPayload, _options);
+    public createProductWithHttpInfo(aPICreateProductPayload: APICreateProductPayload, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APIProduct>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.createProductWithHttpInfo(aPICreateProductPayload, observableOptions);
         return result.toPromise();
     }
 
@@ -528,8 +1021,20 @@ export class PromiseProductsApi {
      * Create a new product.
      * @param aPICreateProductPayload - The details of the product to create.
      */
-    public createProduct(aPICreateProductPayload: APICreateProductPayload, _options?: Configuration): Promise<APIProduct> {
-        const result = this.api.createProduct(aPICreateProductPayload, _options);
+    public createProduct(aPICreateProductPayload: APICreateProductPayload, _options?: PromiseConfigurationOptions): Promise<APIProduct> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.createProduct(aPICreateProductPayload, observableOptions);
         return result.toPromise();
     }
 
@@ -537,8 +1042,20 @@ export class PromiseProductsApi {
      * Delete a product by ID.
      * @param id - The ID of the product to delete.
      */
-    public deleteProductWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<void>> {
-        const result = this.api.deleteProductWithHttpInfo(id, _options);
+    public deleteProductWithHttpInfo(id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<void>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.deleteProductWithHttpInfo(id, observableOptions);
         return result.toPromise();
     }
 
@@ -546,8 +1063,20 @@ export class PromiseProductsApi {
      * Delete a product by ID.
      * @param id - The ID of the product to delete.
      */
-    public deleteProduct(id: string, _options?: Configuration): Promise<void> {
-        const result = this.api.deleteProduct(id, _options);
+    public deleteProduct(id: string, _options?: PromiseConfigurationOptions): Promise<void> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.deleteProduct(id, observableOptions);
         return result.toPromise();
     }
 
@@ -555,8 +1084,20 @@ export class PromiseProductsApi {
      * Get a single product by ID.
      * @param id - The ID of the product to fetch.
      */
-    public getProductWithHttpInfo(id: string, _options?: Configuration): Promise<HttpInfo<APIProduct>> {
-        const result = this.api.getProductWithHttpInfo(id, _options);
+    public getProductWithHttpInfo(id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APIProduct>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.getProductWithHttpInfo(id, observableOptions);
         return result.toPromise();
     }
 
@@ -564,8 +1105,20 @@ export class PromiseProductsApi {
      * Get a single product by ID.
      * @param id - The ID of the product to fetch.
      */
-    public getProduct(id: string, _options?: Configuration): Promise<APIProduct> {
-        const result = this.api.getProduct(id, _options);
+    public getProduct(id: string, _options?: PromiseConfigurationOptions): Promise<APIProduct> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.getProduct(id, observableOptions);
         return result.toPromise();
     }
 
@@ -573,8 +1126,20 @@ export class PromiseProductsApi {
      * Query products based on filters and pagination.
      * @param aPIQueryPayloadAPIProduct - The query filters and pagination details.
      */
-    public queryProductsWithHttpInfo(aPIQueryPayloadAPIProduct: APIQueryPayloadAPIProduct, _options?: Configuration): Promise<HttpInfo<QueryResultAPIProduct>> {
-        const result = this.api.queryProductsWithHttpInfo(aPIQueryPayloadAPIProduct, _options);
+    public queryProductsWithHttpInfo(aPIQueryPayloadAPIProduct: APIQueryPayloadAPIProduct, _options?: PromiseConfigurationOptions): Promise<HttpInfo<QueryResultAPIProduct>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.queryProductsWithHttpInfo(aPIQueryPayloadAPIProduct, observableOptions);
         return result.toPromise();
     }
 
@@ -582,8 +1147,20 @@ export class PromiseProductsApi {
      * Query products based on filters and pagination.
      * @param aPIQueryPayloadAPIProduct - The query filters and pagination details.
      */
-    public queryProducts(aPIQueryPayloadAPIProduct: APIQueryPayloadAPIProduct, _options?: Configuration): Promise<QueryResultAPIProduct> {
-        const result = this.api.queryProducts(aPIQueryPayloadAPIProduct, _options);
+    public queryProducts(aPIQueryPayloadAPIProduct: APIQueryPayloadAPIProduct, _options?: PromiseConfigurationOptions): Promise<QueryResultAPIProduct> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.queryProducts(aPIQueryPayloadAPIProduct, observableOptions);
         return result.toPromise();
     }
 
@@ -592,8 +1169,20 @@ export class PromiseProductsApi {
      * @param aPIUpdateProductPayload - The updated details of the product.
      * @param id - The ID of the product to update.
      */
-    public updateProductWithHttpInfo(aPIUpdateProductPayload: APIUpdateProductPayload, id: string, _options?: Configuration): Promise<HttpInfo<APIProduct>> {
-        const result = this.api.updateProductWithHttpInfo(aPIUpdateProductPayload, id, _options);
+    public updateProductWithHttpInfo(aPIUpdateProductPayload: APIUpdateProductPayload, id: string, _options?: PromiseConfigurationOptions): Promise<HttpInfo<APIProduct>> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.updateProductWithHttpInfo(aPIUpdateProductPayload, id, observableOptions);
         return result.toPromise();
     }
 
@@ -602,8 +1191,20 @@ export class PromiseProductsApi {
      * @param aPIUpdateProductPayload - The updated details of the product.
      * @param id - The ID of the product to update.
      */
-    public updateProduct(aPIUpdateProductPayload: APIUpdateProductPayload, id: string, _options?: Configuration): Promise<APIProduct> {
-        const result = this.api.updateProduct(aPIUpdateProductPayload, id, _options);
+    public updateProduct(aPIUpdateProductPayload: APIUpdateProductPayload, id: string, _options?: PromiseConfigurationOptions): Promise<APIProduct> {
+        let observableOptions: undefined | ConfigurationOptions
+        if (_options){
+	    observableOptions = {
+                baseServer: _options.baseServer,
+                httpApi: _options.httpApi,
+                middleware: _options.middleware?.map(
+                    m => new PromiseMiddlewareWrapper(m)
+		),
+		middlewareMergeStrategy: _options.middlewareMergeStrategy,
+                authMethods: _options.authMethods
+	    }
+	}
+        const result = this.api.updateProduct(aPIUpdateProductPayload, id, observableOptions);
         return result.toPromise();
     }
 

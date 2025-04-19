@@ -22,5 +22,7 @@ export enum CriterionOperator {
     LargerThan = 'LargerThan',
     LowerThan = 'LowerThan',
     LowerEqualTo = 'LowerEqualTo',
-    LargerEqualTo = 'LargerEqualTo'
+    LargerEqualTo = 'LargerEqualTo',
+    Exists = 'Exists',
+    DoesntExists = 'DoesntExists'
 }
