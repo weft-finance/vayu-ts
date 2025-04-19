@@ -16,5 +16,6 @@ export enum NotificationEventType {
     AnonymousCustomer = 'AnonymousCustomer',
     Overage = 'Overage',
     UpcomingRenewal = 'UpcomingRenewal',
-    InvoiceApproved = 'InvoiceApproved'
+    InvoiceApproved = 'InvoiceApproved',
+    CustomerPortalLinkSent = 'CustomerPortalLinkSent'
 }

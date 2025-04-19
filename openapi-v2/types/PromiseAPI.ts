@@ -55,7 +55,7 @@ export class PromiseAuthenticationApi {
     }
 
     /**
-     * @param loginRequest 
+     * @param loginRequest
      */
     public loginWithHttpInfo(loginRequest: LoginRequest, _options?: Configuration): Promise<HttpInfo<Login200Response>> {
         const result = this.api.loginWithHttpInfo(loginRequest, _options);
@@ -63,7 +63,7 @@ export class PromiseAuthenticationApi {
     }
 
     /**
-     * @param loginRequest 
+     * @param loginRequest
      */
     public login(loginRequest: LoginRequest, _options?: Configuration): Promise<Login200Response> {
         const result = this.api.login(loginRequest, _options);

@@ -15,6 +15,7 @@ import { HttpFile } from '../http/http';
 export enum ContractStatus {
     Active = 'Active',
     Inactive = 'Inactive',
+    Expired = 'Expired',
     Terminated = 'Terminated',
     PendingTermination = 'PendingTermination',
     Error = 'Error'

@@ -91,6 +91,7 @@ export interface CustomersApiCreateCustomerRequest {
 export interface CustomersApiDeleteCustomerRequest {
     /**
      * - The ID of the customer to delete.
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApideleteCustomer
      */
@@ -100,6 +101,7 @@ export interface CustomersApiDeleteCustomerRequest {
 export interface CustomersApiGetCustomerRequest {
     /**
      * - The ID of the customer to fetch.
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApigetCustomer
      */
@@ -124,12 +126,14 @@ export interface CustomersApiUpdateACustomersProductRequest {
     body: ReviseEntitlementPayload
     /**
      * - The ID of the customer to revise.
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApiupdateACustomersProduct
      */
     id: string
     /**
      * - The ID of the product to revise.
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApiupdateACustomersProduct
      */
@@ -145,6 +149,7 @@ export interface CustomersApiUpdateCustomerRequest {
     aPIUpdateCustomerPayload: APIUpdateCustomerPayload
     /**
      * - The ID of the customer to update.
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApiupdateCustomer
      */
@@ -262,6 +267,7 @@ import { EntitlementsApiRequestFactory, EntitlementsApiResponseProcessor} from "
 export interface EntitlementsApiDeleteEntitlementRequest {
     /**
      * - The ID of the entitlement to delete.
+     * Defaults to: undefined
      * @type string
      * @memberof EntitlementsApideleteEntitlement
      */
@@ -271,6 +277,7 @@ export interface EntitlementsApiDeleteEntitlementRequest {
 export interface EntitlementsApiGetEntitlementRequest {
     /**
      * - The ID of the entitlement to fetch.
+     * Defaults to: undefined
      * @type string
      * @memberof EntitlementsApigetEntitlement
      */
@@ -349,6 +356,7 @@ import { EventsApiRequestFactory, EventsApiResponseProcessor} from "../apis/Even
 export interface EventsApiDeleteEventRequest {
     /**
      * - The ID of the event to delete.
+     * Defaults to: undefined
      * @type string
      * @memberof EventsApideleteEvent
      */
@@ -358,6 +366,7 @@ export interface EventsApiDeleteEventRequest {
 export interface EventsApiGetEventRequest {
     /**
      * - The ID of the event to fetch.
+     * Defaults to: undefined
      * @type string
      * @memberof EventsApigetEvent
      */
@@ -461,6 +470,7 @@ import { InvoicesApiRequestFactory, InvoicesApiResponseProcessor} from "../apis/
 export interface InvoicesApiCalculateInvoiceRequest {
     /**
      * - The ID of the invoice to calculate.
+     * Defaults to: undefined
      * @type string
      * @memberof InvoicesApicalculateInvoice
      */
@@ -479,6 +489,7 @@ export interface InvoicesApiCreateInvoiceRequest {
 export interface InvoicesApiDeleteInvoiceRequest {
     /**
      * - The ID of the invoice to delete.
+     * Defaults to: undefined
      * @type string
      * @memberof InvoicesApideleteInvoice
      */
@@ -488,6 +499,7 @@ export interface InvoicesApiDeleteInvoiceRequest {
 export interface InvoicesApiGetInvoiceRequest {
     /**
      * - The ID of the invoice to fetch.
+     * Defaults to: undefined
      * @type string
      * @memberof InvoicesApigetInvoice
      */
@@ -512,6 +524,7 @@ export interface InvoicesApiUpdateInvoiceRequest {
     aPIUpdateInvoicePayload: APIUpdateInvoicePayload
     /**
      * - The ID of the invoice to update.
+     * Defaults to: undefined
      * @type string
      * @memberof InvoicesApiupdateInvoice
      */
@@ -638,6 +651,7 @@ export interface ProductsApiCreateProductRequest {
 export interface ProductsApiDeleteProductRequest {
     /**
      * - The ID of the product to delete.
+     * Defaults to: undefined
      * @type string
      * @memberof ProductsApideleteProduct
      */
@@ -647,6 +661,7 @@ export interface ProductsApiDeleteProductRequest {
 export interface ProductsApiGetProductRequest {
     /**
      * - The ID of the product to fetch.
+     * Defaults to: undefined
      * @type string
      * @memberof ProductsApigetProduct
      */
@@ -671,6 +686,7 @@ export interface ProductsApiUpdateProductRequest {
     aPIUpdateProductPayload: APIUpdateProductPayload
     /**
      * - The ID of the product to update.
+     * Defaults to: undefined
      * @type string
      * @memberof ProductsApiupdateProduct
      */

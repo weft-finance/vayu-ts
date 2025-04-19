@@ -40,6 +40,7 @@ import { FullDayPeriod } from '../models/FullDayPeriod';
 import { GetCommitmentReportResponse } from '../models/GetCommitmentReportResponse';
 import { GetContractResponse } from '../models/GetContractResponse';
 import { GetContractResponseContract } from '../models/GetContractResponseContract';
+import { GetCustomerProductsConsumptionsResponse } from '../models/GetCustomerProductsConsumptionsResponse';
 import { GetCustomerResponse } from '../models/GetCustomerResponse';
 import { GetEventResponse } from '../models/GetEventResponse';
 import { GetEventResponseEvent } from '../models/GetEventResponseEvent';
@@ -49,6 +50,8 @@ import { GetMeterResponse } from '../models/GetMeterResponse';
 import { GetMeterResponseMeter } from '../models/GetMeterResponseMeter';
 import { GetPlanResponse } from '../models/GetPlanResponse';
 import { GetPlanResponsePlan } from '../models/GetPlanResponsePlan';
+import { GetProductConsumptionResponse } from '../models/GetProductConsumptionResponse';
+import { GetProductConsumptionResponseProductConsumption } from '../models/GetProductConsumptionResponseProductConsumption';
 import { GetProductsUsageReportResponse } from '../models/GetProductsUsageReportResponse';
 import { GrantCreditsRequest } from '../models/GrantCreditsRequest';
 import { InvalidEvent } from '../models/InvalidEvent';
@@ -73,11 +76,14 @@ import { NetSuiteSyncInvoicesResponse } from '../models/NetSuiteSyncInvoicesResp
 import { NotificationEventType } from '../models/NotificationEventType';
 import { PaymentTerm } from '../models/PaymentTerm';
 import { PlanBillingData } from '../models/PlanBillingData';
+import { PlanDuration } from '../models/PlanDuration';
 import { PlanStatus } from '../models/PlanStatus';
+import { ProductConsumption } from '../models/ProductConsumption';
 import { QueryEventsResponse } from '../models/QueryEventsResponse';
 import { QueryEventsResponseEventsInner } from '../models/QueryEventsResponseEventsInner';
 import { SendEventsRequest } from '../models/SendEventsRequest';
 import { SendEventsResponse } from '../models/SendEventsResponse';
+import { UnlimitedDuration } from '../models/UnlimitedDuration';
 import { UpdateCustomerRequest } from '../models/UpdateCustomerRequest';
 import { UpdateCustomerResponse } from '../models/UpdateCustomerResponse';
 import { UpdateMeterRequest } from '../models/UpdateMeterRequest';
@@ -138,6 +144,7 @@ export interface ContractsApiCreateContractRequest {
 export interface ContractsApiDeleteContractRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof ContractsApideleteContract
      */
@@ -147,6 +154,7 @@ export interface ContractsApiDeleteContractRequest {
 export interface ContractsApiGetContractRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof ContractsApigetContract
      */
@@ -156,12 +164,15 @@ export interface ContractsApiGetContractRequest {
 export interface ContractsApiListContractsRequest {
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof ContractsApilistContracts
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof ContractsApilistContracts
      */
@@ -273,18 +284,22 @@ export interface CreditsApiGrantCreditsRequest {
 export interface CreditsApiListCreditLedgerEntriesRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CreditsApilistCreditLedgerEntries
      */
     customerId: string
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof CreditsApilistCreditLedgerEntries
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CreditsApilistCreditLedgerEntries
      */
@@ -369,6 +384,7 @@ export interface CustomersApiCreateCustomerRequest {
 export interface CustomersApiDeleteCustomerRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApideleteCustomer
      */
@@ -378,6 +394,7 @@ export interface CustomersApiDeleteCustomerRequest {
 export interface CustomersApiGetCustomerRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApigetCustomer
      */
@@ -387,21 +404,35 @@ export interface CustomersApiGetCustomerRequest {
 export interface CustomersApiGetCustomerByExternalIdRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApigetCustomerByExternalId
      */
     externalId: string
 }
 
+export interface CustomersApiGetCustomerProductsConsumptionsRequest {
+    /**
+     * 
+     * Defaults to: undefined
+     * @type string
+     * @memberof CustomersApigetCustomerProductsConsumptions
+     */
+    customerId: string
+}
+
 export interface CustomersApiListCustomersRequest {
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof CustomersApilistCustomers
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApilistCustomers
      */
@@ -417,6 +448,7 @@ export interface CustomersApiUpdateCustomerRequest {
     updateCustomerRequest: UpdateCustomerRequest
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof CustomersApiupdateCustomer
      */
@@ -503,6 +535,24 @@ export class ObjectCustomersApi {
     }
 
     /**
+     * Use this endpoint to get the products consumptions by the customer id.
+     * Get products consumptions by customer id
+     * @param param the request object
+     */
+    public getCustomerProductsConsumptionsWithHttpInfo(param: CustomersApiGetCustomerProductsConsumptionsRequest, options?: Configuration): Promise<HttpInfo<GetCustomerProductsConsumptionsResponse>> {
+        return this.api.getCustomerProductsConsumptionsWithHttpInfo(param.customerId,  options).toPromise();
+    }
+
+    /**
+     * Use this endpoint to get the products consumptions by the customer id.
+     * Get products consumptions by customer id
+     * @param param the request object
+     */
+    public getCustomerProductsConsumptions(param: CustomersApiGetCustomerProductsConsumptionsRequest, options?: Configuration): Promise<GetCustomerProductsConsumptionsResponse> {
+        return this.api.getCustomerProductsConsumptions(param.customerId,  options).toPromise();
+    }
+
+    /**
      * Get a list of Customers.
      * List Customers
      * @param param the request object
@@ -546,6 +596,7 @@ import { EventsApiRequestFactory, EventsApiResponseProcessor} from "../apis/Even
 export interface EventsApiDeleteEventByRefIdRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof EventsApideleteEventByRefId
      */
@@ -555,6 +606,7 @@ export interface EventsApiDeleteEventByRefIdRequest {
 export interface EventsApiGetEventByRefIdRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof EventsApigetEventByRefId
      */
@@ -564,30 +616,36 @@ export interface EventsApiGetEventByRefIdRequest {
 export interface EventsApiQueryEventsRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type Date
      * @memberof EventsApiqueryEvents
      */
     startTime: Date
     /**
      * 
+     * Defaults to: undefined
      * @type Date
      * @memberof EventsApiqueryEvents
      */
     endTime: Date
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof EventsApiqueryEvents
      */
     eventName?: string
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof EventsApiqueryEvents
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof EventsApiqueryEvents
      */
@@ -783,6 +841,7 @@ import { InvoicesApiRequestFactory, InvoicesApiResponseProcessor} from "../apis/
 export interface InvoicesApiGetInvoiceRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof InvoicesApigetInvoice
      */
@@ -792,12 +851,15 @@ export interface InvoicesApiGetInvoiceRequest {
 export interface InvoicesApiListInvoicesRequest {
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof InvoicesApilistInvoices
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof InvoicesApilistInvoices
      */
@@ -855,6 +917,7 @@ import { MetersApiRequestFactory, MetersApiResponseProcessor} from "../apis/Mete
 export interface MetersApiDeleteMeterRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof MetersApideleteMeter
      */
@@ -864,6 +927,7 @@ export interface MetersApiDeleteMeterRequest {
 export interface MetersApiGetMeterRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof MetersApigetMeter
      */
@@ -873,12 +937,15 @@ export interface MetersApiGetMeterRequest {
 export interface MetersApiListMetersRequest {
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof MetersApilistMeters
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof MetersApilistMeters
      */
@@ -894,6 +961,7 @@ export interface MetersApiUpdateMeterRequest {
     updateMeterRequest: UpdateMeterRequest
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof MetersApiupdateMeter
      */
@@ -987,6 +1055,7 @@ import { PlansApiRequestFactory, PlansApiResponseProcessor} from "../apis/PlansA
 export interface PlansApiDeletePlanRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof PlansApideletePlan
      */
@@ -996,6 +1065,7 @@ export interface PlansApiDeletePlanRequest {
 export interface PlansApiGetPlanRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof PlansApigetPlan
      */
@@ -1005,12 +1075,15 @@ export interface PlansApiGetPlanRequest {
 export interface PlansApiListPlansRequest {
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof PlansApilistPlans
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof PlansApilistPlans
      */
@@ -1080,12 +1153,53 @@ export class ObjectPlansApi {
 
 }
 
+import { ObservableProductConsumptionsApi } from "./ObservableAPI";
+import { ProductConsumptionsApiRequestFactory, ProductConsumptionsApiResponseProcessor} from "../apis/ProductConsumptionsApi";
+
+export interface ProductConsumptionsApiGetProductConsumptionRequest {
+    /**
+     * 
+     * Defaults to: undefined
+     * @type string
+     * @memberof ProductConsumptionsApigetProductConsumption
+     */
+    productId: string
+}
+
+export class ObjectProductConsumptionsApi {
+    private api: ObservableProductConsumptionsApi
+
+    public constructor(configuration: Configuration, requestFactory?: ProductConsumptionsApiRequestFactory, responseProcessor?: ProductConsumptionsApiResponseProcessor) {
+        this.api = new ObservableProductConsumptionsApi(configuration, requestFactory, responseProcessor);
+    }
+
+    /**
+     * Use this action to get the consumption data for a product
+     * Get product consumption
+     * @param param the request object
+     */
+    public getProductConsumptionWithHttpInfo(param: ProductConsumptionsApiGetProductConsumptionRequest, options?: Configuration): Promise<HttpInfo<GetProductConsumptionResponse>> {
+        return this.api.getProductConsumptionWithHttpInfo(param.productId,  options).toPromise();
+    }
+
+    /**
+     * Use this action to get the consumption data for a product
+     * Get product consumption
+     * @param param the request object
+     */
+    public getProductConsumption(param: ProductConsumptionsApiGetProductConsumptionRequest, options?: Configuration): Promise<GetProductConsumptionResponse> {
+        return this.api.getProductConsumption(param.productId,  options).toPromise();
+    }
+
+}
+
 import { ObservableReportsApi } from "./ObservableAPI";
 import { ReportsApiRequestFactory, ReportsApiResponseProcessor} from "../apis/ReportsApi";
 
 export interface ReportsApiGetCommitmentReportResponseRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof ReportsApigetCommitmentReportResponse
      */
@@ -1095,18 +1209,22 @@ export interface ReportsApiGetCommitmentReportResponseRequest {
 export interface ReportsApiGetProductsUsageReportRequest {
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof ReportsApigetProductsUsageReport
      */
     reportId?: string
     /**
      * 
+     * Maximum: 1000
+     * Defaults to: 10
      * @type number
      * @memberof ReportsApigetProductsUsageReport
      */
     limit?: number
     /**
      * 
+     * Defaults to: undefined
      * @type string
      * @memberof ReportsApigetProductsUsageReport
      */

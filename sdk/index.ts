@@ -4,7 +4,8 @@ import { ContractsClient,
   InvoicesClient,
   MetersClient,
   PlansClient,
-  WebhooksClient } from './clients';
+  WebhooksClient,
+  ProductConsumptionsClient } from './clients';
 import { ConfigurationService } from './services';
 
 export class Vayu {
@@ -48,6 +49,10 @@ export class Vayu {
 
   get webhooks() {
     return new WebhooksClient();
+  }
+
+  get productConsumptions() {
+    return new ProductConsumptionsClient();
   }
 }
 
