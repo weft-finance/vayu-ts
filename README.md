@@ -133,6 +133,16 @@ const response = await vayu.customers.delete('customer-id');
 console.log(response.customer);
 ```
 
+#### Getting Product Consumptions
+
+To get product consumptions for a customer:
+
+```typescript
+const response = await vayu.customers.getProductConsumptions('customer-id');
+
+console.log(response.productConsumptions);
+```
+
 ### Contracts
 
 #### Assigning a contract to a customer
@@ -170,13 +180,19 @@ console.log(response.hasMore);
 console.log(response.nextCursor);
 ```
 
-#### Subscribing to Vayu events
+### Webhooks
+
+#### Subscribing to Events
+
+You can subscribe to various events using webhooks. Here are the available subscription methods:
 
 ```typescript
- vayu.webhooks.subscribe({
-        callbackUrl: 'https://webhook.site/1234567890',
-        eventType: NotificationEventType.Overage,
-    })
+// Subscribe to overage notifications
+await vayu.webhooks.subscribeToOverage('https://your-webhook-url.com/overage');
+
+// Subscribe to anonymous customer creation notifications
+await vayu.webhooks.subscribeToAnonymousCustomerCreated('https://your-webhook-url.com/your_path');
+
 ```
 
 ## Features
@@ -198,6 +214,7 @@ The Vayu API client library provides access to the following features:
   - `customers.list()`
   - `customers.get()`
   - `customers.getByExternalId()`
+  - `customers.getProductConsumptions()`
 - **Meters**
   - `meters.get()`
   - `meters.update()`
@@ -215,6 +232,11 @@ The Vayu API client library provides access to the following features:
 - **Invoices**
   - `invoices.get()`
   - `invoices.list()`
+- **Webhooks**
+  - `webhooks.subscribeToOverage()`
+  - `webhooks.subscribeToAnonymousCustomerCreated()`
+- **Product Consumption**
+  - `productConsumption.get()`
 
 ## Support
 
