@@ -170,7 +170,17 @@ console.log(response.hasMore);
 console.log(response.nextCursor);
 ```
 
-## Features
+#### Subscribing to Vayu events
+
+```typescript
+
+import { NotificationEventType } from 'vayu-ts/dist/openapi';
+
+vayu.webhooks.subscribe({
+  callbackUrl: 'https://webhook.site/1234567890',
+  eventType: NotificationEventType.Overage,
+})
+```
 
 The Vayu API client library provides access to the following features:
 
