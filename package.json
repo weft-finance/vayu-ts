@@ -1,6 +1,6 @@
 {
   "name": "vayu-ts",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "Simple and easy to use typescript package for utilizing vayu billing system",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",

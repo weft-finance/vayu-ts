@@ -193,6 +193,33 @@ await vayu.webhooks.subscribeToOverage('https://your-webhook-url.com/overage');
 // Subscribe to anonymous customer creation notifications
 await vayu.webhooks.subscribeToAnonymousCustomerCreated('https://your-webhook-url.com/your_path');
 
+// Validate webhook security
+app.post('/webhooks', (req, res) => {
+  const payload = JSON.stringify(req.body);
+  const timestamp = Number(req.headers['x-timestamp']);
+  const signature = String(req.headers['x-signature']);
+
+  // Important to login before verifying webhook signatures.
+  await vayu.login();
+  
+  const isValid = vayu.verifyWebhookSignature({
+    payload,
+    timestamp,
+    signature,
+  });
+
+  if (!isValid) {
+    // Handle invalid token.
+  }
+
+  // Proceed with webhook handling
+  console.log('Webhook is valid', JSON.parse(payload));
+  
+  // ... Handle event.
+  
+  res.sendStatus(200);
+});
+
 ```
 
 ## Features
