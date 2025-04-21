@@ -23,7 +23,10 @@ export class WebhooksClient {
     tolerance?: number;
   }): boolean {
     const now = Math.floor(Date.now() / 1000);
-    if (Math.abs(now - timestamp) > tolerance) return false;
+    
+    if (Math.abs(now - timestamp) > tolerance) {
+      return false;
+    }
   
     const message = `${timestamp}.${JSON.stringify(payload)}`;
     const verifier = crypto.createVerify('RSA-SHA256');
