@@ -1,5 +1,5 @@
 {
-  "name": "vayu-ts",
+  "name": "vayu-ts2",
   "version": "0.2.10",
   "description": "Simple and easy to use typescript package for utilizing vayu billing system",
   "main": "dist/index.js",

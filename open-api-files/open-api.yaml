@@ -2080,6 +2080,7 @@ components:
         - UpcomingRenewal
         - InvoiceApproved
         - CustomerPortalLinkSent
+        - CommitmentCrossed
     WebhookSubscribeRequest:
       type: object
       properties:
@@ -2100,6 +2101,8 @@ components:
         productName:
           type: string
           minLength: 1
+          description: The name of the product.
+          example: Vayu Product
         provisionedAmount:
           type: number
           minimum: 0
@@ -2128,6 +2131,7 @@ components:
           example: 10
       required:
         - productId
+        - productName
         - provisionedAmount
         - consumedAmount
         - usagePercentage
