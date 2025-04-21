@@ -13,6 +13,4 @@ node_modules
 # packed files
 *.tgz
 
-openapitools.json
-
 .DS_Store

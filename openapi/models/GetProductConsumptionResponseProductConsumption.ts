@@ -17,7 +17,10 @@ export class GetProductConsumptionResponseProductConsumption {
     * The id of the product.
     */
     'productId': string;
-    'productName'?: string;
+    /**
+    * The name of the product.
+    */
+    'productName': string;
     /**
     * The amount of units provisioned to the customer.
     */
