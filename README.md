@@ -16,7 +16,9 @@ npm i vayu-ts
 
 ### Initialization
 
-Initialize the Vayu API client. The `baseUrl` parameter is optional and defaults to Vayu's public API servers.
+Initialize the Vayu API client. 
+The `CLIENT_ID` environment variant is required to use the Vayu API client.
+The `baseUrl` parameter is optional and defaults to Vayu's public API servers.
 
 ```typescript
 import { Vayu } from 'vayu-ts';
