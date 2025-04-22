@@ -2,7 +2,9 @@ import type { JwtPayload } from 'jsonwebtoken';
 import jwt from 'jsonwebtoken';
 import type { BaseServerConfiguration, Configuration, RequestContext, ResponseContext } from '../../openapi';
 import { AuthApi, createConfiguration, server1, server2, ServerConfiguration } from '../../openapi';
+import { getRequiredEnvVar } from '../utils';
 
+const CLIENT_ID_ENV_VAR_NAME = 'CLIENT_ID';
 const EXPIRATION_THRESHOLD = 1000 * 60 * 5;
 const BASE_URLS_MAP = new Map<string, BaseServerConfiguration>([
   ['https://connect.withvayu.com', server1],
@@ -42,6 +44,7 @@ export class ConfigurationService {
   }
 
   private accessToken: string | undefined;
+  private clientId: string;
   private expiresAt: number;
 
   constructor(
@@ -49,6 +52,7 @@ export class ConfigurationService {
     private baseServer: BaseServerConfiguration,
   ) {
     this.expiresAt = Date.now();
+    this.clientId = getRequiredEnvVar(CLIENT_ID_ENV_VAR_NAME);
   }
 
   generateNewClient<T extends { new(config: Configuration): InstanceType<T> }>(ClientClass: T): InstanceType<T> {
@@ -106,6 +110,7 @@ export class ConfigurationService {
           }
 
           context.setHeaderParam('Authorization', `Bearer ${this.accessToken}`);
+          context.setHeaderParam('x-api-key', this.clientId);
 
           return context;
         },
