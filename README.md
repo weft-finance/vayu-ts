@@ -17,7 +17,7 @@ npm i vayu-ts
 ### Initialization
 
 Initialize the Vayu API client. 
-> ⚠️ **The `CLIENT_ID` environment variable is required to use the Vayu API client.**
+> ⚠️ **The `VAYU_CLIENT_ID` environment variable is required to use the Vayu API client.**
 
 The `baseUrl` parameter is optional and defaults to Vayu's public API servers.
 
