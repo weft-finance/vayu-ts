@@ -10,14 +10,11 @@
  * Do not edit the class manually.
  */
 
-import { BillingCycleStatus } from '../models/BillingCycleStatus';
 import { HttpFile } from '../http/http';
 
-export class CreditLedgerEntry {
-    'type': BillingCycleStatus;
-    'amount': number;
-    'invoiceId'?: string;
-    'balanceAfterEntry': number;
+export class NetSuiteSyncInvoicesResponse {
+    'recordId': string;
+    'tranId': string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -25,36 +22,22 @@ export class CreditLedgerEntry {
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "type",
-            "baseName": "type",
-            "type": "BillingCycleStatus",
-            "format": ""
-        },
-        {
-            "name": "amount",
-            "baseName": "amount",
-            "type": "number",
-            "format": ""
-        },
-        {
-            "name": "invoiceId",
-            "baseName": "invoiceId",
+            "name": "recordId",
+            "baseName": "recordId",
             "type": "string",
             "format": ""
         },
         {
-            "name": "balanceAfterEntry",
-            "baseName": "balanceAfterEntry",
-            "type": "number",
+            "name": "tranId",
+            "baseName": "tranId",
+            "type": "string",
             "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return CreditLedgerEntry.attributeTypeMap;
+        return NetSuiteSyncInvoicesResponse.attributeTypeMap;
     }
 
     public constructor() {
     }
 }
-
-

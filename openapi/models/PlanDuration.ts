@@ -10,26 +10,20 @@
  * Do not edit the class manually.
  */
 
-import { CreateMeasurementResponseMeasurement } from '../models/CreateMeasurementResponseMeasurement';
+import { UnlimitedDuration } from '../models/UnlimitedDuration';
 import { HttpFile } from '../http/http';
 
-export class CreateMeasurementResponse {
-    'measurement': CreateMeasurementResponseMeasurement;
+export class PlanDuration {
 
     static readonly discriminator: string | undefined = undefined;
 
     static readonly mapping: {[index: string]: string} | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
-        {
-            "name": "measurement",
-            "baseName": "measurement",
-            "type": "CreateMeasurementResponseMeasurement",
-            "format": ""
-        }    ];
+    ];
 
     static getAttributeTypeMap() {
-        return CreateMeasurementResponse.attributeTypeMap;
+        return PlanDuration.attributeTypeMap;
     }
 
     public constructor() {

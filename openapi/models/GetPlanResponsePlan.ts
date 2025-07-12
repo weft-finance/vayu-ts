@@ -10,23 +10,17 @@
  * Do not edit the class manually.
  */
 
-import { CreateMeasurementRequestUsageDate } from '../models/CreateMeasurementRequestUsageDate';
+import { PlanBillingData } from '../models/PlanBillingData';
+import { PlanStatus } from '../models/PlanStatus';
 import { HttpFile } from '../http/http';
 
-export class CreateMeasurementResponseMeasurement {
+export class GetPlanResponsePlan {
     /**
-    * The customer for whom usage will be attributed
+    * The name of the plan
     */
-    'customerId': string;
-    /**
-    * The meter/product that is being measured
-    */
-    'meterId': string;
-    'usageDate': CreateMeasurementRequestUsageDate;
-    /**
-    * The updated value of product units consumed by the customer, for the product for given day
-    */
-    'value': number;
+    'name': string;
+    'status': PlanStatus;
+    'billingData': PlanBillingData;
     'id': string;
     'createdAt': Date;
     'updatedAt': Date;
@@ -37,27 +31,21 @@ export class CreateMeasurementResponseMeasurement {
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "customerId",
-            "baseName": "customerId",
+            "name": "name",
+            "baseName": "name",
             "type": "string",
             "format": ""
         },
         {
-            "name": "meterId",
-            "baseName": "meterId",
-            "type": "string",
+            "name": "status",
+            "baseName": "status",
+            "type": "PlanStatus",
             "format": ""
         },
         {
-            "name": "usageDate",
-            "baseName": "usageDate",
-            "type": "CreateMeasurementRequestUsageDate",
-            "format": ""
-        },
-        {
-            "name": "value",
-            "baseName": "value",
-            "type": "number",
+            "name": "billingData",
+            "baseName": "billingData",
+            "type": "PlanBillingData",
             "format": ""
         },
         {
@@ -80,9 +68,11 @@ export class CreateMeasurementResponseMeasurement {
         }    ];
 
     static getAttributeTypeMap() {
-        return CreateMeasurementResponseMeasurement.attributeTypeMap;
+        return GetPlanResponsePlan.attributeTypeMap;
     }
 
     public constructor() {
     }
 }
+
+

@@ -10,11 +10,12 @@
  * Do not edit the class manually.
  */
 
-import { ProductConsumption } from '../models/ProductConsumption';
 import { HttpFile } from '../http/http';
 
-export class GetCustomerProductsConsumptionsByAliasResponse {
-    'productsConsumptions': Array<ProductConsumption>;
+export class NetSuiteExportSalesOrderRequest {
+    'contractId': string;
+    'productsIds': Array<string>;
+    'subsidiaryId': string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -22,14 +23,26 @@ export class GetCustomerProductsConsumptionsByAliasResponse {
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "productsConsumptions",
-            "baseName": "productsConsumptions",
-            "type": "Array<ProductConsumption>",
+            "name": "contractId",
+            "baseName": "contractId",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "productsIds",
+            "baseName": "productsIds",
+            "type": "Array<string>",
+            "format": ""
+        },
+        {
+            "name": "subsidiaryId",
+            "baseName": "subsidiaryId",
+            "type": "string",
             "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return GetCustomerProductsConsumptionsByAliasResponse.attributeTypeMap;
+        return NetSuiteExportSalesOrderRequest.attributeTypeMap;
     }
 
     public constructor() {

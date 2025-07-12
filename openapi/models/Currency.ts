@@ -12,11 +12,9 @@
 
 import { HttpFile } from '../http/http';
 
-export enum NotificationEventType {
-    AnonymousCustomer = 'AnonymousCustomer',
-    Overage = 'Overage',
-    UpcomingRenewal = 'UpcomingRenewal',
-    InvoiceApproved = 'InvoiceApproved',
-    CustomerPortalLinkSent = 'CustomerPortalLinkSent',
-    CommitmentCrossed = 'CommitmentCrossed'
+export enum Currency {
+    Usd = 'USD',
+    Eur = 'EUR',
+    Gbp = 'GBP',
+    Ils = 'ILS'
 }

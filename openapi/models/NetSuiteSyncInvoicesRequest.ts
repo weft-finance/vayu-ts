@@ -10,23 +10,13 @@
  * Do not edit the class manually.
  */
 
-import { CreateMeasurementRequestUsageDate } from '../models/CreateMeasurementRequestUsageDate';
+import { NetSuiteSyncInvoicesRequestData } from '../models/NetSuiteSyncInvoicesRequestData';
 import { HttpFile } from '../http/http';
 
-export class CreateMeasurementRequest {
-    /**
-    * The customer for whom usage will be attributed
-    */
-    'customerId': string;
-    /**
-    * The meter/product that is being measured
-    */
-    'meterId': string;
-    'usageDate': CreateMeasurementRequestUsageDate;
-    /**
-    * The updated value of product units consumed by the customer, for the product for given day
-    */
-    'value': number;
+export class NetSuiteSyncInvoicesRequest {
+    'integrationType': NetSuiteSyncInvoicesRequestIntegrationTypeEnum;
+    'uid': string;
+    'data': NetSuiteSyncInvoicesRequestData;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -34,34 +24,33 @@ export class CreateMeasurementRequest {
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "customerId",
-            "baseName": "customerId",
+            "name": "integrationType",
+            "baseName": "integrationType",
+            "type": "NetSuiteSyncInvoicesRequestIntegrationTypeEnum",
+            "format": ""
+        },
+        {
+            "name": "uid",
+            "baseName": "uid",
             "type": "string",
             "format": ""
         },
         {
-            "name": "meterId",
-            "baseName": "meterId",
-            "type": "string",
-            "format": ""
-        },
-        {
-            "name": "usageDate",
-            "baseName": "usageDate",
-            "type": "CreateMeasurementRequestUsageDate",
-            "format": ""
-        },
-        {
-            "name": "value",
-            "baseName": "value",
-            "type": "number",
+            "name": "data",
+            "baseName": "data",
+            "type": "NetSuiteSyncInvoicesRequestData",
             "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return CreateMeasurementRequest.attributeTypeMap;
+        return NetSuiteSyncInvoicesRequest.attributeTypeMap;
     }
 
     public constructor() {
     }
 }
+
+export enum NetSuiteSyncInvoicesRequestIntegrationTypeEnum {
+    UpsertInvoice = 'upsertInvoice'
+}
+

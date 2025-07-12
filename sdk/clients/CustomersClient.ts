@@ -40,8 +40,4 @@ export class CustomersClient {
   async listCustomerProductsConsumptions(id: string) {
     return this.client.getCustomerProductsConsumptions(id);
   }
-
-  async listCustomerProductsConsumptionsByAlias(alias: string) {
-    return this.client.getCustomerProductsConsumptionsByAlias(alias);
-  }
 }

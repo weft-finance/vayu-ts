@@ -12,11 +12,11 @@
 
 import { HttpFile } from '../http/http';
 
-export enum NotificationEventType {
-    AnonymousCustomer = 'AnonymousCustomer',
-    Overage = 'Overage',
-    UpcomingRenewal = 'UpcomingRenewal',
-    InvoiceApproved = 'InvoiceApproved',
-    CustomerPortalLinkSent = 'CustomerPortalLinkSent',
-    CommitmentCrossed = 'CommitmentCrossed'
+/**
+* The status of the plan. plan statuses are active, inactive
+*/
+export enum PlanStatus {
+    Active = 'Active',
+    Inactive = 'Inactive',
+    Error = 'Error'
 }
