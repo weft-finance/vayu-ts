@@ -10,32 +10,82 @@ import {canConsumeForm, isCodeInRange} from '../util';
 import {SecurityAuthentication} from '../auth/auth';
 
 
-import { DeletePlanResponse } from '../models/DeletePlanResponse';
-import { GetPlanResponse } from '../models/GetPlanResponse';
-import { ListPlansResponse } from '../models/ListPlansResponse';
+import { CreateMeasurementRequest } from '../models/CreateMeasurementRequest';
+import { CreateMeasurementResponse } from '../models/CreateMeasurementResponse';
+import { DeleteMeasurementResponse } from '../models/DeleteMeasurementResponse';
+import { GetMeasurementResponse } from '../models/GetMeasurementResponse';
+import { ListMeasurementsResponse } from '../models/ListMeasurementsResponse';
 
 /**
  * no description
  */
-export class PlansApiRequestFactory extends BaseAPIRequestFactory {
+export class MeasurementsApiRequestFactory extends BaseAPIRequestFactory {
 
     /**
-     * Delete a Plan by id.
-     * Delete Plan
-     * @param planId 
+     * Create a new Measurement.
+     * Create Measurement
+     * @param createMeasurementRequest 
      */
-    public async deletePlan(planId: string, _options?: Configuration): Promise<RequestContext> {
+    public async createMeasurement(createMeasurementRequest: CreateMeasurementRequest, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
 
-        // verify required parameter 'planId' is not null or undefined
-        if (planId === null || planId === undefined) {
-            throw new RequiredError("PlansApi", "deletePlan", "planId");
+        // verify required parameter 'createMeasurementRequest' is not null or undefined
+        if (createMeasurementRequest === null || createMeasurementRequest === undefined) {
+            throw new RequiredError("MeasurementsApi", "createMeasurement", "createMeasurementRequest");
         }
 
 
         // Path Params
-        const localVarPath = '/plans/{planId}'
-            .replace('{' + 'planId' + '}', encodeURIComponent(String(planId)));
+        const localVarPath = '/measurements';
+
+        // Make Request Context
+        const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.POST);
+        requestContext.setHeaderParam("Accept", "application/json, */*;q=0.8")
+
+
+        // Body Params
+        const contentType = ObjectSerializer.getPreferredMediaType([
+            "application/json"
+        ]);
+        requestContext.setHeaderParam("Content-Type", contentType);
+        const serializedBody = ObjectSerializer.stringify(
+            ObjectSerializer.serialize(createMeasurementRequest, "CreateMeasurementRequest", ""),
+            contentType
+        );
+        requestContext.setBody(serializedBody);
+
+        let authMethod: SecurityAuthentication | undefined;
+        // Apply auth methods
+        authMethod = _config.authMethods["BearerAuthorizer"]
+        if (authMethod?.applySecurityAuthentication) {
+            await authMethod?.applySecurityAuthentication(requestContext);
+        }
+        
+        const defaultAuth: SecurityAuthentication | undefined = _options?.authMethods?.default || this.configuration?.authMethods?.default
+        if (defaultAuth?.applySecurityAuthentication) {
+            await defaultAuth?.applySecurityAuthentication(requestContext);
+        }
+
+        return requestContext;
+    }
+
+    /**
+     * Delete a Measurement by id.
+     * Delete Measurement
+     * @param measurementId 
+     */
+    public async deleteMeasurement(measurementId: string, _options?: Configuration): Promise<RequestContext> {
+        let _config = _options || this.configuration;
+
+        // verify required parameter 'measurementId' is not null or undefined
+        if (measurementId === null || measurementId === undefined) {
+            throw new RequiredError("MeasurementsApi", "deleteMeasurement", "measurementId");
+        }
+
+
+        // Path Params
+        const localVarPath = '/measurements/{measurementId}'
+            .replace('{' + 'measurementId' + '}', encodeURIComponent(String(measurementId)));
 
         // Make Request Context
         const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.DELETE);
@@ -58,22 +108,22 @@ export class PlansApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * Get a Plan by id.
-     * Get Plan
-     * @param planId 
+     * Get a Measurement by id.
+     * Get Measurement
+     * @param measurementId 
      */
-    public async getPlan(planId: string, _options?: Configuration): Promise<RequestContext> {
+    public async getMeasurement(measurementId: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
 
-        // verify required parameter 'planId' is not null or undefined
-        if (planId === null || planId === undefined) {
-            throw new RequiredError("PlansApi", "getPlan", "planId");
+        // verify required parameter 'measurementId' is not null or undefined
+        if (measurementId === null || measurementId === undefined) {
+            throw new RequiredError("MeasurementsApi", "getMeasurement", "measurementId");
         }
 
 
         // Path Params
-        const localVarPath = '/plans/{planId}'
-            .replace('{' + 'planId' + '}', encodeURIComponent(String(planId)));
+        const localVarPath = '/measurements/{measurementId}'
+            .replace('{' + 'measurementId' + '}', encodeURIComponent(String(measurementId)));
 
         // Make Request Context
         const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.GET);
@@ -96,18 +146,18 @@ export class PlansApiRequestFactory extends BaseAPIRequestFactory {
     }
 
     /**
-     * Get a list of Plans.
-     * List Plans
+     * Get a list of Measurements.
+     * List Measurements
      * @param limit 
      * @param cursor 
      */
-    public async listPlans(limit?: number, cursor?: string, _options?: Configuration): Promise<RequestContext> {
+    public async listMeasurements(limit?: number, cursor?: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
 
 
 
         // Path Params
-        const localVarPath = '/plans';
+        const localVarPath = '/measurements';
 
         // Make Request Context
         const requestContext = _config.baseServer.makeRequestContext(localVarPath, HttpMethod.GET);
@@ -141,22 +191,63 @@ export class PlansApiRequestFactory extends BaseAPIRequestFactory {
 
 }
 
-export class PlansApiResponseProcessor {
+export class MeasurementsApiResponseProcessor {
 
     /**
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
      *
-     * @params response Response returned by the server for a request to deletePlan
+     * @params response Response returned by the server for a request to createMeasurement
      * @throws ApiException if the response code was not in [200, 299]
      */
-     public async deletePlanWithHttpInfo(response: ResponseContext): Promise<HttpInfo<DeletePlanResponse >> {
+     public async createMeasurementWithHttpInfo(response: ResponseContext): Promise<HttpInfo<CreateMeasurementResponse >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
         if (isCodeInRange("200", response.httpStatusCode)) {
-            const body: DeletePlanResponse = ObjectSerializer.deserialize(
+            const body: CreateMeasurementResponse = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
-                "DeletePlanResponse", ""
-            ) as DeletePlanResponse;
+                "CreateMeasurementResponse", ""
+            ) as CreateMeasurementResponse;
+            return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("400", response.httpStatusCode)) {
+            throw new ApiException<undefined>(response.httpStatusCode, "Bad Request", undefined, response.headers);
+        }
+        if (isCodeInRange("401", response.httpStatusCode)) {
+            throw new ApiException<undefined>(response.httpStatusCode, "Unauthorized", undefined, response.headers);
+        }
+        if (isCodeInRange("429", response.httpStatusCode)) {
+            throw new ApiException<undefined>(response.httpStatusCode, "Too Many Requests", undefined, response.headers);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            throw new ApiException<undefined>(response.httpStatusCode, "Internal Server Error", undefined, response.headers);
+        }
+
+        // Work around for missing responses in specification, e.g. for petstore.yaml
+        if (response.httpStatusCode >= 200 && response.httpStatusCode <= 299) {
+            const body: CreateMeasurementResponse = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "CreateMeasurementResponse", ""
+            ) as CreateMeasurementResponse;
+            return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+
+        throw new ApiException<string | Buffer | undefined>(response.httpStatusCode, "Unknown API Status Code!", await response.getBodyAsAny(), response.headers);
+    }
+
+    /**
+     * Unwraps the actual response sent by the server from the response context and deserializes the response content
+     * to the expected objects
+     *
+     * @params response Response returned by the server for a request to deleteMeasurement
+     * @throws ApiException if the response code was not in [200, 299]
+     */
+     public async deleteMeasurementWithHttpInfo(response: ResponseContext): Promise<HttpInfo<DeleteMeasurementResponse >> {
+        const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
+        if (isCodeInRange("200", response.httpStatusCode)) {
+            const body: DeleteMeasurementResponse = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "DeleteMeasurementResponse", ""
+            ) as DeleteMeasurementResponse;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
         }
         if (isCodeInRange("400", response.httpStatusCode)) {
@@ -177,10 +268,10 @@ export class PlansApiResponseProcessor {
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
         if (response.httpStatusCode >= 200 && response.httpStatusCode <= 299) {
-            const body: DeletePlanResponse = ObjectSerializer.deserialize(
+            const body: DeleteMeasurementResponse = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
-                "DeletePlanResponse", ""
-            ) as DeletePlanResponse;
+                "DeleteMeasurementResponse", ""
+            ) as DeleteMeasurementResponse;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
         }
 
@@ -191,16 +282,16 @@ export class PlansApiResponseProcessor {
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
      *
-     * @params response Response returned by the server for a request to getPlan
+     * @params response Response returned by the server for a request to getMeasurement
      * @throws ApiException if the response code was not in [200, 299]
      */
-     public async getPlanWithHttpInfo(response: ResponseContext): Promise<HttpInfo<GetPlanResponse >> {
+     public async getMeasurementWithHttpInfo(response: ResponseContext): Promise<HttpInfo<GetMeasurementResponse >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
         if (isCodeInRange("200", response.httpStatusCode)) {
-            const body: GetPlanResponse = ObjectSerializer.deserialize(
+            const body: GetMeasurementResponse = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
-                "GetPlanResponse", ""
-            ) as GetPlanResponse;
+                "GetMeasurementResponse", ""
+            ) as GetMeasurementResponse;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
         }
         if (isCodeInRange("400", response.httpStatusCode)) {
@@ -221,10 +312,10 @@ export class PlansApiResponseProcessor {
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
         if (response.httpStatusCode >= 200 && response.httpStatusCode <= 299) {
-            const body: GetPlanResponse = ObjectSerializer.deserialize(
+            const body: GetMeasurementResponse = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
-                "GetPlanResponse", ""
-            ) as GetPlanResponse;
+                "GetMeasurementResponse", ""
+            ) as GetMeasurementResponse;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
         }
 
@@ -235,16 +326,16 @@ export class PlansApiResponseProcessor {
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
      *
-     * @params response Response returned by the server for a request to listPlans
+     * @params response Response returned by the server for a request to listMeasurements
      * @throws ApiException if the response code was not in [200, 299]
      */
-     public async listPlansWithHttpInfo(response: ResponseContext): Promise<HttpInfo<ListPlansResponse >> {
+     public async listMeasurementsWithHttpInfo(response: ResponseContext): Promise<HttpInfo<ListMeasurementsResponse >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
         if (isCodeInRange("200", response.httpStatusCode)) {
-            const body: ListPlansResponse = ObjectSerializer.deserialize(
+            const body: ListMeasurementsResponse = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
-                "ListPlansResponse", ""
-            ) as ListPlansResponse;
+                "ListMeasurementsResponse", ""
+            ) as ListMeasurementsResponse;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
         }
         if (isCodeInRange("400", response.httpStatusCode)) {
@@ -262,10 +353,10 @@ export class PlansApiResponseProcessor {
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
         if (response.httpStatusCode >= 200 && response.httpStatusCode <= 299) {
-            const body: ListPlansResponse = ObjectSerializer.deserialize(
+            const body: ListMeasurementsResponse = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
-                "ListPlansResponse", ""
-            ) as ListPlansResponse;
+                "ListMeasurementsResponse", ""
+            ) as ListMeasurementsResponse;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
         }
 

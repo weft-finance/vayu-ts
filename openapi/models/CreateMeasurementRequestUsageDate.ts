@@ -12,8 +12,13 @@
 
 import { HttpFile } from '../http/http';
 
-export class NetSuiteSyncInvoicesRequestDataEntity {
-    'id': string;
+/**
+* The day the usage took place
+*/
+export class CreateMeasurementRequestUsageDate {
+    'year': number;
+    'month': number;
+    'day': number;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -21,14 +26,26 @@ export class NetSuiteSyncInvoicesRequestDataEntity {
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "id",
-            "baseName": "id",
-            "type": "string",
+            "name": "year",
+            "baseName": "year",
+            "type": "number",
+            "format": ""
+        },
+        {
+            "name": "month",
+            "baseName": "month",
+            "type": "number",
+            "format": ""
+        },
+        {
+            "name": "day",
+            "baseName": "day",
+            "type": "number",
             "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return NetSuiteSyncInvoicesRequestDataEntity.attributeTypeMap;
+        return CreateMeasurementRequestUsageDate.attributeTypeMap;
     }
 
     public constructor() {

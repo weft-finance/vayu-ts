@@ -10,11 +10,14 @@
  * Do not edit the class manually.
  */
 
-import { GetPlanResponsePlan } from '../models/GetPlanResponsePlan';
+import { CreateMeasurementResponseMeasurement } from '../models/CreateMeasurementResponseMeasurement';
 import { HttpFile } from '../http/http';
 
-export class GetPlanResponse {
-    'plan': GetPlanResponsePlan;
+export class ListMeasurementsResponse {
+    'measurements': Array<CreateMeasurementResponseMeasurement>;
+    'total': number;
+    'hasMore': boolean;
+    'nextCursor'?: string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -22,14 +25,32 @@ export class GetPlanResponse {
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "plan",
-            "baseName": "plan",
-            "type": "GetPlanResponsePlan",
+            "name": "measurements",
+            "baseName": "measurements",
+            "type": "Array<CreateMeasurementResponseMeasurement>",
+            "format": ""
+        },
+        {
+            "name": "total",
+            "baseName": "total",
+            "type": "number",
+            "format": ""
+        },
+        {
+            "name": "hasMore",
+            "baseName": "hasMore",
+            "type": "boolean",
+            "format": ""
+        },
+        {
+            "name": "nextCursor",
+            "baseName": "nextCursor",
+            "type": "string",
             "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return GetPlanResponse.attributeTypeMap;
+        return ListMeasurementsResponse.attributeTypeMap;
     }
 
     public constructor() {
