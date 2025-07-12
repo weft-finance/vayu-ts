@@ -18,5 +18,9 @@ export enum NotificationEventType {
     UpcomingRenewal = 'UpcomingRenewal',
     InvoiceApproved = 'InvoiceApproved',
     CustomerPortalLinkSent = 'CustomerPortalLinkSent',
+    NewCustomerWithoutContract = 'NewCustomerWithoutContract',
+    MonthEndReport = 'MonthEndReport',
+    UnchargedEvents = 'UnchargedEvents',
+    TierCrossed = 'TierCrossed',
     CommitmentCrossed = 'CommitmentCrossed'
 }

@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-import { NetSuiteSyncInvoicesRequestDataItemItemsInner } from '../models/NetSuiteSyncInvoicesRequestDataItemItemsInner';
+import { DeleteMeasurementResponseMeasurement } from '../models/DeleteMeasurementResponseMeasurement';
 import { HttpFile } from '../http/http';
 
-export class NetSuiteSyncInvoicesRequestDataItem {
-    'items': Array<NetSuiteSyncInvoicesRequestDataItemItemsInner>;
+export class DeleteMeasurementResponse {
+    'measurement': DeleteMeasurementResponseMeasurement;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -22,14 +22,14 @@ export class NetSuiteSyncInvoicesRequestDataItem {
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "items",
-            "baseName": "items",
-            "type": "Array<NetSuiteSyncInvoicesRequestDataItemItemsInner>",
+            "name": "measurement",
+            "baseName": "measurement",
+            "type": "DeleteMeasurementResponseMeasurement",
             "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return NetSuiteSyncInvoicesRequestDataItem.attributeTypeMap;
+        return DeleteMeasurementResponse.attributeTypeMap;
     }
 
     public constructor() {

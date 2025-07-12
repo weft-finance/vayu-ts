@@ -2,19 +2,20 @@ export * from '../models/Address';
 export * from '../models/AggregationMethod';
 export * from '../models/AggregationOperator';
 export * from '../models/BillingCycleStatus';
-export * from '../models/BillingInterval';
 export * from '../models/Condition';
 export * from '../models/Contact';
-export * from '../models/ContractStatus';
 export * from '../models/CreateContractRequest';
 export * from '../models/CreateContractResponse';
 export * from '../models/CreateCustomerRequest';
 export * from '../models/CreateCustomerResponse';
 export * from '../models/CreateCustomerResponseCustomer';
+export * from '../models/CreateMeasurementRequest';
+export * from '../models/CreateMeasurementRequestUsageDate';
+export * from '../models/CreateMeasurementResponse';
+export * from '../models/CreateMeasurementResponseMeasurement';
 export * from '../models/CreditLedgerEntry';
 export * from '../models/Criterion';
 export * from '../models/CriterionOperator';
-export * from '../models/Currency';
 export * from '../models/DeductCreditsRequest';
 export * from '../models/DeleteContractResponse';
 export * from '../models/DeleteContractResponseContract';
@@ -22,10 +23,10 @@ export * from '../models/DeleteCustomerResponse';
 export * from '../models/DeleteCustomerResponseCustomer';
 export * from '../models/DeleteEventResponse';
 export * from '../models/DeleteEventResponseEvent';
+export * from '../models/DeleteMeasurementResponse';
+export * from '../models/DeleteMeasurementResponseMeasurement';
 export * from '../models/DeleteMeterResponse';
 export * from '../models/DeleteMeterResponseMeter';
-export * from '../models/DeletePlanResponse';
-export * from '../models/DeletePlanResponsePlan';
 export * from '../models/Event';
 export * from '../models/EventsDryRunRequest';
 export * from '../models/EventsDryRunResponse';
@@ -34,22 +35,20 @@ export * from '../models/EventsDryRunResponseObjectEvent';
 export * from '../models/EventsDryRunResponseObjectMeterWithValuesInner';
 export * from '../models/Filter';
 export * from '../models/FullDayPeriod';
-export * from '../models/GetCommitmentReportResponse';
 export * from '../models/GetContractResponse';
 export * from '../models/GetContractResponseContract';
+export * from '../models/GetCustomerProductsConsumptionsByAliasResponse';
 export * from '../models/GetCustomerProductsConsumptionsResponse';
 export * from '../models/GetCustomerResponse';
 export * from '../models/GetEventResponse';
 export * from '../models/GetEventResponseEvent';
 export * from '../models/GetInvoiceResponse';
 export * from '../models/GetInvoiceResponseInvoice';
+export * from '../models/GetMeasurementResponse';
 export * from '../models/GetMeterResponse';
 export * from '../models/GetMeterResponseMeter';
-export * from '../models/GetPlanResponse';
-export * from '../models/GetPlanResponsePlan';
 export * from '../models/GetProductConsumptionResponse';
 export * from '../models/GetProductConsumptionResponseProductConsumption';
-export * from '../models/GetProductsUsageReportResponse';
 export * from '../models/GrantCreditsRequest';
 export * from '../models/InvalidEvent';
 export * from '../models/LineItem';
@@ -58,29 +57,17 @@ export * from '../models/ListContractsResponse';
 export * from '../models/ListCreditLedgerEntriesResponse';
 export * from '../models/ListCustomersResponse';
 export * from '../models/ListInvoicesResponse';
+export * from '../models/ListMeasurementsResponse';
 export * from '../models/ListMetersResponse';
-export * from '../models/ListPlansResponse';
 export * from '../models/LoginRequest';
 export * from '../models/LoginResponse';
 export * from '../models/Meter';
-export * from '../models/NetSuiteExportSalesOrderRequest';
-export * from '../models/NetSuiteSyncInvoicesRequest';
-export * from '../models/NetSuiteSyncInvoicesRequestData';
-export * from '../models/NetSuiteSyncInvoicesRequestDataEntity';
-export * from '../models/NetSuiteSyncInvoicesRequestDataItem';
-export * from '../models/NetSuiteSyncInvoicesRequestDataItemItemsInner';
-export * from '../models/NetSuiteSyncInvoicesResponse';
 export * from '../models/NotificationEventType';
-export * from '../models/PaymentTerm';
-export * from '../models/PlanBillingData';
-export * from '../models/PlanDuration';
-export * from '../models/PlanStatus';
 export * from '../models/ProductConsumption';
 export * from '../models/QueryEventsResponse';
 export * from '../models/QueryEventsResponseEventsInner';
 export * from '../models/SendEventsRequest';
 export * from '../models/SendEventsResponse';
-export * from '../models/UnlimitedDuration';
 export * from '../models/UpdateCustomerRequest';
 export * from '../models/UpdateCustomerResponse';
 export * from '../models/UpdateMeterRequest';
@@ -91,19 +78,20 @@ import { Address } from '../models/Address';
 import { AggregationMethod    } from '../models/AggregationMethod';
 import { AggregationOperator } from '../models/AggregationOperator';
 import { BillingCycleStatus } from '../models/BillingCycleStatus';
-import { BillingInterval } from '../models/BillingInterval';
 import { Condition } from '../models/Condition';
 import { Contact } from '../models/Contact';
-import { ContractStatus } from '../models/ContractStatus';
 import { CreateContractRequest } from '../models/CreateContractRequest';
 import { CreateContractResponse } from '../models/CreateContractResponse';
 import { CreateCustomerRequest } from '../models/CreateCustomerRequest';
 import { CreateCustomerResponse } from '../models/CreateCustomerResponse';
 import { CreateCustomerResponseCustomer } from '../models/CreateCustomerResponseCustomer';
-import { CreditLedgerEntry     } from '../models/CreditLedgerEntry';
+import { CreateMeasurementRequest } from '../models/CreateMeasurementRequest';
+import { CreateMeasurementRequestUsageDate } from '../models/CreateMeasurementRequestUsageDate';
+import { CreateMeasurementResponse } from '../models/CreateMeasurementResponse';
+import { CreateMeasurementResponseMeasurement } from '../models/CreateMeasurementResponseMeasurement';
+import { CreditLedgerEntry         } from '../models/CreditLedgerEntry';
 import { Criterion    } from '../models/Criterion';
 import { CriterionOperator } from '../models/CriterionOperator';
-import { Currency } from '../models/Currency';
 import { DeductCreditsRequest } from '../models/DeductCreditsRequest';
 import { DeleteContractResponse } from '../models/DeleteContractResponse';
 import { DeleteContractResponseContract } from '../models/DeleteContractResponseContract';
@@ -111,10 +99,10 @@ import { DeleteCustomerResponse } from '../models/DeleteCustomerResponse';
 import { DeleteCustomerResponseCustomer } from '../models/DeleteCustomerResponseCustomer';
 import { DeleteEventResponse } from '../models/DeleteEventResponse';
 import { DeleteEventResponseEvent } from '../models/DeleteEventResponseEvent';
+import { DeleteMeasurementResponse } from '../models/DeleteMeasurementResponse';
+import { DeleteMeasurementResponseMeasurement } from '../models/DeleteMeasurementResponseMeasurement';
 import { DeleteMeterResponse } from '../models/DeleteMeterResponse';
 import { DeleteMeterResponseMeter } from '../models/DeleteMeterResponseMeter';
-import { DeletePlanResponse } from '../models/DeletePlanResponse';
-import { DeletePlanResponsePlan        } from '../models/DeletePlanResponsePlan';
 import { Event } from '../models/Event';
 import { EventsDryRunRequest } from '../models/EventsDryRunRequest';
 import { EventsDryRunResponse } from '../models/EventsDryRunResponse';
@@ -123,22 +111,20 @@ import { EventsDryRunResponseObjectEvent } from '../models/EventsDryRunResponseO
 import { EventsDryRunResponseObjectMeterWithValuesInner } from '../models/EventsDryRunResponseObjectMeterWithValuesInner';
 import { Filter } from '../models/Filter';
 import { FullDayPeriod } from '../models/FullDayPeriod';
-import { GetCommitmentReportResponse                  } from '../models/GetCommitmentReportResponse';
 import { GetContractResponse } from '../models/GetContractResponse';
 import { GetContractResponseContract } from '../models/GetContractResponseContract';
+import { GetCustomerProductsConsumptionsByAliasResponse } from '../models/GetCustomerProductsConsumptionsByAliasResponse';
 import { GetCustomerProductsConsumptionsResponse } from '../models/GetCustomerProductsConsumptionsResponse';
 import { GetCustomerResponse } from '../models/GetCustomerResponse';
 import { GetEventResponse } from '../models/GetEventResponse';
 import { GetEventResponseEvent } from '../models/GetEventResponseEvent';
 import { GetInvoiceResponse } from '../models/GetInvoiceResponse';
 import { GetInvoiceResponseInvoice } from '../models/GetInvoiceResponseInvoice';
+import { GetMeasurementResponse } from '../models/GetMeasurementResponse';
 import { GetMeterResponse } from '../models/GetMeterResponse';
 import { GetMeterResponseMeter } from '../models/GetMeterResponseMeter';
-import { GetPlanResponse } from '../models/GetPlanResponse';
-import { GetPlanResponsePlan       } from '../models/GetPlanResponsePlan';
 import { GetProductConsumptionResponse } from '../models/GetProductConsumptionResponse';
 import { GetProductConsumptionResponseProductConsumption } from '../models/GetProductConsumptionResponseProductConsumption';
-import { GetProductsUsageReportResponse                  } from '../models/GetProductsUsageReportResponse';
 import { GrantCreditsRequest } from '../models/GrantCreditsRequest';
 import { InvalidEvent } from '../models/InvalidEvent';
 import { LineItem } from '../models/LineItem';
@@ -147,29 +133,17 @@ import { ListContractsResponse } from '../models/ListContractsResponse';
 import { ListCreditLedgerEntriesResponse } from '../models/ListCreditLedgerEntriesResponse';
 import { ListCustomersResponse } from '../models/ListCustomersResponse';
 import { ListInvoicesResponse } from '../models/ListInvoicesResponse';
+import { ListMeasurementsResponse } from '../models/ListMeasurementsResponse';
 import { ListMetersResponse } from '../models/ListMetersResponse';
-import { ListPlansResponse } from '../models/ListPlansResponse';
 import { LoginRequest } from '../models/LoginRequest';
 import { LoginResponse } from '../models/LoginResponse';
 import { Meter } from '../models/Meter';
-import { NetSuiteExportSalesOrderRequest } from '../models/NetSuiteExportSalesOrderRequest';
-import { NetSuiteSyncInvoicesRequest, NetSuiteSyncInvoicesRequestIntegrationTypeEnum     } from '../models/NetSuiteSyncInvoicesRequest';
-import { NetSuiteSyncInvoicesRequestData } from '../models/NetSuiteSyncInvoicesRequestData';
-import { NetSuiteSyncInvoicesRequestDataEntity } from '../models/NetSuiteSyncInvoicesRequestDataEntity';
-import { NetSuiteSyncInvoicesRequestDataItem } from '../models/NetSuiteSyncInvoicesRequestDataItem';
-import { NetSuiteSyncInvoicesRequestDataItemItemsInner } from '../models/NetSuiteSyncInvoicesRequestDataItemItemsInner';
-import { NetSuiteSyncInvoicesResponse } from '../models/NetSuiteSyncInvoicesResponse';
 import { NotificationEventType } from '../models/NotificationEventType';
-import { PaymentTerm } from '../models/PaymentTerm';
-import { PlanBillingData      } from '../models/PlanBillingData';
-import { PlanDuration } from '../models/PlanDuration';
-import { PlanStatus } from '../models/PlanStatus';
 import { ProductConsumption } from '../models/ProductConsumption';
 import { QueryEventsResponse } from '../models/QueryEventsResponse';
 import { QueryEventsResponseEventsInner } from '../models/QueryEventsResponseEventsInner';
 import { SendEventsRequest } from '../models/SendEventsRequest';
 import { SendEventsResponse } from '../models/SendEventsResponse';
-import { UnlimitedDuration } from '../models/UnlimitedDuration';
 import { UpdateCustomerRequest } from '../models/UpdateCustomerRequest';
 import { UpdateCustomerResponse } from '../models/UpdateCustomerResponse';
 import { UpdateMeterRequest } from '../models/UpdateMeterRequest';
@@ -191,15 +165,8 @@ let primitives = [
 let enumsMap: Set<string> = new Set<string>([
     "AggregationOperator",
     "BillingCycleStatus",
-    "BillingInterval",
-    "ContractStatus",
     "CriterionOperator",
-    "Currency",
-    "NetSuiteSyncInvoicesRequestIntegrationTypeEnum",
     "NotificationEventType",
-    "PaymentTerm",
-    "PlanStatus",
-    "UnlimitedDuration",
 ]);
 
 let typeMap: {[index: string]: any} = {
@@ -212,6 +179,10 @@ let typeMap: {[index: string]: any} = {
     "CreateCustomerRequest": CreateCustomerRequest,
     "CreateCustomerResponse": CreateCustomerResponse,
     "CreateCustomerResponseCustomer": CreateCustomerResponseCustomer,
+    "CreateMeasurementRequest": CreateMeasurementRequest,
+    "CreateMeasurementRequestUsageDate": CreateMeasurementRequestUsageDate,
+    "CreateMeasurementResponse": CreateMeasurementResponse,
+    "CreateMeasurementResponseMeasurement": CreateMeasurementResponseMeasurement,
     "CreditLedgerEntry": CreditLedgerEntry,
     "Criterion": Criterion,
     "DeductCreditsRequest": DeductCreditsRequest,
@@ -221,10 +192,10 @@ let typeMap: {[index: string]: any} = {
     "DeleteCustomerResponseCustomer": DeleteCustomerResponseCustomer,
     "DeleteEventResponse": DeleteEventResponse,
     "DeleteEventResponseEvent": DeleteEventResponseEvent,
+    "DeleteMeasurementResponse": DeleteMeasurementResponse,
+    "DeleteMeasurementResponseMeasurement": DeleteMeasurementResponseMeasurement,
     "DeleteMeterResponse": DeleteMeterResponse,
     "DeleteMeterResponseMeter": DeleteMeterResponseMeter,
-    "DeletePlanResponse": DeletePlanResponse,
-    "DeletePlanResponsePlan": DeletePlanResponsePlan,
     "Event": Event,
     "EventsDryRunRequest": EventsDryRunRequest,
     "EventsDryRunResponse": EventsDryRunResponse,
@@ -233,22 +204,20 @@ let typeMap: {[index: string]: any} = {
     "EventsDryRunResponseObjectMeterWithValuesInner": EventsDryRunResponseObjectMeterWithValuesInner,
     "Filter": Filter,
     "FullDayPeriod": FullDayPeriod,
-    "GetCommitmentReportResponse": GetCommitmentReportResponse,
     "GetContractResponse": GetContractResponse,
     "GetContractResponseContract": GetContractResponseContract,
+    "GetCustomerProductsConsumptionsByAliasResponse": GetCustomerProductsConsumptionsByAliasResponse,
     "GetCustomerProductsConsumptionsResponse": GetCustomerProductsConsumptionsResponse,
     "GetCustomerResponse": GetCustomerResponse,
     "GetEventResponse": GetEventResponse,
     "GetEventResponseEvent": GetEventResponseEvent,
     "GetInvoiceResponse": GetInvoiceResponse,
     "GetInvoiceResponseInvoice": GetInvoiceResponseInvoice,
+    "GetMeasurementResponse": GetMeasurementResponse,
     "GetMeterResponse": GetMeterResponse,
     "GetMeterResponseMeter": GetMeterResponseMeter,
-    "GetPlanResponse": GetPlanResponse,
-    "GetPlanResponsePlan": GetPlanResponsePlan,
     "GetProductConsumptionResponse": GetProductConsumptionResponse,
     "GetProductConsumptionResponseProductConsumption": GetProductConsumptionResponseProductConsumption,
-    "GetProductsUsageReportResponse": GetProductsUsageReportResponse,
     "GrantCreditsRequest": GrantCreditsRequest,
     "InvalidEvent": InvalidEvent,
     "LineItem": LineItem,
@@ -257,20 +226,11 @@ let typeMap: {[index: string]: any} = {
     "ListCreditLedgerEntriesResponse": ListCreditLedgerEntriesResponse,
     "ListCustomersResponse": ListCustomersResponse,
     "ListInvoicesResponse": ListInvoicesResponse,
+    "ListMeasurementsResponse": ListMeasurementsResponse,
     "ListMetersResponse": ListMetersResponse,
-    "ListPlansResponse": ListPlansResponse,
     "LoginRequest": LoginRequest,
     "LoginResponse": LoginResponse,
     "Meter": Meter,
-    "NetSuiteExportSalesOrderRequest": NetSuiteExportSalesOrderRequest,
-    "NetSuiteSyncInvoicesRequest": NetSuiteSyncInvoicesRequest,
-    "NetSuiteSyncInvoicesRequestData": NetSuiteSyncInvoicesRequestData,
-    "NetSuiteSyncInvoicesRequestDataEntity": NetSuiteSyncInvoicesRequestDataEntity,
-    "NetSuiteSyncInvoicesRequestDataItem": NetSuiteSyncInvoicesRequestDataItem,
-    "NetSuiteSyncInvoicesRequestDataItemItemsInner": NetSuiteSyncInvoicesRequestDataItemItemsInner,
-    "NetSuiteSyncInvoicesResponse": NetSuiteSyncInvoicesResponse,
-    "PlanBillingData": PlanBillingData,
-    "PlanDuration": PlanDuration,
     "ProductConsumption": ProductConsumption,
     "QueryEventsResponse": QueryEventsResponse,
     "QueryEventsResponseEventsInner": QueryEventsResponseEventsInner,
