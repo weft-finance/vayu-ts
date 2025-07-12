@@ -3,7 +3,6 @@ import { ContractsClient,
   EventsClient,
   InvoicesClient,
   MetersClient,
-  PlansClient,
   WebhooksClient,
   ProductConsumptionsClient } from './clients';
 import { ConfigurationService } from './services';
@@ -33,10 +32,6 @@ export class Vayu {
 
   get meters() {
     return new MetersClient();
-  }
-
-  get plans() {
-    return new PlansClient();
   }
 
   get contracts() {

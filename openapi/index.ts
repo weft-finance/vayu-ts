@@ -8,5 +8,5 @@ export * from "./servers";
 export { RequiredError } from "./apis/baseapi";
 
 export type { PromiseMiddleware as Middleware } from './middleware';
-export { PromiseAuthApi as AuthApi,  PromiseContractsApi as ContractsApi,  PromiseCreditsApi as CreditsApi,  PromiseCustomersApi as CustomersApi,  PromiseEventsApi as EventsApi,  PromiseIntegrationsApi as IntegrationsApi,  PromiseInvoicesApi as InvoicesApi,  PromiseMetersApi as MetersApi,  PromisePlansApi as PlansApi,  PromiseProductConsumptionsApi as ProductConsumptionsApi,  PromiseReportsApi as ReportsApi,  PromiseWebhooksApi as WebhooksApi } from './types/PromiseAPI';
+export { PromiseAuthApi as AuthApi,  PromiseContractsApi as ContractsApi,  PromiseCreditsApi as CreditsApi,  PromiseCustomersApi as CustomersApi,  PromiseEventsApi as EventsApi,  PromiseInvoicesApi as InvoicesApi,  PromiseMeasurementsApi as MeasurementsApi,  PromiseMetersApi as MetersApi,  PromiseProductConsumptionsApi as ProductConsumptionsApi,  PromiseWebhooksApi as WebhooksApi } from './types/PromiseAPI';
 

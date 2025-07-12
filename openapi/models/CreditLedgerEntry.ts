@@ -14,16 +14,32 @@ import { BillingCycleStatus } from '../models/BillingCycleStatus';
 import { HttpFile } from '../http/http';
 
 export class CreditLedgerEntry {
+    'id': string;
+    'createdAt': Date;
     'type': BillingCycleStatus;
     'amount': number;
-    'invoiceId'?: string;
     'balanceAfterEntry': number;
+    'invoiceId'?: string;
+    'productId'?: string;
+    'contractId'?: string;
 
     static readonly discriminator: string | undefined = undefined;
 
     static readonly mapping: {[index: string]: string} | undefined = undefined;
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
+        {
+            "name": "id",
+            "baseName": "id",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "createdAt",
+            "baseName": "createdAt",
+            "type": "Date",
+            "format": "date-time"
+        },
         {
             "name": "type",
             "baseName": "type",
@@ -37,15 +53,27 @@ export class CreditLedgerEntry {
             "format": ""
         },
         {
+            "name": "balanceAfterEntry",
+            "baseName": "balanceAfterEntry",
+            "type": "number",
+            "format": ""
+        },
+        {
             "name": "invoiceId",
             "baseName": "invoiceId",
             "type": "string",
             "format": ""
         },
         {
-            "name": "balanceAfterEntry",
-            "baseName": "balanceAfterEntry",
-            "type": "number",
+            "name": "productId",
+            "baseName": "productId",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "contractId",
+            "baseName": "contractId",
+            "type": "string",
             "format": ""
         }    ];
 
