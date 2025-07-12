@@ -12,11 +12,10 @@
 
 import { HttpFile } from '../http/http';
 
-export enum NotificationEventType {
-    AnonymousCustomer = 'AnonymousCustomer',
-    Overage = 'Overage',
-    UpcomingRenewal = 'UpcomingRenewal',
-    InvoiceApproved = 'InvoiceApproved',
-    CustomerPortalLinkSent = 'CustomerPortalLinkSent',
-    CommitmentCrossed = 'CommitmentCrossed'
+/**
+* flag to indicate if the payment is postpayment or prepayment
+*/
+export enum PaymentTerm {
+    Prepayment = 'Prepayment',
+    Postpayment = 'Postpayment'
 }

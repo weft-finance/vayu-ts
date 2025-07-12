@@ -6,20 +6,19 @@ import { Address } from '../models/Address';
 import { AggregationMethod } from '../models/AggregationMethod';
 import { AggregationOperator } from '../models/AggregationOperator';
 import { BillingCycleStatus } from '../models/BillingCycleStatus';
+import { BillingInterval } from '../models/BillingInterval';
 import { Condition } from '../models/Condition';
 import { Contact } from '../models/Contact';
+import { ContractStatus } from '../models/ContractStatus';
 import { CreateContractRequest } from '../models/CreateContractRequest';
 import { CreateContractResponse } from '../models/CreateContractResponse';
 import { CreateCustomerRequest } from '../models/CreateCustomerRequest';
 import { CreateCustomerResponse } from '../models/CreateCustomerResponse';
 import { CreateCustomerResponseCustomer } from '../models/CreateCustomerResponseCustomer';
-import { CreateMeasurementRequest } from '../models/CreateMeasurementRequest';
-import { CreateMeasurementRequestUsageDate } from '../models/CreateMeasurementRequestUsageDate';
-import { CreateMeasurementResponse } from '../models/CreateMeasurementResponse';
-import { CreateMeasurementResponseMeasurement } from '../models/CreateMeasurementResponseMeasurement';
 import { CreditLedgerEntry } from '../models/CreditLedgerEntry';
 import { Criterion } from '../models/Criterion';
 import { CriterionOperator } from '../models/CriterionOperator';
+import { Currency } from '../models/Currency';
 import { DeductCreditsRequest } from '../models/DeductCreditsRequest';
 import { DeleteContractResponse } from '../models/DeleteContractResponse';
 import { DeleteContractResponseContract } from '../models/DeleteContractResponseContract';
@@ -27,10 +26,10 @@ import { DeleteCustomerResponse } from '../models/DeleteCustomerResponse';
 import { DeleteCustomerResponseCustomer } from '../models/DeleteCustomerResponseCustomer';
 import { DeleteEventResponse } from '../models/DeleteEventResponse';
 import { DeleteEventResponseEvent } from '../models/DeleteEventResponseEvent';
-import { DeleteMeasurementResponse } from '../models/DeleteMeasurementResponse';
-import { DeleteMeasurementResponseMeasurement } from '../models/DeleteMeasurementResponseMeasurement';
 import { DeleteMeterResponse } from '../models/DeleteMeterResponse';
 import { DeleteMeterResponseMeter } from '../models/DeleteMeterResponseMeter';
+import { DeletePlanResponse } from '../models/DeletePlanResponse';
+import { DeletePlanResponsePlan } from '../models/DeletePlanResponsePlan';
 import { Event } from '../models/Event';
 import { EventsDryRunRequest } from '../models/EventsDryRunRequest';
 import { EventsDryRunResponse } from '../models/EventsDryRunResponse';
@@ -39,20 +38,22 @@ import { EventsDryRunResponseObjectEvent } from '../models/EventsDryRunResponseO
 import { EventsDryRunResponseObjectMeterWithValuesInner } from '../models/EventsDryRunResponseObjectMeterWithValuesInner';
 import { Filter } from '../models/Filter';
 import { FullDayPeriod } from '../models/FullDayPeriod';
+import { GetCommitmentReportResponse } from '../models/GetCommitmentReportResponse';
 import { GetContractResponse } from '../models/GetContractResponse';
 import { GetContractResponseContract } from '../models/GetContractResponseContract';
-import { GetCustomerProductsConsumptionsByAliasResponse } from '../models/GetCustomerProductsConsumptionsByAliasResponse';
 import { GetCustomerProductsConsumptionsResponse } from '../models/GetCustomerProductsConsumptionsResponse';
 import { GetCustomerResponse } from '../models/GetCustomerResponse';
 import { GetEventResponse } from '../models/GetEventResponse';
 import { GetEventResponseEvent } from '../models/GetEventResponseEvent';
 import { GetInvoiceResponse } from '../models/GetInvoiceResponse';
 import { GetInvoiceResponseInvoice } from '../models/GetInvoiceResponseInvoice';
-import { GetMeasurementResponse } from '../models/GetMeasurementResponse';
 import { GetMeterResponse } from '../models/GetMeterResponse';
 import { GetMeterResponseMeter } from '../models/GetMeterResponseMeter';
+import { GetPlanResponse } from '../models/GetPlanResponse';
+import { GetPlanResponsePlan } from '../models/GetPlanResponsePlan';
 import { GetProductConsumptionResponse } from '../models/GetProductConsumptionResponse';
 import { GetProductConsumptionResponseProductConsumption } from '../models/GetProductConsumptionResponseProductConsumption';
+import { GetProductsUsageReportResponse } from '../models/GetProductsUsageReportResponse';
 import { GrantCreditsRequest } from '../models/GrantCreditsRequest';
 import { InvalidEvent } from '../models/InvalidEvent';
 import { LineItem } from '../models/LineItem';
@@ -61,17 +62,29 @@ import { ListContractsResponse } from '../models/ListContractsResponse';
 import { ListCreditLedgerEntriesResponse } from '../models/ListCreditLedgerEntriesResponse';
 import { ListCustomersResponse } from '../models/ListCustomersResponse';
 import { ListInvoicesResponse } from '../models/ListInvoicesResponse';
-import { ListMeasurementsResponse } from '../models/ListMeasurementsResponse';
 import { ListMetersResponse } from '../models/ListMetersResponse';
+import { ListPlansResponse } from '../models/ListPlansResponse';
 import { LoginRequest } from '../models/LoginRequest';
 import { LoginResponse } from '../models/LoginResponse';
 import { Meter } from '../models/Meter';
+import { NetSuiteExportSalesOrderRequest } from '../models/NetSuiteExportSalesOrderRequest';
+import { NetSuiteSyncInvoicesRequest } from '../models/NetSuiteSyncInvoicesRequest';
+import { NetSuiteSyncInvoicesRequestData } from '../models/NetSuiteSyncInvoicesRequestData';
+import { NetSuiteSyncInvoicesRequestDataEntity } from '../models/NetSuiteSyncInvoicesRequestDataEntity';
+import { NetSuiteSyncInvoicesRequestDataItem } from '../models/NetSuiteSyncInvoicesRequestDataItem';
+import { NetSuiteSyncInvoicesRequestDataItemItemsInner } from '../models/NetSuiteSyncInvoicesRequestDataItemItemsInner';
+import { NetSuiteSyncInvoicesResponse } from '../models/NetSuiteSyncInvoicesResponse';
 import { NotificationEventType } from '../models/NotificationEventType';
+import { PaymentTerm } from '../models/PaymentTerm';
+import { PlanBillingData } from '../models/PlanBillingData';
+import { PlanDuration } from '../models/PlanDuration';
+import { PlanStatus } from '../models/PlanStatus';
 import { ProductConsumption } from '../models/ProductConsumption';
 import { QueryEventsResponse } from '../models/QueryEventsResponse';
 import { QueryEventsResponseEventsInner } from '../models/QueryEventsResponseEventsInner';
 import { SendEventsRequest } from '../models/SendEventsRequest';
 import { SendEventsResponse } from '../models/SendEventsResponse';
+import { UnlimitedDuration } from '../models/UnlimitedDuration';
 import { UpdateCustomerRequest } from '../models/UpdateCustomerRequest';
 import { UpdateCustomerResponse } from '../models/UpdateCustomerResponse';
 import { UpdateMeterRequest } from '../models/UpdateMeterRequest';
@@ -584,39 +597,6 @@ export class ObservableCustomersApi {
     }
 
     /**
-     * Use this endpoint to get the products consumptions by the customer alias.
-     * Get products consumptions by customer alias
-     * @param alias
-     */
-    public getCustomerProductsConsumptionsByAliasWithHttpInfo(alias: string, _options?: Configuration): Observable<HttpInfo<GetCustomerProductsConsumptionsByAliasResponse>> {
-        const requestContextPromise = this.requestFactory.getCustomerProductsConsumptionsByAlias(alias, _options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (const middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (const middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getCustomerProductsConsumptionsByAliasWithHttpInfo(rsp)));
-            }));
-    }
-
-    /**
-     * Use this endpoint to get the products consumptions by the customer alias.
-     * Get products consumptions by customer alias
-     * @param alias
-     */
-    public getCustomerProductsConsumptionsByAlias(alias: string, _options?: Configuration): Observable<GetCustomerProductsConsumptionsByAliasResponse> {
-        return this.getCustomerProductsConsumptionsByAliasWithHttpInfo(alias, _options).pipe(map((apiResponse: HttpInfo<GetCustomerProductsConsumptionsByAliasResponse>) => apiResponse.data));
-    }
-
-    /**
      * Get a list of Customers.
      * List Customers
      * @param [limit]
@@ -879,6 +859,90 @@ export class ObservableEventsApi {
 
 }
 
+import { IntegrationsApiRequestFactory, IntegrationsApiResponseProcessor} from "../apis/IntegrationsApi";
+export class ObservableIntegrationsApi {
+    private requestFactory: IntegrationsApiRequestFactory;
+    private responseProcessor: IntegrationsApiResponseProcessor;
+    private configuration: Configuration;
+
+    public constructor(
+        configuration: Configuration,
+        requestFactory?: IntegrationsApiRequestFactory,
+        responseProcessor?: IntegrationsApiResponseProcessor
+    ) {
+        this.configuration = configuration;
+        this.requestFactory = requestFactory || new IntegrationsApiRequestFactory(configuration);
+        this.responseProcessor = responseProcessor || new IntegrationsApiResponseProcessor();
+    }
+
+    /**
+     * This endpoint is used to export sales order to NetSuite.
+     * Export sales order to NetSuite
+     * @param netSuiteExportSalesOrderRequest
+     */
+    public exportNetSuiteSalesOrderWithHttpInfo(netSuiteExportSalesOrderRequest: NetSuiteExportSalesOrderRequest, _options?: Configuration): Observable<HttpInfo<void>> {
+        const requestContextPromise = this.requestFactory.exportNetSuiteSalesOrder(netSuiteExportSalesOrderRequest, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (const middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (const middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.exportNetSuiteSalesOrderWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * This endpoint is used to export sales order to NetSuite.
+     * Export sales order to NetSuite
+     * @param netSuiteExportSalesOrderRequest
+     */
+    public exportNetSuiteSalesOrder(netSuiteExportSalesOrderRequest: NetSuiteExportSalesOrderRequest, _options?: Configuration): Observable<void> {
+        return this.exportNetSuiteSalesOrderWithHttpInfo(netSuiteExportSalesOrderRequest, _options).pipe(map((apiResponse: HttpInfo<void>) => apiResponse.data));
+    }
+
+    /**
+     * This endpoint is used to sync invoices to NetSuite.
+     * Sync invoices to NetSuite
+     * @param netSuiteSyncInvoicesRequest
+     */
+    public netSuiteSyncInvoicesWithHttpInfo(netSuiteSyncInvoicesRequest: NetSuiteSyncInvoicesRequest, _options?: Configuration): Observable<HttpInfo<NetSuiteSyncInvoicesResponse>> {
+        const requestContextPromise = this.requestFactory.netSuiteSyncInvoices(netSuiteSyncInvoicesRequest, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (const middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (const middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.netSuiteSyncInvoicesWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * This endpoint is used to sync invoices to NetSuite.
+     * Sync invoices to NetSuite
+     * @param netSuiteSyncInvoicesRequest
+     */
+    public netSuiteSyncInvoices(netSuiteSyncInvoicesRequest: NetSuiteSyncInvoicesRequest, _options?: Configuration): Observable<NetSuiteSyncInvoicesResponse> {
+        return this.netSuiteSyncInvoicesWithHttpInfo(netSuiteSyncInvoicesRequest, _options).pipe(map((apiResponse: HttpInfo<NetSuiteSyncInvoicesResponse>) => apiResponse.data));
+    }
+
+}
+
 import { InvoicesApiRequestFactory, InvoicesApiResponseProcessor} from "../apis/InvoicesApi";
 export class ObservableInvoicesApi {
     private requestFactory: InvoicesApiRequestFactory;
@@ -961,158 +1025,6 @@ export class ObservableInvoicesApi {
      */
     public listInvoices(limit?: number, cursor?: string, _options?: Configuration): Observable<ListInvoicesResponse> {
         return this.listInvoicesWithHttpInfo(limit, cursor, _options).pipe(map((apiResponse: HttpInfo<ListInvoicesResponse>) => apiResponse.data));
-    }
-
-}
-
-import { MeasurementsApiRequestFactory, MeasurementsApiResponseProcessor} from "../apis/MeasurementsApi";
-export class ObservableMeasurementsApi {
-    private requestFactory: MeasurementsApiRequestFactory;
-    private responseProcessor: MeasurementsApiResponseProcessor;
-    private configuration: Configuration;
-
-    public constructor(
-        configuration: Configuration,
-        requestFactory?: MeasurementsApiRequestFactory,
-        responseProcessor?: MeasurementsApiResponseProcessor
-    ) {
-        this.configuration = configuration;
-        this.requestFactory = requestFactory || new MeasurementsApiRequestFactory(configuration);
-        this.responseProcessor = responseProcessor || new MeasurementsApiResponseProcessor();
-    }
-
-    /**
-     * Create a new Measurement.
-     * Create Measurement
-     * @param createMeasurementRequest
-     */
-    public createMeasurementWithHttpInfo(createMeasurementRequest: CreateMeasurementRequest, _options?: Configuration): Observable<HttpInfo<CreateMeasurementResponse>> {
-        const requestContextPromise = this.requestFactory.createMeasurement(createMeasurementRequest, _options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (const middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (const middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.createMeasurementWithHttpInfo(rsp)));
-            }));
-    }
-
-    /**
-     * Create a new Measurement.
-     * Create Measurement
-     * @param createMeasurementRequest
-     */
-    public createMeasurement(createMeasurementRequest: CreateMeasurementRequest, _options?: Configuration): Observable<CreateMeasurementResponse> {
-        return this.createMeasurementWithHttpInfo(createMeasurementRequest, _options).pipe(map((apiResponse: HttpInfo<CreateMeasurementResponse>) => apiResponse.data));
-    }
-
-    /**
-     * Delete a Measurement by id.
-     * Delete Measurement
-     * @param measurementId
-     */
-    public deleteMeasurementWithHttpInfo(measurementId: string, _options?: Configuration): Observable<HttpInfo<DeleteMeasurementResponse>> {
-        const requestContextPromise = this.requestFactory.deleteMeasurement(measurementId, _options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (const middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (const middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deleteMeasurementWithHttpInfo(rsp)));
-            }));
-    }
-
-    /**
-     * Delete a Measurement by id.
-     * Delete Measurement
-     * @param measurementId
-     */
-    public deleteMeasurement(measurementId: string, _options?: Configuration): Observable<DeleteMeasurementResponse> {
-        return this.deleteMeasurementWithHttpInfo(measurementId, _options).pipe(map((apiResponse: HttpInfo<DeleteMeasurementResponse>) => apiResponse.data));
-    }
-
-    /**
-     * Get a Measurement by id.
-     * Get Measurement
-     * @param measurementId
-     */
-    public getMeasurementWithHttpInfo(measurementId: string, _options?: Configuration): Observable<HttpInfo<GetMeasurementResponse>> {
-        const requestContextPromise = this.requestFactory.getMeasurement(measurementId, _options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (const middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (const middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getMeasurementWithHttpInfo(rsp)));
-            }));
-    }
-
-    /**
-     * Get a Measurement by id.
-     * Get Measurement
-     * @param measurementId
-     */
-    public getMeasurement(measurementId: string, _options?: Configuration): Observable<GetMeasurementResponse> {
-        return this.getMeasurementWithHttpInfo(measurementId, _options).pipe(map((apiResponse: HttpInfo<GetMeasurementResponse>) => apiResponse.data));
-    }
-
-    /**
-     * Get a list of Measurements.
-     * List Measurements
-     * @param [limit]
-     * @param [cursor]
-     */
-    public listMeasurementsWithHttpInfo(limit?: number, cursor?: string, _options?: Configuration): Observable<HttpInfo<ListMeasurementsResponse>> {
-        const requestContextPromise = this.requestFactory.listMeasurements(limit, cursor, _options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (const middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (const middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.listMeasurementsWithHttpInfo(rsp)));
-            }));
-    }
-
-    /**
-     * Get a list of Measurements.
-     * List Measurements
-     * @param [limit]
-     * @param [cursor]
-     */
-    public listMeasurements(limit?: number, cursor?: string, _options?: Configuration): Observable<ListMeasurementsResponse> {
-        return this.listMeasurementsWithHttpInfo(limit, cursor, _options).pipe(map((apiResponse: HttpInfo<ListMeasurementsResponse>) => apiResponse.data));
     }
 
 }
@@ -1271,6 +1183,125 @@ export class ObservableMetersApi {
 
 }
 
+import { PlansApiRequestFactory, PlansApiResponseProcessor} from "../apis/PlansApi";
+export class ObservablePlansApi {
+    private requestFactory: PlansApiRequestFactory;
+    private responseProcessor: PlansApiResponseProcessor;
+    private configuration: Configuration;
+
+    public constructor(
+        configuration: Configuration,
+        requestFactory?: PlansApiRequestFactory,
+        responseProcessor?: PlansApiResponseProcessor
+    ) {
+        this.configuration = configuration;
+        this.requestFactory = requestFactory || new PlansApiRequestFactory(configuration);
+        this.responseProcessor = responseProcessor || new PlansApiResponseProcessor();
+    }
+
+    /**
+     * Delete a Plan by id.
+     * Delete Plan
+     * @param planId
+     */
+    public deletePlanWithHttpInfo(planId: string, _options?: Configuration): Observable<HttpInfo<DeletePlanResponse>> {
+        const requestContextPromise = this.requestFactory.deletePlan(planId, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (const middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (const middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.deletePlanWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * Delete a Plan by id.
+     * Delete Plan
+     * @param planId
+     */
+    public deletePlan(planId: string, _options?: Configuration): Observable<DeletePlanResponse> {
+        return this.deletePlanWithHttpInfo(planId, _options).pipe(map((apiResponse: HttpInfo<DeletePlanResponse>) => apiResponse.data));
+    }
+
+    /**
+     * Get a Plan by id.
+     * Get Plan
+     * @param planId
+     */
+    public getPlanWithHttpInfo(planId: string, _options?: Configuration): Observable<HttpInfo<GetPlanResponse>> {
+        const requestContextPromise = this.requestFactory.getPlan(planId, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (const middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (const middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getPlanWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * Get a Plan by id.
+     * Get Plan
+     * @param planId
+     */
+    public getPlan(planId: string, _options?: Configuration): Observable<GetPlanResponse> {
+        return this.getPlanWithHttpInfo(planId, _options).pipe(map((apiResponse: HttpInfo<GetPlanResponse>) => apiResponse.data));
+    }
+
+    /**
+     * Get a list of Plans.
+     * List Plans
+     * @param [limit]
+     * @param [cursor]
+     */
+    public listPlansWithHttpInfo(limit?: number, cursor?: string, _options?: Configuration): Observable<HttpInfo<ListPlansResponse>> {
+        const requestContextPromise = this.requestFactory.listPlans(limit, cursor, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (const middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (const middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.listPlansWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * Get a list of Plans.
+     * List Plans
+     * @param [limit]
+     * @param [cursor]
+     */
+    public listPlans(limit?: number, cursor?: string, _options?: Configuration): Observable<ListPlansResponse> {
+        return this.listPlansWithHttpInfo(limit, cursor, _options).pipe(map((apiResponse: HttpInfo<ListPlansResponse>) => apiResponse.data));
+    }
+
+}
+
 import { ProductConsumptionsApiRequestFactory, ProductConsumptionsApiResponseProcessor} from "../apis/ProductConsumptionsApi";
 export class ObservableProductConsumptionsApi {
     private requestFactory: ProductConsumptionsApiRequestFactory;
@@ -1318,6 +1349,92 @@ export class ObservableProductConsumptionsApi {
      */
     public getProductConsumption(productId: string, _options?: Configuration): Observable<GetProductConsumptionResponse> {
         return this.getProductConsumptionWithHttpInfo(productId, _options).pipe(map((apiResponse: HttpInfo<GetProductConsumptionResponse>) => apiResponse.data));
+    }
+
+}
+
+import { ReportsApiRequestFactory, ReportsApiResponseProcessor} from "../apis/ReportsApi";
+export class ObservableReportsApi {
+    private requestFactory: ReportsApiRequestFactory;
+    private responseProcessor: ReportsApiResponseProcessor;
+    private configuration: Configuration;
+
+    public constructor(
+        configuration: Configuration,
+        requestFactory?: ReportsApiRequestFactory,
+        responseProcessor?: ReportsApiResponseProcessor
+    ) {
+        this.configuration = configuration;
+        this.requestFactory = requestFactory || new ReportsApiRequestFactory(configuration);
+        this.responseProcessor = responseProcessor || new ReportsApiResponseProcessor();
+    }
+
+    /**
+     * Get commitment report 
+     * @param [reportId]
+     */
+    public getCommitmentReportResponseWithHttpInfo(reportId?: string, _options?: Configuration): Observable<HttpInfo<GetCommitmentReportResponse>> {
+        const requestContextPromise = this.requestFactory.getCommitmentReportResponse(reportId, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (const middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (const middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getCommitmentReportResponseWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * Get commitment report 
+     * @param [reportId]
+     */
+    public getCommitmentReportResponse(reportId?: string, _options?: Configuration): Observable<GetCommitmentReportResponse> {
+        return this.getCommitmentReportResponseWithHttpInfo(reportId, _options).pipe(map((apiResponse: HttpInfo<GetCommitmentReportResponse>) => apiResponse.data));
+    }
+
+    /**
+     * Use this endpoint to get the products usage report.
+     * Get products usage report
+     * @param [reportId]
+     * @param [limit]
+     * @param [cursor]
+     */
+    public getProductsUsageReportWithHttpInfo(reportId?: string, limit?: number, cursor?: string, _options?: Configuration): Observable<HttpInfo<GetProductsUsageReportResponse>> {
+        const requestContextPromise = this.requestFactory.getProductsUsageReport(reportId, limit, cursor, _options);
+
+        // build promise chain
+        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
+        for (const middleware of this.configuration.middleware) {
+            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
+        }
+
+        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
+            pipe(mergeMap((response: ResponseContext) => {
+                let middlewarePostObservable = of(response);
+                for (const middleware of this.configuration.middleware) {
+                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
+                }
+                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.getProductsUsageReportWithHttpInfo(rsp)));
+            }));
+    }
+
+    /**
+     * Use this endpoint to get the products usage report.
+     * Get products usage report
+     * @param [reportId]
+     * @param [limit]
+     * @param [cursor]
+     */
+    public getProductsUsageReport(reportId?: string, limit?: number, cursor?: string, _options?: Configuration): Observable<GetProductsUsageReportResponse> {
+        return this.getProductsUsageReportWithHttpInfo(reportId, limit, cursor, _options).pipe(map((apiResponse: HttpInfo<GetProductsUsageReportResponse>) => apiResponse.data));
     }
 
 }

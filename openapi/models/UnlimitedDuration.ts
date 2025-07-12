@@ -12,11 +12,6 @@
 
 import { HttpFile } from '../http/http';
 
-export enum NotificationEventType {
-    AnonymousCustomer = 'AnonymousCustomer',
-    Overage = 'Overage',
-    UpcomingRenewal = 'UpcomingRenewal',
-    InvoiceApproved = 'InvoiceApproved',
-    CustomerPortalLinkSent = 'CustomerPortalLinkSent',
-    CommitmentCrossed = 'CommitmentCrossed'
+export enum UnlimitedDuration {
+    NUMBER_MINUS_1 = -1
 }

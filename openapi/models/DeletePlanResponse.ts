@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 
-import { CreateMeasurementResponseMeasurement } from '../models/CreateMeasurementResponseMeasurement';
+import { DeletePlanResponsePlan } from '../models/DeletePlanResponsePlan';
 import { HttpFile } from '../http/http';
 
-export class GetMeasurementResponse {
-    'measurement': CreateMeasurementResponseMeasurement;
+export class DeletePlanResponse {
+    'plan': DeletePlanResponsePlan;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -22,14 +22,14 @@ export class GetMeasurementResponse {
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "measurement",
-            "baseName": "measurement",
-            "type": "CreateMeasurementResponseMeasurement",
+            "name": "plan",
+            "baseName": "plan",
+            "type": "DeletePlanResponsePlan",
             "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return GetMeasurementResponse.attributeTypeMap;
+        return DeletePlanResponse.attributeTypeMap;
     }
 
     public constructor() {

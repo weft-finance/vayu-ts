@@ -5,20 +5,19 @@ import { Address } from '../models/Address';
 import { AggregationMethod } from '../models/AggregationMethod';
 import { AggregationOperator } from '../models/AggregationOperator';
 import { BillingCycleStatus } from '../models/BillingCycleStatus';
+import { BillingInterval } from '../models/BillingInterval';
 import { Condition } from '../models/Condition';
 import { Contact } from '../models/Contact';
+import { ContractStatus } from '../models/ContractStatus';
 import { CreateContractRequest } from '../models/CreateContractRequest';
 import { CreateContractResponse } from '../models/CreateContractResponse';
 import { CreateCustomerRequest } from '../models/CreateCustomerRequest';
 import { CreateCustomerResponse } from '../models/CreateCustomerResponse';
 import { CreateCustomerResponseCustomer } from '../models/CreateCustomerResponseCustomer';
-import { CreateMeasurementRequest } from '../models/CreateMeasurementRequest';
-import { CreateMeasurementRequestUsageDate } from '../models/CreateMeasurementRequestUsageDate';
-import { CreateMeasurementResponse } from '../models/CreateMeasurementResponse';
-import { CreateMeasurementResponseMeasurement } from '../models/CreateMeasurementResponseMeasurement';
 import { CreditLedgerEntry } from '../models/CreditLedgerEntry';
 import { Criterion } from '../models/Criterion';
 import { CriterionOperator } from '../models/CriterionOperator';
+import { Currency } from '../models/Currency';
 import { DeductCreditsRequest } from '../models/DeductCreditsRequest';
 import { DeleteContractResponse } from '../models/DeleteContractResponse';
 import { DeleteContractResponseContract } from '../models/DeleteContractResponseContract';
@@ -26,10 +25,10 @@ import { DeleteCustomerResponse } from '../models/DeleteCustomerResponse';
 import { DeleteCustomerResponseCustomer } from '../models/DeleteCustomerResponseCustomer';
 import { DeleteEventResponse } from '../models/DeleteEventResponse';
 import { DeleteEventResponseEvent } from '../models/DeleteEventResponseEvent';
-import { DeleteMeasurementResponse } from '../models/DeleteMeasurementResponse';
-import { DeleteMeasurementResponseMeasurement } from '../models/DeleteMeasurementResponseMeasurement';
 import { DeleteMeterResponse } from '../models/DeleteMeterResponse';
 import { DeleteMeterResponseMeter } from '../models/DeleteMeterResponseMeter';
+import { DeletePlanResponse } from '../models/DeletePlanResponse';
+import { DeletePlanResponsePlan } from '../models/DeletePlanResponsePlan';
 import { Event } from '../models/Event';
 import { EventsDryRunRequest } from '../models/EventsDryRunRequest';
 import { EventsDryRunResponse } from '../models/EventsDryRunResponse';
@@ -38,20 +37,22 @@ import { EventsDryRunResponseObjectEvent } from '../models/EventsDryRunResponseO
 import { EventsDryRunResponseObjectMeterWithValuesInner } from '../models/EventsDryRunResponseObjectMeterWithValuesInner';
 import { Filter } from '../models/Filter';
 import { FullDayPeriod } from '../models/FullDayPeriod';
+import { GetCommitmentReportResponse } from '../models/GetCommitmentReportResponse';
 import { GetContractResponse } from '../models/GetContractResponse';
 import { GetContractResponseContract } from '../models/GetContractResponseContract';
-import { GetCustomerProductsConsumptionsByAliasResponse } from '../models/GetCustomerProductsConsumptionsByAliasResponse';
 import { GetCustomerProductsConsumptionsResponse } from '../models/GetCustomerProductsConsumptionsResponse';
 import { GetCustomerResponse } from '../models/GetCustomerResponse';
 import { GetEventResponse } from '../models/GetEventResponse';
 import { GetEventResponseEvent } from '../models/GetEventResponseEvent';
 import { GetInvoiceResponse } from '../models/GetInvoiceResponse';
 import { GetInvoiceResponseInvoice } from '../models/GetInvoiceResponseInvoice';
-import { GetMeasurementResponse } from '../models/GetMeasurementResponse';
 import { GetMeterResponse } from '../models/GetMeterResponse';
 import { GetMeterResponseMeter } from '../models/GetMeterResponseMeter';
+import { GetPlanResponse } from '../models/GetPlanResponse';
+import { GetPlanResponsePlan } from '../models/GetPlanResponsePlan';
 import { GetProductConsumptionResponse } from '../models/GetProductConsumptionResponse';
 import { GetProductConsumptionResponseProductConsumption } from '../models/GetProductConsumptionResponseProductConsumption';
+import { GetProductsUsageReportResponse } from '../models/GetProductsUsageReportResponse';
 import { GrantCreditsRequest } from '../models/GrantCreditsRequest';
 import { InvalidEvent } from '../models/InvalidEvent';
 import { LineItem } from '../models/LineItem';
@@ -60,17 +61,29 @@ import { ListContractsResponse } from '../models/ListContractsResponse';
 import { ListCreditLedgerEntriesResponse } from '../models/ListCreditLedgerEntriesResponse';
 import { ListCustomersResponse } from '../models/ListCustomersResponse';
 import { ListInvoicesResponse } from '../models/ListInvoicesResponse';
-import { ListMeasurementsResponse } from '../models/ListMeasurementsResponse';
 import { ListMetersResponse } from '../models/ListMetersResponse';
+import { ListPlansResponse } from '../models/ListPlansResponse';
 import { LoginRequest } from '../models/LoginRequest';
 import { LoginResponse } from '../models/LoginResponse';
 import { Meter } from '../models/Meter';
+import { NetSuiteExportSalesOrderRequest } from '../models/NetSuiteExportSalesOrderRequest';
+import { NetSuiteSyncInvoicesRequest } from '../models/NetSuiteSyncInvoicesRequest';
+import { NetSuiteSyncInvoicesRequestData } from '../models/NetSuiteSyncInvoicesRequestData';
+import { NetSuiteSyncInvoicesRequestDataEntity } from '../models/NetSuiteSyncInvoicesRequestDataEntity';
+import { NetSuiteSyncInvoicesRequestDataItem } from '../models/NetSuiteSyncInvoicesRequestDataItem';
+import { NetSuiteSyncInvoicesRequestDataItemItemsInner } from '../models/NetSuiteSyncInvoicesRequestDataItemItemsInner';
+import { NetSuiteSyncInvoicesResponse } from '../models/NetSuiteSyncInvoicesResponse';
 import { NotificationEventType } from '../models/NotificationEventType';
+import { PaymentTerm } from '../models/PaymentTerm';
+import { PlanBillingData } from '../models/PlanBillingData';
+import { PlanDuration } from '../models/PlanDuration';
+import { PlanStatus } from '../models/PlanStatus';
 import { ProductConsumption } from '../models/ProductConsumption';
 import { QueryEventsResponse } from '../models/QueryEventsResponse';
 import { QueryEventsResponseEventsInner } from '../models/QueryEventsResponseEventsInner';
 import { SendEventsRequest } from '../models/SendEventsRequest';
 import { SendEventsResponse } from '../models/SendEventsResponse';
+import { UnlimitedDuration } from '../models/UnlimitedDuration';
 import { UpdateCustomerRequest } from '../models/UpdateCustomerRequest';
 import { UpdateCustomerResponse } from '../models/UpdateCustomerResponse';
 import { UpdateMeterRequest } from '../models/UpdateMeterRequest';
@@ -414,26 +427,6 @@ export class PromiseCustomersApi {
     }
 
     /**
-     * Use this endpoint to get the products consumptions by the customer alias.
-     * Get products consumptions by customer alias
-     * @param alias
-     */
-    public getCustomerProductsConsumptionsByAliasWithHttpInfo(alias: string, _options?: Configuration): Promise<HttpInfo<GetCustomerProductsConsumptionsByAliasResponse>> {
-        const result = this.api.getCustomerProductsConsumptionsByAliasWithHttpInfo(alias, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * Use this endpoint to get the products consumptions by the customer alias.
-     * Get products consumptions by customer alias
-     * @param alias
-     */
-    public getCustomerProductsConsumptionsByAlias(alias: string, _options?: Configuration): Promise<GetCustomerProductsConsumptionsByAliasResponse> {
-        const result = this.api.getCustomerProductsConsumptionsByAlias(alias, _options);
-        return result.toPromise();
-    }
-
-    /**
      * Get a list of Customers.
      * List Customers
      * @param [limit]
@@ -609,6 +602,65 @@ export class PromiseEventsApi {
 
 
 
+import { ObservableIntegrationsApi } from './ObservableAPI';
+
+import { IntegrationsApiRequestFactory, IntegrationsApiResponseProcessor} from "../apis/IntegrationsApi";
+export class PromiseIntegrationsApi {
+    private api: ObservableIntegrationsApi
+
+    public constructor(
+        configuration: Configuration,
+        requestFactory?: IntegrationsApiRequestFactory,
+        responseProcessor?: IntegrationsApiResponseProcessor
+    ) {
+        this.api = new ObservableIntegrationsApi(configuration, requestFactory, responseProcessor);
+    }
+
+    /**
+     * This endpoint is used to export sales order to NetSuite.
+     * Export sales order to NetSuite
+     * @param netSuiteExportSalesOrderRequest
+     */
+    public exportNetSuiteSalesOrderWithHttpInfo(netSuiteExportSalesOrderRequest: NetSuiteExportSalesOrderRequest, _options?: Configuration): Promise<HttpInfo<void>> {
+        const result = this.api.exportNetSuiteSalesOrderWithHttpInfo(netSuiteExportSalesOrderRequest, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * This endpoint is used to export sales order to NetSuite.
+     * Export sales order to NetSuite
+     * @param netSuiteExportSalesOrderRequest
+     */
+    public exportNetSuiteSalesOrder(netSuiteExportSalesOrderRequest: NetSuiteExportSalesOrderRequest, _options?: Configuration): Promise<void> {
+        const result = this.api.exportNetSuiteSalesOrder(netSuiteExportSalesOrderRequest, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * This endpoint is used to sync invoices to NetSuite.
+     * Sync invoices to NetSuite
+     * @param netSuiteSyncInvoicesRequest
+     */
+    public netSuiteSyncInvoicesWithHttpInfo(netSuiteSyncInvoicesRequest: NetSuiteSyncInvoicesRequest, _options?: Configuration): Promise<HttpInfo<NetSuiteSyncInvoicesResponse>> {
+        const result = this.api.netSuiteSyncInvoicesWithHttpInfo(netSuiteSyncInvoicesRequest, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * This endpoint is used to sync invoices to NetSuite.
+     * Sync invoices to NetSuite
+     * @param netSuiteSyncInvoicesRequest
+     */
+    public netSuiteSyncInvoices(netSuiteSyncInvoicesRequest: NetSuiteSyncInvoicesRequest, _options?: Configuration): Promise<NetSuiteSyncInvoicesResponse> {
+        const result = this.api.netSuiteSyncInvoices(netSuiteSyncInvoicesRequest, _options);
+        return result.toPromise();
+    }
+
+
+}
+
+
+
 import { ObservableInvoicesApi } from './ObservableAPI';
 
 import { InvoicesApiRequestFactory, InvoicesApiResponseProcessor} from "../apis/InvoicesApi";
@@ -662,107 +714,6 @@ export class PromiseInvoicesApi {
      */
     public listInvoices(limit?: number, cursor?: string, _options?: Configuration): Promise<ListInvoicesResponse> {
         const result = this.api.listInvoices(limit, cursor, _options);
-        return result.toPromise();
-    }
-
-
-}
-
-
-
-import { ObservableMeasurementsApi } from './ObservableAPI';
-
-import { MeasurementsApiRequestFactory, MeasurementsApiResponseProcessor} from "../apis/MeasurementsApi";
-export class PromiseMeasurementsApi {
-    private api: ObservableMeasurementsApi
-
-    public constructor(
-        configuration: Configuration,
-        requestFactory?: MeasurementsApiRequestFactory,
-        responseProcessor?: MeasurementsApiResponseProcessor
-    ) {
-        this.api = new ObservableMeasurementsApi(configuration, requestFactory, responseProcessor);
-    }
-
-    /**
-     * Create a new Measurement.
-     * Create Measurement
-     * @param createMeasurementRequest
-     */
-    public createMeasurementWithHttpInfo(createMeasurementRequest: CreateMeasurementRequest, _options?: Configuration): Promise<HttpInfo<CreateMeasurementResponse>> {
-        const result = this.api.createMeasurementWithHttpInfo(createMeasurementRequest, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * Create a new Measurement.
-     * Create Measurement
-     * @param createMeasurementRequest
-     */
-    public createMeasurement(createMeasurementRequest: CreateMeasurementRequest, _options?: Configuration): Promise<CreateMeasurementResponse> {
-        const result = this.api.createMeasurement(createMeasurementRequest, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * Delete a Measurement by id.
-     * Delete Measurement
-     * @param measurementId
-     */
-    public deleteMeasurementWithHttpInfo(measurementId: string, _options?: Configuration): Promise<HttpInfo<DeleteMeasurementResponse>> {
-        const result = this.api.deleteMeasurementWithHttpInfo(measurementId, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * Delete a Measurement by id.
-     * Delete Measurement
-     * @param measurementId
-     */
-    public deleteMeasurement(measurementId: string, _options?: Configuration): Promise<DeleteMeasurementResponse> {
-        const result = this.api.deleteMeasurement(measurementId, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * Get a Measurement by id.
-     * Get Measurement
-     * @param measurementId
-     */
-    public getMeasurementWithHttpInfo(measurementId: string, _options?: Configuration): Promise<HttpInfo<GetMeasurementResponse>> {
-        const result = this.api.getMeasurementWithHttpInfo(measurementId, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * Get a Measurement by id.
-     * Get Measurement
-     * @param measurementId
-     */
-    public getMeasurement(measurementId: string, _options?: Configuration): Promise<GetMeasurementResponse> {
-        const result = this.api.getMeasurement(measurementId, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * Get a list of Measurements.
-     * List Measurements
-     * @param [limit]
-     * @param [cursor]
-     */
-    public listMeasurementsWithHttpInfo(limit?: number, cursor?: string, _options?: Configuration): Promise<HttpInfo<ListMeasurementsResponse>> {
-        const result = this.api.listMeasurementsWithHttpInfo(limit, cursor, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * Get a list of Measurements.
-     * List Measurements
-     * @param [limit]
-     * @param [cursor]
-     */
-    public listMeasurements(limit?: number, cursor?: string, _options?: Configuration): Promise<ListMeasurementsResponse> {
-        const result = this.api.listMeasurements(limit, cursor, _options);
         return result.toPromise();
     }
 
@@ -874,6 +825,87 @@ export class PromiseMetersApi {
 
 
 
+import { ObservablePlansApi } from './ObservableAPI';
+
+import { PlansApiRequestFactory, PlansApiResponseProcessor} from "../apis/PlansApi";
+export class PromisePlansApi {
+    private api: ObservablePlansApi
+
+    public constructor(
+        configuration: Configuration,
+        requestFactory?: PlansApiRequestFactory,
+        responseProcessor?: PlansApiResponseProcessor
+    ) {
+        this.api = new ObservablePlansApi(configuration, requestFactory, responseProcessor);
+    }
+
+    /**
+     * Delete a Plan by id.
+     * Delete Plan
+     * @param planId
+     */
+    public deletePlanWithHttpInfo(planId: string, _options?: Configuration): Promise<HttpInfo<DeletePlanResponse>> {
+        const result = this.api.deletePlanWithHttpInfo(planId, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Delete a Plan by id.
+     * Delete Plan
+     * @param planId
+     */
+    public deletePlan(planId: string, _options?: Configuration): Promise<DeletePlanResponse> {
+        const result = this.api.deletePlan(planId, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Get a Plan by id.
+     * Get Plan
+     * @param planId
+     */
+    public getPlanWithHttpInfo(planId: string, _options?: Configuration): Promise<HttpInfo<GetPlanResponse>> {
+        const result = this.api.getPlanWithHttpInfo(planId, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Get a Plan by id.
+     * Get Plan
+     * @param planId
+     */
+    public getPlan(planId: string, _options?: Configuration): Promise<GetPlanResponse> {
+        const result = this.api.getPlan(planId, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Get a list of Plans.
+     * List Plans
+     * @param [limit]
+     * @param [cursor]
+     */
+    public listPlansWithHttpInfo(limit?: number, cursor?: string, _options?: Configuration): Promise<HttpInfo<ListPlansResponse>> {
+        const result = this.api.listPlansWithHttpInfo(limit, cursor, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Get a list of Plans.
+     * List Plans
+     * @param [limit]
+     * @param [cursor]
+     */
+    public listPlans(limit?: number, cursor?: string, _options?: Configuration): Promise<ListPlansResponse> {
+        const result = this.api.listPlans(limit, cursor, _options);
+        return result.toPromise();
+    }
+
+
+}
+
+
+
 import { ObservableProductConsumptionsApi } from './ObservableAPI';
 
 import { ProductConsumptionsApiRequestFactory, ProductConsumptionsApiResponseProcessor} from "../apis/ProductConsumptionsApi";
@@ -905,6 +937,67 @@ export class PromiseProductConsumptionsApi {
      */
     public getProductConsumption(productId: string, _options?: Configuration): Promise<GetProductConsumptionResponse> {
         const result = this.api.getProductConsumption(productId, _options);
+        return result.toPromise();
+    }
+
+
+}
+
+
+
+import { ObservableReportsApi } from './ObservableAPI';
+
+import { ReportsApiRequestFactory, ReportsApiResponseProcessor} from "../apis/ReportsApi";
+export class PromiseReportsApi {
+    private api: ObservableReportsApi
+
+    public constructor(
+        configuration: Configuration,
+        requestFactory?: ReportsApiRequestFactory,
+        responseProcessor?: ReportsApiResponseProcessor
+    ) {
+        this.api = new ObservableReportsApi(configuration, requestFactory, responseProcessor);
+    }
+
+    /**
+     * Get commitment report 
+     * @param [reportId]
+     */
+    public getCommitmentReportResponseWithHttpInfo(reportId?: string, _options?: Configuration): Promise<HttpInfo<GetCommitmentReportResponse>> {
+        const result = this.api.getCommitmentReportResponseWithHttpInfo(reportId, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Get commitment report 
+     * @param [reportId]
+     */
+    public getCommitmentReportResponse(reportId?: string, _options?: Configuration): Promise<GetCommitmentReportResponse> {
+        const result = this.api.getCommitmentReportResponse(reportId, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Use this endpoint to get the products usage report.
+     * Get products usage report
+     * @param [reportId]
+     * @param [limit]
+     * @param [cursor]
+     */
+    public getProductsUsageReportWithHttpInfo(reportId?: string, limit?: number, cursor?: string, _options?: Configuration): Promise<HttpInfo<GetProductsUsageReportResponse>> {
+        const result = this.api.getProductsUsageReportWithHttpInfo(reportId, limit, cursor, _options);
+        return result.toPromise();
+    }
+
+    /**
+     * Use this endpoint to get the products usage report.
+     * Get products usage report
+     * @param [reportId]
+     * @param [limit]
+     * @param [cursor]
+     */
+    public getProductsUsageReport(reportId?: string, limit?: number, cursor?: string, _options?: Configuration): Promise<GetProductsUsageReportResponse> {
+        const result = this.api.getProductsUsageReport(reportId, limit, cursor, _options);
         return result.toPromise();
     }
 

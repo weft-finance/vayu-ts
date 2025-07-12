@@ -10,14 +10,15 @@
  * Do not edit the class manually.
  */
 
-import { BillingCycleStatus } from '../models/BillingCycleStatus';
+import { NetSuiteSyncInvoicesRequestDataEntity } from '../models/NetSuiteSyncInvoicesRequestDataEntity';
 import { HttpFile } from '../http/http';
 
-export class CreditLedgerEntry {
-    'type': BillingCycleStatus;
+export class NetSuiteSyncInvoicesRequestDataItemItemsInner {
+    'item': NetSuiteSyncInvoicesRequestDataEntity;
+    'quantity': number;
     'amount': number;
-    'invoiceId'?: string;
-    'balanceAfterEntry': number;
+    'description'?: string;
+    'memo'?: string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -25,9 +26,15 @@ export class CreditLedgerEntry {
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "type",
-            "baseName": "type",
-            "type": "BillingCycleStatus",
+            "name": "item",
+            "baseName": "item",
+            "type": "NetSuiteSyncInvoicesRequestDataEntity",
+            "format": ""
+        },
+        {
+            "name": "quantity",
+            "baseName": "quantity",
+            "type": "number",
             "format": ""
         },
         {
@@ -37,24 +44,22 @@ export class CreditLedgerEntry {
             "format": ""
         },
         {
-            "name": "invoiceId",
-            "baseName": "invoiceId",
+            "name": "description",
+            "baseName": "description",
             "type": "string",
             "format": ""
         },
         {
-            "name": "balanceAfterEntry",
-            "baseName": "balanceAfterEntry",
-            "type": "number",
+            "name": "memo",
+            "baseName": "memo",
+            "type": "string",
             "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return CreditLedgerEntry.attributeTypeMap;
+        return NetSuiteSyncInvoicesRequestDataItemItemsInner.attributeTypeMap;
     }
 
     public constructor() {
     }
 }
-
-

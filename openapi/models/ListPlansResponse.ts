@@ -10,14 +10,14 @@
  * Do not edit the class manually.
  */
 
-import { BillingCycleStatus } from '../models/BillingCycleStatus';
+import { GetPlanResponsePlan } from '../models/GetPlanResponsePlan';
 import { HttpFile } from '../http/http';
 
-export class CreditLedgerEntry {
-    'type': BillingCycleStatus;
-    'amount': number;
-    'invoiceId'?: string;
-    'balanceAfterEntry': number;
+export class ListPlansResponse {
+    'plans': Array<GetPlanResponsePlan>;
+    'total': number;
+    'hasMore': boolean;
+    'nextCursor'?: string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -25,36 +25,34 @@ export class CreditLedgerEntry {
 
     static readonly attributeTypeMap: Array<{name: string, baseName: string, type: string, format: string}> = [
         {
-            "name": "type",
-            "baseName": "type",
-            "type": "BillingCycleStatus",
+            "name": "plans",
+            "baseName": "plans",
+            "type": "Array<GetPlanResponsePlan>",
             "format": ""
         },
         {
-            "name": "amount",
-            "baseName": "amount",
+            "name": "total",
+            "baseName": "total",
             "type": "number",
             "format": ""
         },
         {
-            "name": "invoiceId",
-            "baseName": "invoiceId",
+            "name": "hasMore",
+            "baseName": "hasMore",
+            "type": "boolean",
+            "format": ""
+        },
+        {
+            "name": "nextCursor",
+            "baseName": "nextCursor",
             "type": "string",
-            "format": ""
-        },
-        {
-            "name": "balanceAfterEntry",
-            "baseName": "balanceAfterEntry",
-            "type": "number",
             "format": ""
         }    ];
 
     static getAttributeTypeMap() {
-        return CreditLedgerEntry.attributeTypeMap;
+        return ListPlansResponse.attributeTypeMap;
     }
 
     public constructor() {
     }
 }
-
-

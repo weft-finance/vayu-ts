@@ -245,7 +245,6 @@ The Vayu API client library provides access to the following features:
   - `customers.get()`
   - `customers.getByExternalId()`
   - `customers.getProductConsumptions()`
-  - `getCustomerProductsConsumptionsByAlias`
 - **Meters**
   - `meters.get()`
   - `meters.update()`
